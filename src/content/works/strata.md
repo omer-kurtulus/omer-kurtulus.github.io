@@ -7,7 +7,7 @@ secondaryTags:
   - acousmatic
   - ambisonics
   - binaural
-  - sound archaeology
+  - sonic archaeology
   - field recording
   - Istanbul
   - fixed media
@@ -80,7 +80,7 @@ Ableton Live and Python. The master is 5th-order ambiX (ACN/SN3D, full 3D), 36
 channels. The binaural version is decoded from that same master through a
 Magnitude Least Squares decoder built from a measured KU100 dummy-head dataset.
 
-First piece of *Strata*, an album on the sound archaeologies of cities.
+First piece of *Strata*, an album on the sonic archaeologies.
 
 For the multichannel master, the technical notes, or a decode matched to your own
 loudspeaker layout, please get in touch.

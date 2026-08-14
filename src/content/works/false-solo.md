@@ -11,7 +11,18 @@ featured: false
 status: archived
 instrumentation: B♭ clarinet
 duration: "5:40"
-shortDescription: Three short solos for B♭ clarinet.
+shortDescription: >-
+  Three short solos for B♭ clarinet. The first was awarded Second Prize at the
+  International Woodwind Festival, Caddebostan Cultural Center, Istanbul.
+credits:
+  - role: Composition
+    name: Ömer Kurtuluş
+performances:
+  - date: "2016"
+    event: International Woodwind Festival
+    venue: Caddebostan Cultural Center
+    city: Istanbul
+    country: Turkey
 media:
   - type: soundcloud
     url: https://soundcloud.com/mer-kurtulu-399116903/false-solo-1-for-bb-clarinet-omer-kurtulus
@@ -24,8 +35,7 @@ media:
     title: "III"
 sourceUrls:
   - https://soundcloud.com/mer-kurtulu-399116903/false-solo-1-for-bb-clarinet-omer-kurtulus
-needsReview: true
 ---
 
-Three short solos for B♭ clarinet. An early work; the date of composition and the
-performer have not been documented.
+Three short solos for B♭ clarinet. *False Solo — 1* was awarded Second Prize at the
+International Woodwind Festival, Caddebostan Cultural Center, Istanbul.

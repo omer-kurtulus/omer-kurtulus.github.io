@@ -8,7 +8,7 @@ secondaryTags:
   - RAVE
   - machine listening
   - ambisonics
-  - sound archaeology
+  - sonic archaeology
   - field recording
   - Istanbul
   - interactive
@@ -46,8 +46,7 @@ sourceUrls:
 ---
 
 STRATA II is a work of sonic archaeology. It is the second piece of *Strata*, an
-album in which I research sound archaeologies — the layers a city leaves behind
-in whatever can still be heard of it.
+album in which I research the sonic archaeologies.
 
 I dedicate it to my friend Halil İbrahim Tutar, with whom I walked this city so
 much, and through whom I came to know its atmosphere.

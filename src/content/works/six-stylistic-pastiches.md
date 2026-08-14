@@ -1,17 +1,36 @@
 ---
-title: Six Stylistical Pastiches
-year: 2016
-date: 2016-07-24T08:46:17Z
+title: Six Stylistic Pastiches
+year: 2015
+date: 2015-01-01T00:00:00Z
 primaryCategory: acoustic
 secondaryTags:
-  - early works
+  - wind quartet
   - suite
+  - early works
 featured: false
 status: archived
+instrumentation: Flute, oboe, clarinet and bassoon
 duration: "11:56"
 shortDescription: >-
-  A suite of six short movements, each written through a different compositional
-  idiom.
+  Six short movements for wind quartet, each written through a different
+  compositional idiom.
+credits:
+  - role: Composition
+    name: Ömer Kurtuluş
+  - role: Flute
+    name: Deniz Ünel
+  - role: Oboe
+    name: Sedef Temiz
+  - role: Clarinet
+    name: Hür Can Davran
+  - role: Bassoon
+    name: Ada Banu Kara
+performances:
+  - date: "2015"
+    venue: Süreyya Opera House
+    city: Istanbul
+    country: Turkey
+    performers: Deniz Ünel, Sedef Temiz, Hür Can Davran, Ada Banu Kara
 media:
   - type: soundcloud
     url: https://soundcloud.com/mer-kurtulu-399116903/six-stylistical-pastiches-fugue
@@ -33,10 +52,9 @@ media:
     title: Idiosyncratical
 sourceUrls:
   - https://soundcloud.com/mer-kurtulu-399116903/six-stylistical-pastiches-fugue
-needsReview: true
 ---
 
-Six short movements, each written through a different compositional idiom:
-*Fugue*, *Modal*, *Modal Serial*, *Infinite Serie*, *Intervalistical* and
-*Idiosyncratical*. An early work; instrumentation and the date of composition
-have not been documented.
+Six short movements for flute, oboe, clarinet and bassoon, each written through a
+different compositional idiom: *Fugue*, *Modal*, *Modal Serial*, *Infinite Serie*,
+*Intervalistical* and *Idiosyncratical*. Selected for performance at the Süreyya
+Opera House, Istanbul, in 2015.

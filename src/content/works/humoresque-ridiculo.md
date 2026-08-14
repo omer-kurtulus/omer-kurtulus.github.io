@@ -4,11 +4,29 @@ year: 2016
 date: 2016-07-24T09:32:31Z
 primaryCategory: acoustic
 secondaryTags:
+  - piano
+  - solo
   - early works
 featured: false
 status: archived
+instrumentation: Solo piano
 duration: "6:46"
-shortDescription: In two movements.
+shortDescription: >-
+  In two movements. The first movement was awarded Second Prize at the 12th FIDELIO
+  Piano Composition Competition.
+credits:
+  - role: Composition
+    name: Ömer Kurtuluş
+  - role: Piano
+    name: Damla Koşar
+performances:
+  - date: "2016"
+    venue: Süreyya Opera House
+    city: Istanbul
+    country: Turkey
+    performers: Damla Koşar, piano
+  - date: "2020"
+    event: 12th FIDELIO Piano Composition Competition — Second Prize (first movement)
 media:
   - type: soundcloud
     url: https://soundcloud.com/mer-kurtulu-399116903/humoresque-ridiculo-first-movement
@@ -18,8 +36,8 @@ media:
     title: Second movement
 sourceUrls:
   - https://soundcloud.com/mer-kurtulu-399116903/humoresque-ridiculo-first-movement
-needsReview: true
 ---
 
-An early work in two movements. Instrumentation, date of composition and
-performers have not been documented.
+For solo piano, in two movements. Performed by Damla Koşar at the Süreyya Opera
+House, Istanbul, in 2016. The first movement was awarded Second Prize at the 12th
+FIDELIO Piano Composition Competition in 2020.

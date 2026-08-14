@@ -239,11 +239,37 @@ These are deliberate. Keep them.
 - The palette is defined once in `src/styles/global.css` as custom properties,
   with a dark-mode block. Change colours there, never inline.
 
-## Content that must not be invented
+## Sources of truth for biography and CV
 
-The About and CV pages are deliberately incomplete. Education, degrees, teachers,
-awards, prizes, competition results, publications and dates of birth are absent
-because no source available to this repository documents them. Ask Ömer for the
-text; do not fill these in from inference. The same applies to pending
-submissions and unconfirmed results — nothing goes on the site until it is a
-fact.
+About and CV are built from Ömer's own *Tabellarischer Lebenslauf*
+(`~/Downloads/Omer_Kurtulus_Tabellarischer Lebenslauf 2.docx` — check for a newer
+version before relying on it). Education, mentors, awards, residencies,
+performances and teaching all come from that document.
+
+To read it:
+
+```bash
+python3 -c "
+import zipfile, re, html
+z = zipfile.ZipFile('<path to the docx>')
+xml = z.read('word/document.xml').decode('utf-8')
+xml = re.sub(r'</w:p>', chr(10), xml)
+print(html.unescape(re.sub(r'<[^>]+>', '', xml)))
+"
+```
+
+Hyperlinks live separately in `word/_rels/document.xml.rels` — extract them if you
+need the YouTube or Drive URLs.
+
+**Do not invent anything that is not in that document or in a recording's own
+description.** Not instrumentation, not dates, not venues, not prizes. If a fact is
+missing, leave the field out and set `needsReview: true`. Pending submissions and
+unconfirmed competition results stay off the site entirely until they are facts.
+
+## Framing
+
+Ömer's practice is framed as **sonic archaeology** — the through-line of all his
+work, acoustic as much as electronic, and not tied to any single piece or
+technology. Do not describe it as belonging to the electronics alone, and do not
+reduce it to "the sound archaeology of cities"; the cities are a subject of the
+*Strata* album, not the definition of the method.
