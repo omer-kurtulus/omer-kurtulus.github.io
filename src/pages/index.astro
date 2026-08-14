@@ -15,10 +15,10 @@ import {
 const published = await getPublishedWorks();
 const visible = await getVisibleWorks();
 
-// "Recent" means recent work you can actually hear. Commissions still in
-// progress carry a future date and would otherwise lead the page ahead of
-// finished work; they stay in /works and in their category instead.
-const recent = published.filter((w) => w.data.media.length > 0).slice(0, 3);
+// The three newest works, recording or not. `date` is the sort key that
+// decides this, so keep it truthful and never post-date a work to push it up
+// the page — a future date would silently take the top of the home page.
+const recent = published.slice(0, 3);
 const recentIds = new Set(recent.map((w) => w.id));
 
 // Featured works that the Recent block has not already shown.

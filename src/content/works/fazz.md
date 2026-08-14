@@ -1,7 +1,7 @@
 ---
 title: Fazz
 year: 2026
-date: 2026-12-01T00:00:00Z
+date: 2026-01-01T00:00:00Z
 primaryCategory: electroacoustic
 secondaryTags:
   - oboe

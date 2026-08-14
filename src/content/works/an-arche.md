@@ -1,7 +1,7 @@
 ---
 title: an arche
 year: 2026
-date: 2026-07-09T00:00:00Z
+date: 2026-08-14T00:00:00Z
 primaryCategory: electroacoustic
 secondaryTags:
   - cello
