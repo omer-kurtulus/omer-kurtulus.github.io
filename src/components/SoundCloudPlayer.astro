@@ -114,6 +114,9 @@ const label = title ? `${workTitle} — ${title}` : workTitle;
         const src = trigger.dataset.embed;
         if (!src) return;
 
+        // Stop the site-wide player before a second stream starts.
+        document.dispatchEvent(new CustomEvent('ambient:yield'));
+
         const iframe = document.createElement('iframe');
         iframe.src = src;
         iframe.title = 'SoundCloud player';

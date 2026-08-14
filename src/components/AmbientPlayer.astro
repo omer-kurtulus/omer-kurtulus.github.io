@@ -1,0 +1,319 @@
+---
+import { soundcloudEmbedSrc } from '../lib/works';
+
+interface Props {
+  /** SoundCloud track URL to open the site with. */
+  url: string;
+  label: string;
+  href: string;
+}
+
+const { url, label, href } = Astro.props;
+
+// The iframe itself is never seen — it is driven through the SoundCloud Widget
+// API so the visible control can stay inside the site's own geometry. No
+// waveform, no branded player chrome.
+const embedSrc = soundcloudEmbedSrc(url);
+---
+
+<div class="ambient" data-ambient hidden>
+  <iframe
+    class="ambient__engine"
+    data-ambient-frame
+    src={embedSrc}
+    title={`Audio player: ${label}`}
+    allow="autoplay"
+    tabindex="-1"
+    aria-hidden="true"></iframe>
+
+  <div class="ambient__panel">
+    <button class="ambient__toggle" type="button" data-ambient-toggle aria-pressed="false">
+      <span class="ambient__disc" aria-hidden="true"></span>
+      <span class="ambient__text">
+        <span class="ambient__eyebrow">Now playing</span>
+        <span class="ambient__title">{label}</span>
+      </span>
+    </button>
+
+    <a class="ambient__open" href={href} aria-label={`Open ${label}`}>↗</a>
+
+    <button class="ambient__close" type="button" data-ambient-close aria-label="Stop and hide">
+      ×
+    </button>
+
+    <span class="ambient__progress" aria-hidden="true">
+      <span class="ambient__progress-fill" data-ambient-progress></span>
+    </span>
+  </div>
+</div>
+
+<style>
+  .ambient {
+    position: fixed;
+    left: var(--page-margin);
+    bottom: var(--space-s);
+    z-index: 20;
+    max-width: calc(100vw - (var(--page-margin) * 2));
+  }
+
+  .ambient[hidden] {
+    display: none;
+  }
+
+  /* Keep the end of every page clear of the panel. */
+  :global(body:has(.ambient:not([hidden]))) {
+    padding-bottom: calc(var(--space-l) + var(--space-s));
+  }
+
+  .ambient__engine {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    border: 0;
+  }
+
+  .ambient__panel {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    background: var(--color-background);
+    border: var(--rule-thin) solid var(--color-text);
+  }
+
+  .ambient__toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-s) var(--space-xs) var(--space-xs);
+    min-width: 0;
+  }
+
+  /* Outline = paused, filled = playing. Geometry carries the state. */
+  .ambient__disc {
+    flex: none;
+    width: var(--space-s);
+    height: var(--space-s);
+    border-radius: 50%;
+    border: var(--rule-medium) solid var(--color-accent);
+    background: transparent;
+    transition: background-color 140ms linear;
+  }
+
+  .ambient.is-playing .ambient__disc {
+    background: var(--color-accent);
+  }
+
+  .ambient__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1em;
+    min-width: 0;
+  }
+
+  .ambient__eyebrow {
+    font-size: var(--step--2);
+    font-stretch: 78%;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .ambient.is-playing .ambient__eyebrow::after {
+    content: '';
+  }
+
+  .ambient:not(.is-playing) .ambient__eyebrow {
+    /* When paused the label would lie, so it announces the action instead. */
+    font-size: 0;
+  }
+
+  .ambient:not(.is-playing) .ambient__eyebrow::before {
+    content: 'Listen';
+    font-size: var(--step--2);
+  }
+
+  .ambient__title {
+    font-size: var(--step--1);
+    font-weight: 700;
+    font-stretch: 100%;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 12rem;
+  }
+
+  .ambient__open,
+  .ambient__close {
+    display: flex;
+    align-items: center;
+    padding-inline: var(--space-xs);
+    border-left: var(--rule-hair) solid var(--color-line);
+    font-size: var(--step--1);
+    color: var(--color-muted);
+    transition: color 120ms linear, background-color 120ms linear;
+  }
+
+  .ambient__open:hover,
+  .ambient__close:hover,
+  .ambient__toggle:hover {
+    background: var(--color-surface);
+  }
+
+  .ambient__open:hover,
+  .ambient__close:hover {
+    color: var(--color-accent);
+  }
+
+  .ambient__progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--rule-medium);
+    background: var(--color-line);
+  }
+
+  .ambient__progress-fill {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--color-accent);
+  }
+
+  @media (max-width: 34rem) {
+    .ambient {
+      left: var(--space-xs);
+      right: var(--space-xs);
+      bottom: var(--space-xs);
+      max-width: none;
+    }
+    .ambient__title {
+      max-width: none;
+    }
+    .ambient__toggle {
+      flex: 1 1 auto;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Opens the site with a track playing where the browser allows it.
+   *
+   * Every browser blocks audible autoplay until the visitor has interacted with
+   * the origin, so the first load almost always lands paused — the control then
+   * reads "Listen" and one click starts it. Once the visitor has played it, the
+   * choice and the playhead are kept in sessionStorage, so moving between pages
+   * resumes rather than restarts. Stopping it is remembered too: dismissing the
+   * panel keeps it gone for the rest of the visit.
+   */
+  const KEY_STATE = 'ambient:state';
+  const KEY_POSITION = 'ambient:position';
+  const API = 'https://w.soundcloud.com/player/api.js';
+
+  const root = document.querySelector<HTMLElement>('[data-ambient]');
+  const frame = document.querySelector<HTMLIFrameElement>('[data-ambient-frame]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-ambient-toggle]');
+  const closeBtn = document.querySelector<HTMLButtonElement>('[data-ambient-close]');
+  const progress = document.querySelector<HTMLElement>('[data-ambient-progress]');
+
+  const read = (key: string) => {
+    try {
+      return sessionStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  };
+  const write = (key: string, value: string) => {
+    try {
+      sessionStorage.setItem(key, value);
+    } catch {
+      /* private mode — the player still works, it just will not resume */
+    }
+  };
+
+  if (root && frame && toggle && closeBtn && progress && read(KEY_STATE) !== 'dismissed') {
+    root.hidden = false;
+
+    const script = document.createElement('script');
+    script.src = API;
+    script.async = true;
+    document.head.appendChild(script);
+
+    script.addEventListener('load', () => {
+      // @ts-expect-error — SC is injected by the widget API
+      const widget = SC.Widget(frame);
+      // @ts-expect-error
+      const Events = SC.Widget.Events;
+
+      let duration = 0;
+      let playing = false;
+
+      const setPlaying = (value: boolean) => {
+        playing = value;
+        root.classList.toggle('is-playing', value);
+        toggle.setAttribute('aria-pressed', String(value));
+      };
+
+      widget.bind(Events.READY, () => {
+        widget.getDuration((ms: number) => {
+          duration = ms;
+        });
+
+        const saved = Number(read(KEY_POSITION) ?? 0);
+        if (saved > 0) widget.seekTo(saved);
+
+        // Only ask to resume if the visitor already chose to play in this visit;
+        // otherwise the first attempt is the one the browser will refuse, and a
+        // refusal that leaves the panel reading "Listen" is the correct outcome.
+        if (read(KEY_STATE) === 'playing') widget.play();
+      });
+
+      widget.bind(Events.PLAY, () => {
+        setPlaying(true);
+        write(KEY_STATE, 'playing');
+      });
+
+      widget.bind(Events.PAUSE, () => setPlaying(false));
+
+      widget.bind(Events.FINISH, () => {
+        setPlaying(false);
+        write(KEY_POSITION, '0');
+        write(KEY_STATE, 'idle');
+      });
+
+      widget.bind(Events.PLAY_PROGRESS, (data: { currentPosition: number }) => {
+        write(KEY_POSITION, String(Math.floor(data.currentPosition)));
+        if (duration > 0) {
+          progress.style.width = `${(data.currentPosition / duration) * 100}%`;
+        }
+      });
+
+      toggle.addEventListener('click', () => {
+        if (playing) {
+          widget.pause();
+          write(KEY_STATE, 'paused');
+        } else {
+          widget.play();
+        }
+      });
+
+      closeBtn.addEventListener('click', () => {
+        widget.pause();
+        write(KEY_STATE, 'dismissed');
+        root.hidden = true;
+      });
+
+      // A work's own player takes over: never two streams at once.
+      document.addEventListener('ambient:yield', () => {
+        widget.pause();
+        write(KEY_STATE, 'paused');
+      });
+    });
+  }
+</script>

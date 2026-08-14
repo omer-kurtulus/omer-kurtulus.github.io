@@ -15,7 +15,10 @@ import {
 const published = await getPublishedWorks();
 const visible = await getVisibleWorks();
 
-const recent = published.slice(0, 3);
+// "Recent" means recent work you can actually hear. Commissions still in
+// progress carry a future date and would otherwise lead the page ahead of
+// finished work; they stay in /works and in their category instead.
+const recent = published.filter((w) => w.data.media.length > 0).slice(0, 3);
 const recentIds = new Set(recent.map((w) => w.id));
 
 // Featured works that the Recent block has not already shown.
@@ -24,9 +27,10 @@ const featured = selectFeatured(published, 8).filter((w) => !recentIds.has(w.id)
 const counts = categoryCounts(published);
 const foreground = counts.filter(({ category }) => category !== 'acoustic');
 
-// Acoustic sits apart as a quieter archive layer — every acoustic work,
-// published or archived, newest first.
-const acoustic = byCategory(visible, 'acoustic');
+// Acoustic sits apart as a quieter archive layer. Anything already shown above
+// is left out, so no work appears twice on the same page.
+const shownAbove = new Set([...recentIds, ...featured.map((w) => w.id)]);
+const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w.id));
 ---
 
 <BaseLayout isHome jsonLd={undefined}>

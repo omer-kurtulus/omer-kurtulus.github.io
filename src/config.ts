@@ -15,6 +15,18 @@ export const SITE = {
   email: 'okurtul@bgsu.edu',
 } as const;
 
+/**
+ * The track the site opens with. Browsers refuse audible autoplay until the
+ * visitor has interacted with the origin, so on a first load the control lands
+ * paused and reads "Listen"; from then on it resumes across pages. Set to
+ * `null` to remove the player entirely.
+ */
+export const OPENING_TRACK: { url: string; label: string; href: string } | null = {
+  url: 'https://soundcloud.com/mer-kurtulu-399116903/p-re-cise',
+  label: 'P(re)cise',
+  href: '/works/p-re-cise',
+};
+
 export const NAV = [
   { label: 'Works', href: '/works' },
   { label: 'About', href: '/about' },
