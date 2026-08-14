@@ -33,8 +33,9 @@ Principal instructors: Emel Çelebioğlu, Özkan Manav
 ## Awards, honours and commissions
 
 **2026** — Selected Composer, TAK Ensemble (*A Room For The Belated Sentences*,
-KEAR Electroacoustic Residency) · Commission: *Fazz*, Mikayla Farmer, solo oboe ·
-Commission: *Yörüngeler*, Duo Latitude, two saxophones
+KEAR Electroacoustic Residency) · Commission: *Fazz*, Mikayla Farmer — oboe,
+electronics and light · Commission: *Yörüngeler*, Duo Latitude — two saxophones and
+fixed media
 
 **2025** — Selected Composer, Toledo Symphony Orchestra (*Animal*) · Commission:
 *Focus*, FLYDLPHN Ensemble · Selected Composer, Flash Mass / Siteworks, Ensemble
@@ -74,11 +75,11 @@ Stephane Delplasse
 
 ## Selected performances
 
-**2026** · *Fazz* — Mikayla Farmer, solo oboe. Commission; première 2026, venue to be
-announced
+**2026** · *Fazz* — oboe, electronics and light. Mikayla Farmer, oboe. Commission;
+première 2026, venue to be announced
 
-**2026** · *Yörüngeler* — Duo Latitude, two saxophones. Commission; première 2026,
-venue to be announced
+**2026** · *Yörüngeler* — two saxophones and fixed media. Duo Latitude. Commission;
+première 2026, venue to be announced
 
 **2026** · *A Room For The Belated Sentences* — TAK Ensemble, pre-recorded corpus,
 SoMax 2 / FluCoMa. KEAR Electroacoustic Residency, Bowling Green State University, OH

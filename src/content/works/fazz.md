@@ -2,17 +2,22 @@
 title: Fazz
 year: 2026
 date: 2026-12-01T00:00:00Z
-primaryCategory: acoustic
+primaryCategory: electroacoustic
 secondaryTags:
   - oboe
-  - solo
+  - electronics
+  - light
+  - multimedia
   - commission
 featured: false
 status: published
-instrumentation: Solo oboe
+instrumentation: Oboe, electronics and light
 shortDescription: >-
-  A commission for Mikayla Farmer. Première scheduled for 2026; venue to be
-  announced.
+  A commission for Mikayla Farmer, for oboe with electronics and light. Première
+  scheduled for 2026; venue to be announced.
+technology:
+  - Electronics
+  - Light
 credits:
   - role: Composition
     name: Ömer Kurtuluş
@@ -27,5 +32,6 @@ performances:
 needsReview: true
 ---
 
-A commissioned work for solo oboe, written for Mikayla Farmer. In progress; the
-première is scheduled for 2026 and the venue has not yet been announced.
+A commissioned work for oboe with electronics and light, written for Mikayla
+Farmer. In progress; the première is scheduled for 2026 and the venue has not yet
+been announced.
