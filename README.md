@@ -63,7 +63,7 @@ src/
   components/            SiteHeader, SiteFooter, WorkRow, PageHeader, SoundCloudPlayer
   pages/                 routes
   styles/global.css      the entire design system
-public/fonts/            Archivo variable, self-hosted
+public/fonts/            Karrik, self-hosted
 scripts/                 new-work.mjs, check-content.mjs
 ```
 
@@ -84,8 +84,11 @@ Ornament is CSS-only geometry. Categories are distinguished by rule weight,
 geometric mark, numbering and spacing rather than by colour — the single accent
 (matte oxide red, `#873B32`) is used sparingly.
 
-Typography is Archivo, one variable family used at two extremes of its width
-axis: ~118% for display, ~78% for metadata.
+Typography is **Karrik** (Jean-Baptiste Morizot & Lucas Le Bihan, Velvetyne),
+a grotesque drawn from anonymous, uncredited twentieth-century specimens whose
+mismatched details are kept rather than regularised — the same operation the work
+performs on sound. It ships in one weight and one italic, so hierarchy is built
+from size, case, letter-spacing, colour and space, never from weight.
 
 The palette and every token live in `src/styles/global.css`, with a dark-mode
 block driven by `prefers-color-scheme`.
@@ -98,5 +101,5 @@ publishes it to GitHub Pages. Nothing is deployed by hand.
 ## Licence
 
 Site code: MIT. Music, program notes, recordings and all other content:
-© Ömer Kurtuluş, all rights reserved. Archivo is used under the SIL Open Font
+© Ömer Kurtuluş, all rights reserved. Karrik is used under the SIL Open Font
 License 1.1 — see `public/fonts/LICENSE.txt`.

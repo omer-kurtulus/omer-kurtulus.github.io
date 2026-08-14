@@ -234,8 +234,14 @@ These are deliberate. Keep them.
   nav, hover, one or two structural marks. Categories are **not** colour-coded;
   they are distinguished by rule weight, geometric mark, numbering and spacing.
 - No gradients, no glassmorphism, no neon.
-- Typography is Archivo variable, self-hosted in `public/fonts/`. Width is the
-  main expressive axis: ~118% for display, ~78% for metadata.
+- Typography is **Karrik** (Velvetyne, OFL), self-hosted in `public/fonts/`. It
+  has **one weight and one italic — there is no bold.** Hierarchy comes from
+  size, case, letter-spacing, colour and space. `font-synthesis: none` is set
+  globally so the browser cannot fake a bold; do not add `font-weight: 700`
+  anywhere, it will silently do nothing. Markdown `**bold**` renders in the
+  accent colour instead of heavier.
+- Karrik has no Greek and no musical symbols (♭ ♯). Those fall through to the
+  system stack, which is intended — do not add a second webfont for them.
 - The palette is defined once in `src/styles/global.css` as custom properties,
   with a dark-mode block. Change colours there, never inline.
 

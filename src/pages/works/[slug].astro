@@ -327,7 +327,6 @@ const jsonLd = {
     gap: var(--space-2xs);
     margin-bottom: var(--space-m);
     font-size: var(--step--2);
-    font-stretch: 78%;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-muted);
@@ -360,10 +359,16 @@ const jsonLd = {
 
   .specs__row {
     display: grid;
-    grid-template-columns: minmax(6.5rem, 1fr) minmax(0, 2fr);
+    /* Wide enough for INSTRUMENTATION, which must never break mid-word. */
+    grid-template-columns: minmax(8.75rem, auto) minmax(0, 2fr);
     gap: var(--space-xs);
     padding-block: var(--space-2xs);
     border-top: var(--rule-hair) solid var(--color-line);
+  }
+
+  .specs__label {
+    overflow-wrap: normal;
+    hyphens: none;
   }
 
   .specs__value {
@@ -491,7 +496,7 @@ const jsonLd = {
 
   .panel__strong {
     display: block;
-    font-weight: 600;
+    font-weight: 400;
   }
 
   .panel__role {
@@ -509,7 +514,6 @@ const jsonLd = {
     padding: 0.1em 0.5em;
     border: var(--rule-hair) solid var(--color-line);
     font-size: var(--step--2);
-    font-stretch: 78%;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--color-muted);
