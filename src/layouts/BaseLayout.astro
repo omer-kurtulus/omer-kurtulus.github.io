@@ -74,15 +74,7 @@ const personLd = {
         <slot />
       </main>
       <SiteFooter />
-      {
-        OPENING_TRACK && (
-          <AmbientPlayer
-            url={OPENING_TRACK.url}
-            label={OPENING_TRACK.label}
-            href={OPENING_TRACK.href}
-          />
-        )
-      }
+      {OPENING_TRACK && <AmbientPlayer url={OPENING_TRACK.url} label={OPENING_TRACK.label} />}
     </div>
   </body>
 </html>

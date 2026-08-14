@@ -16,15 +16,14 @@ export const SITE = {
 } as const;
 
 /**
- * The track the site opens with. Browsers refuse audible autoplay until the
- * visitor has interacted with the origin, so on a first load the control lands
- * paused and reads "Listen"; from then on it resumes across pages. Set to
- * `null` to remove the player entirely.
+ * The track every visitor hears. Nothing about it is shown on the page — no
+ * control, no title. Browsers refuse audible autoplay until the visitor has
+ * interacted with the origin, so it starts on their first click or keypress
+ * anywhere on the site. Set to `null` to remove it entirely.
  */
-export const OPENING_TRACK: { url: string; label: string; href: string } | null = {
+export const OPENING_TRACK: { url: string; label: string } | null = {
   url: 'https://soundcloud.com/mer-kurtulu-399116903/p-re-cise',
   label: 'P(re)cise',
-  href: '/works/p-re-cise',
 };
 
 export const NAV = [
