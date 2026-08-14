@@ -5,6 +5,10 @@ description: >-
   composer and music technologist.
 ---
 
+## Position
+
+**2026 – present** · Freelance composer and artist
+
 ## Education
 
 **2024 – 2026** · Master of Music in Composition
@@ -69,6 +73,12 @@ Gadenstätter, Yann Robin, Johannes Maria Staud
 Stephane Delplasse
 
 ## Selected performances
+
+**2026** · *Fazz* — Mikayla Farmer, solo oboe. Commission; première 2026, venue to be
+announced
+
+**2026** · *Yörüngeler* — Duo Latitude, two saxophones. Commission; première 2026,
+venue to be announced
 
 **2026** · *A Room For The Belated Sentences* — TAK Ensemble, pre-recorded corpus,
 SoMax 2 / FluCoMa. KEAR Electroacoustic Residency, Bowling Green State University, OH
@@ -136,7 +146,7 @@ live sound and amplification.
 **2016 – 2019** · Teaching Assistant, Music Theory, Harmony and Solfeggio — Istanbul
 University State Conservatory
 
-**2014 – present** · Freelance instructor, composition, piano and aural skills —
+**2014 – present** · Private instructor, composition, piano and aural skills —
 Istanbul
 
 **2014 – 2019** · Piano and Music Theory Instructor — Nar Sanat, Istanbul

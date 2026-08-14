@@ -1,0 +1,32 @@
+---
+title: Yörüngeler
+year: 2026
+date: 2026-12-01T00:00:00Z
+primaryCategory: acoustic
+secondaryTags:
+  - saxophone
+  - duo
+  - commission
+featured: false
+status: published
+instrumentation: Two saxophones
+shortDescription: >-
+  A commission for Duo Latitude. Première scheduled for 2026; venue to be
+  announced.
+credits:
+  - role: Composition
+    name: Ömer Kurtuluş
+  - role: Commissioned by
+    name: Duo Latitude
+  - role: Ensemble
+    name: Duo Latitude
+performances:
+  - date: "2026"
+    event: Première — venue to be announced
+    performers: Duo Latitude
+needsReview: true
+---
+
+*Yörüngeler* — orbits. A commissioned work for two saxophones, written for Duo
+Latitude. In progress; the première is scheduled for 2026 and the venue has not yet
+been announced.
