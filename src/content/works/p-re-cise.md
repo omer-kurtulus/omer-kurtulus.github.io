@@ -10,7 +10,7 @@ secondaryTags:
   - micro-rhythm
   - fixed media
 featured: true
-featuredOrder: 5
+featuredOrder: 6
 status: published
 instrumentation: Fixed media, stereo
 duration: "7:36"

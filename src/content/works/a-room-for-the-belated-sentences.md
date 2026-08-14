@@ -11,7 +11,7 @@ secondaryTags:
   - live electronics
   - ensemble
 featured: true
-featuredOrder: 2
+featuredOrder: 3
 status: published
 instrumentation: TAK Ensemble, pre-recorded corpus material and live electronics (SoMax 2 / FluCoMa)
 duration: "9:36"

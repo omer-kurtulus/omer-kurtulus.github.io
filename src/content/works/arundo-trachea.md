@@ -10,7 +10,7 @@ secondaryTags:
   - instrument deconstruction
   - fixed media
 featured: true
-featuredOrder: 4
+featuredOrder: 5
 status: published
 instrumentation: Oboe and electronics, fixed media
 duration: "8:25"

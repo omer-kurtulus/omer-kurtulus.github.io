@@ -10,7 +10,7 @@ secondaryTags:
   - double bass
   - voice
 featured: true
-featuredOrder: 7
+featuredOrder: 8
 status: published
 instrumentation: Double bass and voice with live interactive electronics
 shortDescription: >-

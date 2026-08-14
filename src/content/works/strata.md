@@ -13,7 +13,7 @@ secondaryTags:
   - fixed media
   - musique concrète
 featured: true
-featuredOrder: 3
+featuredOrder: 4
 status: published
 series:
   id: strata

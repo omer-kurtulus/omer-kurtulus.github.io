@@ -33,7 +33,8 @@ Principal instructors: Emel Çelebioğlu, Özkan Manav
 ## Awards, honours and commissions
 
 **2026** — Selected Composer, TAK Ensemble (*A Room For The Belated Sentences*,
-KEAR Electroacoustic Residency) · Commission: *Fazz*, Mikayla Farmer — oboe,
+KEAR Electroacoustic Residency) · Commission: *an arche*, Liam Battle — cello, three
+performers, quadraphonic diffusion and light · Commission: *Fazz*, Mikayla Farmer — oboe,
 electronics and light · Commission: *Yörüngeler*, Duo Latitude — two saxophones and
 fixed media
 
@@ -74,6 +75,10 @@ Gadenstätter, Yann Robin, Johannes Maria Staud
 Stephane Delplasse
 
 ## Selected performances
+
+**2026** · *an arche* — one cello shared by three performers, quadraphonic
+diffusion, live electronics and light. Commissioned by Liam Battle; première to be
+announced
 
 **2026** · *Fazz* — oboe, electronics and light. Mikayla Farmer, oboe. Commission;
 première 2026, venue to be announced
