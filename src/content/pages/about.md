@@ -63,10 +63,10 @@ platforms.
 He was born in Istanbul in 1990 and studied at Mimar Sinan Fine Arts University
 State Conservatory and Istanbul University State Conservatory, where he completed a
 Bachelor's degree in Music Theory and Composition and a Master of Music in
-Composition with Emel Çelebioğlu and Kemal Mete Sakpınar. He is currently completing
-a second Master of Music in Composition at Bowling Green State University with
+Composition with Emel Çelebioğlu and Kemal Mete Sakpınar. In 2026 he completed a
+second Master of Music in Composition at Bowling Green State University with
 Christopher Dietz, Marilyn Shrude, Elainie Lillios and Piyawat Louilarpprasert,
-where he is also a Graduate Teaching Assistant in the composition area.
+where he was also a Graduate Teaching Assistant in the composition area.
 
 His music has been performed by the Toledo Symphony Orchestra, TAK Ensemble,
 Ensemble Ipse, FLYDLPHN and Flam-a Duo, in venues including Kobacker Hall and Bryan

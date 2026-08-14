@@ -7,7 +7,7 @@ description: >-
 
 ## Education
 
-**2024 – expected 2026** · Master of Music in Composition
+**2024 – 2026** · Master of Music in Composition
 Bowling Green State University, College of Musical Arts, Bowling Green, OH, USA
 Principal instructors: Marilyn Shrude, Christopher Dietz, Elainie Lillios,
 Piyawat Louilarpprasert
@@ -127,10 +127,10 @@ Vocal Ensemble.
 
 ## Teaching
 
-**2024 – present** · Graduate Teaching Assistant, Composition Area — Bowling Green
-State University, College of Musical Arts. Organises composition concerts, the
-Bowling Green New Music Festival and Composer's Forum; coordinates rehearsals and
-guest composers; oversees stage and electronics logistics including fixed media,
+**2024 – 2026** · Graduate Teaching Assistant, Composition Area — Bowling Green
+State University, College of Musical Arts. Organised composition concerts, the
+Bowling Green New Music Festival and Composer's Forum; coordinated rehearsals and
+guest composers; oversaw stage and electronics logistics including fixed media,
 live sound and amplification.
 
 **2016 – 2019** · Teaching Assistant, Music Theory, Harmony and Solfeggio — Istanbul
