@@ -234,14 +234,14 @@ These are deliberate. Keep them.
   nav, hover, one or two structural marks. Categories are **not** colour-coded;
   they are distinguished by rule weight, geometric mark, numbering and spacing.
 - No gradients, no glassmorphism, no neon.
-- Typography is **Karrik** (Velvetyne, OFL), self-hosted in `public/fonts/`. It
-  has **one weight and one italic — there is no bold.** Hierarchy comes from
-  size, case, letter-spacing, colour and space. `font-synthesis: none` is set
-  globally so the browser cannot fake a bold; do not add `font-weight: 700`
-  anywhere, it will silently do nothing. Markdown `**bold**` renders in the
-  accent colour instead of heavier.
-- Karrik has no Greek and no musical symbols (♭ ♯). Those fall through to the
-  system stack, which is intended — do not add a second webfont for them.
+- Typography is **JetBrains Mono** (OFL), self-hosted in `public/fonts/`, and it
+  is the only family on the site. Everything is monospaced. Do not introduce a
+  second face; the whole design depends on one rhythm.
+- It is variable across weights 100–800 with a true italic, so hierarchy uses
+  weight as well as size, case, letter-spacing and space.
+- Mono glyphs are ~20% wider than proportional ones. Display sizes and
+  `--measure` in `global.css` are set for that — if you change one, check the
+  other, and re-run the overflow check before pushing.
 - The palette is defined once in `src/styles/global.css` as custom properties,
   with a dark-mode block. Change colours there, never inline.
 
