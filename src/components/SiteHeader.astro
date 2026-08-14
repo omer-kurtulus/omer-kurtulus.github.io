@@ -55,6 +55,7 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
   }
 
   .masthead__name {
+    flex: none;
     font-size: var(--step--1);
     font-weight: 700;
     font-stretch: 108%;
@@ -62,10 +63,16 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
     text-transform: uppercase;
   }
 
+  /* Without min-width:0 the nav refuses to shrink and pushes the page
+     wider than the viewport on narrow screens. */
+  .masthead__nav {
+    min-width: 0;
+  }
+
   .masthead__list {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-xs) var(--space-s);
+    gap: var(--space-2xs) var(--space-s);
     margin: 0;
   }
 

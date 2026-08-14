@@ -95,8 +95,10 @@
   --space-s: calc(var(--u) * 3);
   --space-m: calc(var(--u) * 5);
   --space-l: calc(var(--u) * 8);
-  --space-xl: calc(var(--u) * 13);
-  --space-2xl: calc(var(--u) * 21);
+  /* The two largest steps scale with the viewport: 104px of air between
+     sections reads as composition on a desktop and as a dead zone on a phone. */
+  --space-xl: clamp(3.5rem, 8vw, 6.5rem);
+  --space-2xl: clamp(5rem, 13vw, 10.5rem);
 
   /* Grid */
   --grid-columns: 12;
@@ -164,6 +166,8 @@ html {
 
 body {
   min-height: 100vh;
+  /* Long URLs and technical strings must never widen the page. */
+  overflow-wrap: break-word;
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-sans);
@@ -256,7 +260,16 @@ button {
    5. Typographic roles
    -------------------------------------------------------------------------- */
 
-/* Wordmark / page titles — the widest, heaviest cut of the family */
+/* Wordmark / page titles — the widest, heaviest cut of the family.
+   Titles like ARUNDO_TRACHEA have no natural break, so every display role
+   is allowed to break inside a word rather than push the page sideways. */
+.display,
+.title-l,
+.title-m {
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
 .display {
   font-size: var(--step-5);
   font-weight: 800;
@@ -264,7 +277,6 @@ button {
   line-height: 0.86;
   letter-spacing: -0.025em;
   text-transform: uppercase;
-  text-wrap: balance;
 }
 
 .title-l {
@@ -274,7 +286,6 @@ button {
   line-height: 0.95;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  text-wrap: balance;
 }
 
 .title-m {
@@ -283,7 +294,6 @@ button {
   font-stretch: 108%;
   line-height: 1.05;
   letter-spacing: -0.01em;
-  text-wrap: balance;
 }
 
 /* Section headers — narrow, tracked out, small. The catalogue voice. */
