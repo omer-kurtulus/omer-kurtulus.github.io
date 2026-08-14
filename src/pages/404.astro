@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Not found" description="This page does not exist.">
+  <section class="shell notfound">
+    <p class="index">404</p>
+    <h1 class="title-l">Not found</h1>
+    <p class="notfound__lead">
+      This page does not exist. The catalogue is complete and browsable from Works.
+    </p>
+    <p class="notfound__links">
+      <a class="link link--strong" href="/works">Works →</a>
+      <a class="link" href="/">Home →</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    padding-block: var(--space-2xl);
+    max-width: 44ch;
+  }
+
+  .notfound h1 {
+    margin-top: var(--space-xs);
+  }
+
+  .notfound__lead {
+    margin-top: var(--space-m);
+    color: var(--color-muted);
+  }
+
+  .notfound__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-m);
+    margin-top: var(--space-l);
+  }
+</style>

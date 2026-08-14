@@ -1,0 +1,228 @@
+---
+import { getEntry } from 'astro:content';
+import { CATEGORY_META } from '../content.config';
+import { catalogueNumber, partLabel, workPath, type Work } from '../lib/works';
+
+interface Props {
+  work: Work;
+  index: number;
+  /** Set on album pages, where repeating the album name on every row is noise. */
+  hideSeries?: boolean;
+  /**
+   * large   — recent works, display type, full-width
+   * default — featured and category listings
+   * compact — the quiet archive layer
+   */
+  variant?: 'large' | 'default' | 'compact';
+}
+
+const { work, index, variant = 'default', hideSeries = false } = Astro.props;
+const { data } = work;
+const category = CATEGORY_META[data.primaryCategory];
+const part = partLabel(work);
+const showSeries = !hideSeries && Boolean(data.series);
+const seriesEntry = data.series ? await getEntry(data.series.id) : undefined;
+
+const facts = [
+  data.instrumentation,
+  data.duration,
+  data.technology.slice(0, 3).join(' · ') || undefined,
+].filter(Boolean) as string[];
+---
+
+<article class:list={['row', `row--${variant}`, `row--cat-${data.primaryCategory}`]}>
+  <a class="row__link" href={workPath(work)}>
+    <span class="row__index index">{catalogueNumber(index)}</span>
+
+    <span class="row__body">
+      <span class="row__category meta">
+        <span class:list={['mark', `mark--${data.primaryCategory}`]} aria-hidden="true"></span>
+        {category.short}
+        {
+          showSeries && seriesEntry && (
+            <span class="row__series">
+              <span class="row__sep" aria-hidden="true">
+                /
+              </span>
+              {seriesEntry.data.title}
+              {part && <span class="row__part">{part}</span>}
+            </span>
+          )
+        }
+      </span>
+
+      <span class:list={['row__title', variant === 'large' ? 'title-l' : 'title-m']}>
+        {data.title}
+      </span>
+
+      {
+        variant !== 'compact' && data.shortDescription && (
+          <span class="row__description">{data.shortDescription}</span>
+        )
+      }
+    </span>
+
+    <span class="row__aside">
+      <span class="row__year index">{data.year}</span>
+      {
+        variant !== 'compact' && facts.length > 0 && (
+          <span class="row__facts meta meta--tight">
+            {facts.map((fact) => (
+              <span class="row__fact">{fact}</span>
+            ))}
+          </span>
+        )
+      }
+    </span>
+  </a>
+</article>
+
+<style>
+  .row {
+    border-top: var(--rule-thin) solid var(--color-line);
+  }
+
+  /* Category is signalled by rule weight, never by colour. */
+  .row--cat-ai {
+    border-top-width: var(--rule-thick);
+    border-top-color: var(--color-text);
+  }
+  .row--cat-electroacoustic {
+    border-top-width: var(--rule-medium);
+  }
+  .row--cat-electronic {
+    border-top-width: var(--rule-thin);
+  }
+  .row--cat-acoustic {
+    border-top-width: var(--rule-hair);
+  }
+
+  .row__link {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    column-gap: var(--grid-gap);
+    row-gap: var(--space-2xs);
+    padding-block: var(--space-s);
+    transition: background-color 120ms linear;
+  }
+
+  .row--large .row__link {
+    padding-block: var(--space-m);
+  }
+  .row--compact .row__link {
+    padding-block: var(--space-xs);
+  }
+
+  .row__link:hover {
+    background-color: var(--color-surface);
+  }
+
+  .row__index {
+    padding-top: 0.35em;
+    color: var(--color-muted);
+  }
+
+  .row__link:hover .row__index {
+    color: var(--color-accent);
+  }
+
+  .row__body {
+    display: block;
+    min-width: 0;
+  }
+
+  .row__category {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .row--compact .row__category {
+    display: none;
+  }
+
+  .row__series {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4em;
+    color: var(--color-text);
+  }
+
+  .row__sep {
+    color: var(--color-line);
+  }
+
+  .row__part {
+    font-variant-numeric: tabular-nums;
+    color: var(--color-accent);
+  }
+
+  .row__title {
+    display: block;
+    text-wrap: balance;
+  }
+
+  .row--compact .row__title {
+    font-size: var(--step-0);
+    font-weight: 500;
+    font-stretch: 100%;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .row__description {
+    display: block;
+    max-width: 46ch;
+    margin-top: var(--space-2xs);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  .row__aside {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2xs) var(--space-s);
+    margin-top: var(--space-2xs);
+  }
+
+  .row__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-s);
+  }
+
+  .row__fact + .row__fact::before {
+    content: '';
+  }
+
+  /* From the medium breakpoint the row becomes a true three-field grid:
+     number / title / metadata, aligned to the 12-column field. */
+  @media (min-width: 56rem) {
+    .row__link {
+      grid-template-columns: 4rem minmax(0, 7fr) minmax(0, 4fr);
+      align-items: start;
+    }
+
+    .row__aside {
+      grid-column: 3;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 0;
+      padding-top: 0.35em;
+    }
+
+    .row--compact .row__aside {
+      flex-direction: row;
+      align-items: baseline;
+    }
+
+    .row__facts {
+      flex-direction: column;
+      gap: var(--space-2xs);
+    }
+  }
+</style>

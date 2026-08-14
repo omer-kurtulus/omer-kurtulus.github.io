@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+
+const notes = (await getCollection('research', ({ data }) => data.status !== 'draft')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long' });
+---
+
+<BaseLayout
+  title="Research"
+  description="Technical notes on neural audio, machine listening and spatial composition."
+>
+  <PageHeader
+    title="Research"
+    lead="Technical notes on neural audio, corpus-based machine listening and spatial composition."
+    index={String(notes.length).padStart(2, '0')}
+  />
+
+  <div class="shell">
+    {
+      notes.length > 0 ? (
+        <div class="list">
+          {notes.map((note, i) => (
+            <article class="note">
+              <a class="note__link" href={`/research/${note.id}`}>
+                <span class="index note__index">{String(i + 1).padStart(2, '0')}</span>
+                <span class="note__body">
+                  <span class="title-m">{note.data.title}</span>
+                  {note.data.summary && <span class="note__summary">{note.data.summary}</span>}
+                </span>
+                <span class="meta note__date">{dateFormat.format(note.data.date)}</span>
+              </a>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p class="empty prose">Notes are in preparation.</p>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .list {
+    border-bottom: var(--rule-thin) solid var(--color-line);
+  }
+
+  .note {
+    border-top: var(--rule-medium) solid var(--color-line);
+  }
+
+  .note__link {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    column-gap: var(--grid-gap);
+    row-gap: var(--space-2xs);
+    padding-block: var(--space-s);
+    transition: background-color 120ms linear;
+  }
+
+  .note__link:hover {
+    background-color: var(--color-surface);
+  }
+
+  .note__index {
+    padding-top: 0.35em;
+  }
+
+  .note__link:hover .note__index {
+    color: var(--color-accent);
+  }
+
+  .note__summary {
+    display: block;
+    max-width: 52ch;
+    margin-top: var(--space-2xs);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  .note__date {
+    grid-column: 2;
+  }
+
+  .empty {
+    padding-block: var(--space-l) var(--space-2xl);
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 56rem) {
+    .note__link {
+      grid-template-columns: 4rem minmax(0, 7fr) minmax(0, 4fr);
+    }
+    .note__date {
+      grid-column: 3;
+      padding-top: 0.5em;
+    }
+  }
+</style>

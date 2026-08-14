@@ -1,0 +1,130 @@
+---
+import { soundcloudEmbedSrc } from '../lib/works';
+
+interface Props {
+  url: string;
+  title?: string;
+  note?: string;
+  workTitle: string;
+}
+
+const { url, title, note, workTitle } = Astro.props;
+const label = title ? `${workTitle} — ${title}` : workTitle;
+---
+
+<div class="player">
+  <button class="player__trigger" type="button" data-embed={soundcloudEmbedSrc(url)}>
+    <span class="player__meta">
+      <span class="eyebrow">Listen</span>
+      {title && <span class="player__variant meta meta--tight">{title}</span>}
+    </span>
+
+    <span class="player__cue">
+      <!-- Geometric play cue: a triangle drawn from borders. No waveform, no icon set. -->
+      <span class="player__triangle" aria-hidden="true"></span>
+      <span class="player__action">Play on SoundCloud</span>
+    </span>
+
+    <span class="visually-hidden">Load the SoundCloud player for {label}</span>
+  </button>
+
+  {note && <p class="player__note meta meta--tight">{note}</p>}
+
+  <noscript>
+    <p class="player__note meta meta--tight">
+      <a class="link" href={url} rel="noopener noreferrer" target="_blank">
+        Listen on SoundCloud
+      </a>
+    </p>
+  </noscript>
+</div>
+
+<style>
+  .player {
+    border: var(--rule-thin) solid var(--color-line);
+  }
+
+  .player__trigger {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s);
+    width: 100%;
+    padding: var(--space-s);
+    text-align: left;
+    transition: background-color 120ms linear;
+  }
+
+  .player__trigger:hover {
+    background-color: var(--color-surface);
+  }
+
+  .player__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  .player__cue {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .player__triangle {
+    width: 0;
+    height: 0;
+    border-top: 0.45rem solid transparent;
+    border-bottom: 0.45rem solid transparent;
+    border-left: 0.78rem solid var(--color-text);
+    transition: border-left-color 120ms linear;
+  }
+
+  .player__trigger:hover .player__triangle {
+    border-left-color: var(--color-accent);
+  }
+
+  .player__action {
+    font-size: var(--step--2);
+    font-stretch: 78%;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .player__note {
+    padding: 0 var(--space-s) var(--space-s);
+    max-width: 60ch;
+  }
+
+  /* Swapped in once the visitor asks for it. */
+  .player :global(iframe) {
+    width: 100%;
+    height: 120px;
+    border: 0;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.player__trigger').forEach((trigger) => {
+    trigger.addEventListener(
+      'click',
+      () => {
+        const src = trigger.dataset.embed;
+        if (!src) return;
+
+        const iframe = document.createElement('iframe');
+        iframe.src = src;
+        iframe.title = 'SoundCloud player';
+        iframe.allow = 'autoplay';
+        iframe.loading = 'lazy';
+        iframe.setAttribute('scrolling', 'no');
+        iframe.setAttribute('frameborder', 'no');
+
+        trigger.replaceWith(iframe);
+      },
+      { once: true },
+    );
+  });
+</script>

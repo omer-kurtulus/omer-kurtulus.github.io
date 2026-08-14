@@ -1,0 +1,525 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkRow from '../../components/WorkRow.astro';
+import SoundCloudPlayer from '../../components/SoundCloudPlayer.astro';
+import { CATEGORY_META } from '../../content.config';
+import { SITE } from '../../config';
+import {
+  categoryPath,
+  getVisibleWorks,
+  partLabel,
+  relatedWorks,
+  seriesMembers,
+  seriesPath,
+  workPath,
+  workSlug,
+  type Work,
+} from '../../lib/works';
+
+export const getStaticPaths = (async () => {
+  const works = await getVisibleWorks();
+  return works.map((work) => ({
+    params: { slug: workSlug(work) },
+    props: {
+      work,
+      // A work in an album is related to its siblings first; the generic
+      // scorer already ranks them highest, so they need no special case here.
+      related: relatedWorks(work, works),
+      siblings: work.data.series ? seriesMembers(works, work.data.series.id.id) : [],
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  work: Work;
+  related: Work[];
+  siblings: Work[];
+}
+
+const { work, related, siblings } = Astro.props;
+const { data } = work;
+const { Content } = await render(work);
+
+const album = data.series ? await getEntry(data.series.id) : undefined;
+const part = partLabel(work);
+
+const category = CATEGORY_META[data.primaryCategory];
+const soundcloud = data.media.filter((m) => m.type === 'soundcloud');
+const otherMedia = data.media.filter((m) => m.type !== 'soundcloud');
+
+const specs = [
+  { label: 'Year', value: String(data.year) },
+  { label: 'Category', value: category.label },
+  { label: 'Instrumentation', value: data.instrumentation },
+  { label: 'Duration', value: data.duration },
+].filter((spec): spec is { label: string; value: string } => Boolean(spec.value));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicComposition',
+  name: data.title,
+  url: new URL(workPath(work), SITE.url).href,
+  composer: { '@type': 'Person', name: SITE.name, url: SITE.url },
+  dateCreated: String(data.year),
+  ...(data.shortDescription ? { description: data.shortDescription } : {}),
+  ...(data.duration
+    ? { duration: `PT${data.duration.split(':')[0]}M${data.duration.split(':')[1]}S` }
+    : {}),
+  genre: category.label,
+  ...(album
+    ? {
+        isPartOf: {
+          '@type': 'MusicAlbum',
+          name: album.data.title,
+          url: new URL(seriesPath(album.id), SITE.url).href,
+        },
+      }
+    : {}),
+  ...(data.media.length ? { sameAs: data.media.map((m) => m.url) } : {}),
+  ...(data.performances.length
+    ? {
+        subjectOf: data.performances.map((p) => ({
+          '@type': 'Event',
+          name: p.event ?? `${data.title} — performance`,
+          ...(p.date ? { startDate: p.date } : {}),
+          ...(p.venue
+            ? {
+                location: {
+                  '@type': 'Place',
+                  name: p.venue,
+                  ...(p.city ? { address: [p.city, p.country].filter(Boolean).join(', ') } : {}),
+                },
+              }
+            : {}),
+        })),
+      }
+    : {}),
+};
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.shortDescription ?? `${data.title} (${data.year}) by ${SITE.name}.`}
+  jsonLd={jsonLd}
+>
+  <article>
+    <header class="work-head">
+      <div class="shell">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a class="crumbs__link" href="/works">Works</a>
+          <span class="crumbs__sep" aria-hidden="true">/</span>
+          <a class="crumbs__link" href={categoryPath(data.primaryCategory)}>{category.short}</a>
+          {
+            album && (
+              <>
+                <span class="crumbs__sep" aria-hidden="true">
+                  /
+                </span>
+                <a class="crumbs__link" href={seriesPath(album.id)}>
+                  {album.data.title}
+                  {part && ` ${part}`}
+                </a>
+              </>
+            )
+          }
+        </nav>
+
+        <div class="work-head__grid grid">
+          <div class="work-head__title">
+            <h1 class="title-l">{data.title}</h1>
+            {data.shortDescription && <p class="work-head__lead">{data.shortDescription}</p>}
+          </div>
+
+          <dl class="specs">
+            {
+              specs.map((spec) => (
+                <div class="specs__row">
+                  <dt class="specs__label meta">{spec.label}</dt>
+                  <dd class="specs__value">{spec.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+        <hr class="rule rule--thick work-head__rule" />
+      </div>
+    </header>
+
+    {
+      soundcloud.length > 0 && (
+        <section class="section--tight shell" aria-label="Recordings">
+          <div class="players">
+            {soundcloud.map((item) => (
+              <SoundCloudPlayer
+                url={item.url}
+                title={item.title}
+                note={item.note}
+                workTitle={data.title}
+              />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <div class="shell">
+      <div class="body grid">
+        <div class="body__main">
+          <div class="prose">
+            <Content />
+          </div>
+        </div>
+
+        <aside class="body__aside">
+          {
+            album && (
+              <section class="panel panel--album">
+                <h2 class="eyebrow">Album</h2>
+                <a class="album__title title-m" href={seriesPath(album.id)}>
+                  {album.data.title}
+                </a>
+                <p class="album__position meta">
+                  {album.data.year} · {siblings.length}{' '}
+                  {siblings.length === 1 ? 'work' : 'works'}
+                </p>
+                <ol class="album__list">
+                  {siblings.map((sibling) => {
+                    const siblingPart = partLabel(sibling);
+                    const isCurrent = sibling.id === work.id;
+                    return (
+                      <li class:list={['album__item', isCurrent && 'is-current']}>
+                        <span class="album__numeral index">{siblingPart ?? '—'}</span>
+                        {isCurrent ? (
+                          <span aria-current="true">{sibling.data.title}</span>
+                        ) : (
+                          <a href={workPath(sibling)}>{sibling.data.title}</a>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ol>
+              </section>
+            )
+          }
+
+          {
+            data.technology.length > 0 && (
+              <section class="panel">
+                <h2 class="eyebrow">Technology</h2>
+                <ul class="panel__list">
+                  {data.technology.map((item) => (
+                    <li class="panel__item">{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          {
+            data.credits.length > 0 && (
+              <section class="panel">
+                <h2 class="eyebrow">Credits</h2>
+                <dl class="panel__list">
+                  {data.credits.map((credit) => (
+                    <div class="panel__pair">
+                      <dt class="panel__role meta meta--tight">{credit.role}</dt>
+                      <dd class="panel__item">{credit.name}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            )
+          }
+
+          {
+            data.performances.length > 0 && (
+              <section class="panel">
+                <h2 class="eyebrow">Performances</h2>
+                <ul class="panel__list">
+                  {data.performances.map((performance) => (
+                    <li class="panel__item">
+                      {performance.event && <span class="panel__strong">{performance.event}</span>}
+                      {performance.performers && <span>{performance.performers}</span>}
+                      <span class="meta meta--tight">
+                        {[
+                          performance.venue,
+                          [performance.city, performance.country].filter(Boolean).join(', '),
+                          performance.date,
+                        ]
+                          .filter(Boolean)
+                          .join(' · ')}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          {
+            data.secondaryTags.length > 0 && (
+              <section class="panel">
+                <h2 class="eyebrow">Tags</h2>
+                <ul class="tags">
+                  {data.secondaryTags.map((tag) => (
+                    <li class="tag">{tag}</li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          {
+            (data.links.length > 0 || otherMedia.length > 0) && (
+              <section class="panel">
+                <h2 class="eyebrow">Links</h2>
+                <ul class="panel__list">
+                  {otherMedia.map((item) => (
+                    <li>
+                      <a class="link" href={item.url} rel="noopener noreferrer" target="_blank">
+                        {item.title ?? item.type} →
+                      </a>
+                    </li>
+                  ))}
+                  {data.links.map((item) => (
+                    <li>
+                      <a class="link" href={item.url} rel="noopener noreferrer" target="_blank">
+                        {item.label} →
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+        </aside>
+      </div>
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="section shell" aria-labelledby="related-heading">
+          <h2 id="related-heading" class="eyebrow related__heading">
+            Related works
+          </h2>
+          <div class="related__list">
+            {related.map((item, i) => (
+              <WorkRow work={item} index={i} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  .work-head {
+    padding-top: var(--space-m);
+  }
+
+  .crumbs {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2xs);
+    margin-bottom: var(--space-m);
+    font-size: var(--step--2);
+    font-stretch: 78%;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .crumbs__link:hover {
+    color: var(--color-accent);
+  }
+
+  .work-head__grid {
+    row-gap: var(--space-m);
+    align-items: end;
+  }
+
+  .work-head__title {
+    grid-column: 1 / -1;
+  }
+
+  .work-head__lead {
+    max-width: 48ch;
+    margin-top: var(--space-s);
+    font-size: var(--step-0);
+    line-height: 1.55;
+    color: var(--color-muted);
+  }
+
+  .specs {
+    grid-column: 1 / -1;
+  }
+
+  .specs__row {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, 1fr) minmax(0, 2fr);
+    gap: var(--space-xs);
+    padding-block: var(--space-2xs);
+    border-top: var(--rule-hair) solid var(--color-line);
+  }
+
+  .specs__value {
+    margin: 0;
+    font-size: var(--step--1);
+    line-height: 1.45;
+  }
+
+  .work-head__rule {
+    margin-top: var(--space-m);
+  }
+
+  @media (min-width: 56rem) {
+    .work-head {
+      padding-top: var(--space-l);
+    }
+    .work-head__title {
+      grid-column: 1 / 8;
+    }
+    .specs {
+      grid-column: 9 / -1;
+    }
+  }
+
+  .players {
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .body {
+    row-gap: var(--space-xl);
+    padding-block: var(--space-l);
+  }
+
+  .body__main {
+    grid-column: 1 / -1;
+  }
+
+  .body__aside {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: var(--space-m);
+    align-content: start;
+  }
+
+  @media (min-width: 56rem) {
+    .body__main {
+      grid-column: 1 / 8;
+    }
+    .body__aside {
+      grid-column: 9 / -1;
+    }
+  }
+
+  .panel {
+    border-top: var(--rule-thin) solid var(--color-line);
+    padding-top: var(--space-xs);
+  }
+
+  .panel__list {
+    display: grid;
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
+  }
+
+  .panel--album {
+    border-top-width: var(--rule-thick);
+    border-top-color: var(--color-text);
+  }
+
+  .album__title {
+    display: block;
+    margin-top: var(--space-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    transition: color 120ms linear;
+  }
+
+  .album__title:hover {
+    color: var(--color-accent);
+  }
+
+  .album__position {
+    margin-top: var(--space-2xs);
+  }
+
+  .album__list {
+    display: grid;
+    gap: var(--space-2xs);
+    margin-top: var(--space-s);
+  }
+
+  .album__item {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: var(--space-2xs);
+    padding-top: var(--space-2xs);
+    border-top: var(--rule-hair) solid var(--color-line);
+    font-size: var(--step--1);
+  }
+
+  .album__item.is-current {
+    color: var(--color-muted);
+  }
+
+  .album__item a:hover {
+    color: var(--color-accent);
+  }
+
+  .album__item.is-current .album__numeral {
+    color: var(--color-accent);
+  }
+
+  .panel__item {
+    display: block;
+    margin: 0;
+    font-size: var(--step--1);
+    line-height: 1.45;
+  }
+
+  .panel__pair {
+    display: grid;
+    gap: 0.15em;
+  }
+
+  .panel__strong {
+    display: block;
+    font-weight: 600;
+  }
+
+  .panel__role {
+    font-size: var(--step--2);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    margin-top: var(--space-xs);
+  }
+
+  .tag {
+    padding: 0.1em 0.5em;
+    border: var(--rule-hair) solid var(--color-line);
+    font-size: var(--step--2);
+    font-stretch: 78%;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .related__heading {
+    padding-bottom: var(--space-s);
+  }
+
+  .related__list {
+    border-bottom: var(--rule-thin) solid var(--color-line);
+  }
+</style>

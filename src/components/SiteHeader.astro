@@ -1,0 +1,95 @@
+---
+import { NAV, SITE } from '../config';
+
+interface Props {
+  isHome?: boolean;
+}
+
+const { isHome = false } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="masthead">
+  <div class="shell masthead__inner">
+    <a class="masthead__name" href="/" aria-current={path === '/' ? 'page' : undefined}>
+      {isHome ? <span class="visually-hidden">{SITE.name}</span> : SITE.name}
+    </a>
+
+    <nav class="masthead__nav" aria-label="Primary">
+      <ul class="masthead__list">
+        {
+          NAV.map((item) => (
+            <li>
+              <a
+                class:list={['masthead__link', isActive(item.href) && 'is-active']}
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--color-background);
+    border-bottom: var(--rule-thin) solid var(--color-line);
+  }
+
+  .masthead__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-xs) var(--space-m);
+    padding-block: var(--space-xs);
+  }
+
+  .masthead__name {
+    font-size: var(--step--1);
+    font-weight: 700;
+    font-stretch: 108%;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .masthead__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs) var(--space-s);
+    margin: 0;
+  }
+
+  .masthead__link {
+    display: block;
+    padding-block: 0.2em;
+    font-size: var(--step--2);
+    font-weight: 500;
+    font-stretch: 78%;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    border-bottom: var(--rule-medium) solid transparent;
+    transition: color 120ms linear, border-color 120ms linear;
+  }
+
+  .masthead__link:hover {
+    color: var(--color-text);
+    border-bottom-color: var(--color-line);
+  }
+
+  /* Accent appears here and almost nowhere else. */
+  .masthead__link.is-active {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+</style>

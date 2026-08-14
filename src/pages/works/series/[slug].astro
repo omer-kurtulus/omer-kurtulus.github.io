@@ -1,0 +1,109 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import WorkRow from '../../../components/WorkRow.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import { SITE } from '../../../config';
+import { getVisibleWorks, seriesMembers, type Work } from '../../../lib/works';
+
+export const getStaticPaths = (async () => {
+  const albums = await getCollection('series', ({ data }) => data.status !== 'draft');
+  const works = await getVisibleWorks();
+
+  return albums.map((album) => ({
+    params: { slug: album.id },
+    props: { album, works: seriesMembers(works, album.id) },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  album: CollectionEntry<'series'>;
+  works: Work[];
+}
+
+const { album, works } = Astro.props;
+const { Content } = await render(album);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicAlbum',
+  name: album.data.title,
+  byArtist: { '@type': 'Person', name: SITE.name, url: SITE.url },
+  numTracks: works.length,
+  ...(album.data.summary ? { description: album.data.summary } : {}),
+  track: works.map((work) => ({
+    '@type': 'MusicComposition',
+    name: work.data.title,
+    url: new URL(`/works/${work.data.slug ?? work.id}`, SITE.url).href,
+  })),
+};
+---
+
+<BaseLayout
+  title={album.data.title}
+  description={album.data.summary ?? `${album.data.title}, an album by ${SITE.name}.`}
+  jsonLd={jsonLd}
+>
+  <PageHeader
+    eyebrow="Album"
+    title={album.data.title}
+    lead={album.data.summary}
+    index={`${String(works.length).padStart(2, '0')} · ${album.data.year}`}
+  />
+
+  <div class="shell">
+    <div class="body grid">
+      <div class="body__main prose">
+        <Content />
+      </div>
+    </div>
+
+    <section aria-labelledby="album-works">
+      <div class="head">
+        <h2 id="album-works" class="eyebrow">Works in this album</h2>
+        <span class="index">{String(works.length).padStart(2, '0')}</span>
+      </div>
+      <div class="list">
+        {works.map((work, i) => <WorkRow work={work} index={i} hideSeries />)}
+      </div>
+    </section>
+
+    <p class="back">
+      <a class="link link--strong" href="/works">All works →</a>
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .body {
+    padding-block: var(--space-l);
+  }
+
+  .body__main {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 56rem) {
+    .body__main {
+      grid-column: 1 / 8;
+    }
+  }
+
+  .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-m);
+    padding-block: var(--space-s);
+    border-top: var(--rule-thick) solid var(--color-text);
+  }
+
+  .list {
+    border-bottom: var(--rule-thin) solid var(--color-line);
+  }
+
+  .back {
+    padding-block: var(--space-xl);
+  }
+</style>

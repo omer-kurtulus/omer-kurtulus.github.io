@@ -1,0 +1,91 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import WorkRow from '../../../components/WorkRow.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import { CATEGORIES, CATEGORY_META, type Category } from '../../../content.config';
+import { byCategory, categoryPath, getVisibleWorks, type Work } from '../../../lib/works';
+
+export const getStaticPaths = (async () => {
+  const works = await getVisibleWorks();
+  return CATEGORIES.map((category) => ({
+    params: { category },
+    props: { category, works: byCategory(works, category) },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  category: Category;
+  works: Work[];
+}
+
+const { category, works } = Astro.props;
+const meta = CATEGORY_META[category];
+const others = CATEGORIES.filter((c) => c !== category);
+---
+
+<BaseLayout title={meta.label} description={meta.blurb}>
+  <PageHeader
+    eyebrow="Works"
+    title={meta.label}
+    lead={meta.blurb}
+    index={String(works.length).padStart(2, '0')}
+  />
+
+  <div class="shell">
+    {
+      works.length > 0 ? (
+        <div class="list">
+          {works.map((work, i) => (
+            <WorkRow work={work} index={i} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty prose">No works are published in this category yet.</p>
+      )
+    }
+
+    <nav class="jump" aria-label="Other categories">
+      <p class="eyebrow jump__label">Elsewhere</p>
+      <ul class="jump__list">
+        {
+          others.map((other) => (
+            <li>
+              <a class="link" href={categoryPath(other)}>
+                {CATEGORY_META[other].short} →
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a class="link link--strong" href="/works">All works →</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</BaseLayout>
+
+<style>
+  .list {
+    border-bottom: var(--rule-thin) solid var(--color-line);
+  }
+
+  .empty {
+    padding-block: var(--space-l);
+    color: var(--color-muted);
+  }
+
+  .jump {
+    padding-block: var(--space-xl);
+  }
+
+  .jump__label {
+    margin-bottom: var(--space-s);
+  }
+
+  .jump__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s) var(--space-m);
+  }
+</style>

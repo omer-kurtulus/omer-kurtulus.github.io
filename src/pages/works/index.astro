@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkRow from '../../components/WorkRow.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { CATEGORY_META } from '../../content.config';
+import { getCollection } from 'astro:content';
+import {
+  categoryCounts,
+  categoryPath,
+  getVisibleWorks,
+  groupByYear,
+  seriesMembers,
+  seriesPath,
+} from '../../lib/works';
+
+const works = await getVisibleWorks();
+const years = groupByYear(works);
+const counts = categoryCounts(works);
+
+const albums = (await getCollection('series', ({ data }) => data.status !== 'draft'))
+  .map((album) => ({ album, members: seriesMembers(works, album.id) }))
+  .filter(({ members }) => members.length > 0)
+  .sort((a, b) => b.album.data.year - a.album.data.year);
+
+let running = 0;
+---
+
+<BaseLayout
+  title="Works"
+  description="The complete catalogue of works by Ömer Kurtuluş, newest first."
+>
+  <PageHeader
+    title="Works"
+    lead={`${works.length} works, newest first.`}
+    index={String(works.length).padStart(2, '0')}
+  />
+
+  <section class="section--tight shell" aria-label="Filter by category">
+    <ul class="filters">
+      {
+        counts.map(({ category, count }) => (
+          <li>
+            <a class="filter" href={categoryPath(category)}>
+              <span class:list={['mark', `mark--${category}`]} aria-hidden="true" />
+              <span class="filter__label">{CATEGORY_META[category].short}</span>
+              <span class="filter__count index">{String(count).padStart(2, '0')}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {
+    albums.length > 0 && (
+      <section class="section--tight shell" aria-labelledby="albums-heading">
+        <h2 id="albums-heading" class="eyebrow albums__heading">
+          Albums
+        </h2>
+        <ul class="albums">
+          {albums.map(({ album, members }) => (
+            <li class="album">
+              <a class="album__link" href={seriesPath(album.id)}>
+                <span class="album__head">
+                  <span class="index">{String(members.length).padStart(2, '0')} works</span>
+                  <span class="index">{album.data.year}</span>
+                </span>
+                <span class="album__name title-m">{album.data.title}</span>
+                {album.data.summary && <span class="album__summary">{album.data.summary}</span>}
+                <span class="album__members meta meta--tight">
+                  {members.map((m) => m.data.title).join(' · ')}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <div class="shell">
+    {
+      years.map(({ year, works: entries }) => {
+        const start = running;
+        running += entries.length;
+        return (
+          <section class="year" aria-labelledby={`year-${year}`}>
+            <div class="year__head">
+              <h2 id={`year-${year}`} class="year__label eyebrow">
+                {year}
+              </h2>
+              <span class="index">{String(entries.length).padStart(2, '0')}</span>
+            </div>
+            <div class="year__list">
+              {entries.map((work, i) => (
+                <WorkRow work={work} index={start + i} />
+              ))}
+            </div>
+          </section>
+        );
+      })
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+
+  .filter {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding: var(--space-2xs) var(--space-xs);
+    border: var(--rule-thin) solid var(--color-line);
+    font-size: var(--step--2);
+    font-stretch: 78%;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transition: border-color 120ms linear, color 120ms linear;
+  }
+
+  .filter:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .filter__count {
+    color: var(--color-muted);
+  }
+
+  .albums__heading {
+    padding-bottom: var(--space-s);
+  }
+
+  .albums {
+    display: grid;
+    gap: var(--grid-gap);
+  }
+
+  @media (min-width: 48rem) {
+    .albums {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .album {
+    border-top: var(--rule-thick) solid var(--color-text);
+  }
+
+  .album__link {
+    display: block;
+    height: 100%;
+    padding-block: var(--space-s);
+    transition: background-color 120ms linear;
+  }
+
+  .album__link:hover {
+    background-color: var(--color-surface);
+  }
+
+  .album__head {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-s);
+    margin-bottom: var(--space-s);
+    text-transform: uppercase;
+  }
+
+  .album__link:hover .album__head {
+    color: var(--color-accent);
+  }
+
+  .album__name {
+    display: block;
+    text-transform: uppercase;
+  }
+
+  .album__summary {
+    display: block;
+    max-width: 46ch;
+    margin-top: var(--space-xs);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  .album__members {
+    display: block;
+    margin-top: var(--space-s);
+  }
+
+  .year {
+    padding-bottom: var(--space-l);
+  }
+
+  .year__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-m);
+    padding-block: var(--space-s);
+    border-top: var(--rule-thick) solid var(--color-text);
+  }
+
+  .year__label {
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .year__list {
+    border-bottom: var(--rule-thin) solid var(--color-line);
+  }
+</style>
