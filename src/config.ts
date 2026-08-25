@@ -36,6 +36,7 @@ export const NAV = [
 
 export const PROFILES = [
   { label: 'SoundCloud', url: 'https://soundcloud.com/mer-kurtulu-399116903' },
+  { label: 'Bandcamp', url: 'https://merkurtulu.bandcamp.com/' },
   {
     label: 'Scores & performances',
     url: 'https://drive.google.com/drive/folders/1TVLEtLhu0pgR1o5KFMcE_nSEQj_jGfAZ?usp=drive_link',
