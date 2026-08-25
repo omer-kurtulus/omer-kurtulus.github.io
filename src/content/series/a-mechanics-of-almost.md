@@ -20,4 +20,4 @@ itself is almost gone, and what remains is the residue of a physical gesture.
 The seven works are *Anaculaton*, *Afterglare*, *Intergrain*, *Aerolith*,
 *Craquelure*, *Endobody* and *Remanence*.
 
-Released on Bandcamp.
+Released on [Bandcamp](https://merkurtulu.bandcamp.com/album/a-mechanics-of-almost).

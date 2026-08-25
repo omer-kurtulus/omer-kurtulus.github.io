@@ -22,6 +22,9 @@ shortDescription: >-
 media:
   - type: soundcloud
     url: https://soundcloud.com/mer-kurtulu-399116903/intergrain
+  - type: bandcamp
+    url: https://merkurtulu.bandcamp.com/album/a-mechanics-of-almost
+    title: A Mechanics of Almost (Bandcamp)
 sourceUrls:
   - https://soundcloud.com/mer-kurtulu-399116903/intergrain
 ---
