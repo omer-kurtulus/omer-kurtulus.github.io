@@ -21,6 +21,10 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'l
   />
 
   <div class="shell">
+    <p class="usage-note meta">
+      Shared for reference — please ask the composer before sharing or reproducing
+      any of these texts.
+    </p>
     {
       notes.length > 0 ? (
         <div class="list">
@@ -45,6 +49,11 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'l
 </BaseLayout>
 
 <style>
+  .usage-note {
+    max-width: 52ch;
+    margin-bottom: var(--space-m);
+  }
+
   .list {
     border-bottom: var(--rule-thin) solid var(--color-line);
   }
