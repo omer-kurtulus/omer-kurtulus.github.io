@@ -42,3 +42,25 @@ export const PROFILES = [
     url: 'https://drive.google.com/drive/folders/1TVLEtLhu0pgR1o5KFMcE_nSEQj_jGfAZ?usp=drive_link',
   },
 ] as const;
+
+/**
+ * A live call or project shown near the top of the home page. It is not a work
+ * and not a nav entry — it is a thing with a deadline, and it should disappear
+ * when the deadline passes. Set to `null` to remove the block entirely.
+ */
+export const CURRENT: {
+  eyebrow: string;
+  title: string;
+  blurb: string;
+  href: string;
+  cta: string;
+  until: string;
+} | null = {
+  eyebrow: 'Open call',
+  title: 'What the C*rp*s',
+  blurb:
+    'A machine-learning electroacoustic composition project built from recordings sent by other people. Instruments, objects, voice, augmented and self-built instruments — no studio needed. Everyone who contributes is credited.',
+  href: '/what-the-corpus/',
+  cta: 'Take part',
+  until: 'Open until 30 November 2026 · Bandcamp release February 2027',
+};

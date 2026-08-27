@@ -1,57 +1,38 @@
 /* --------------------------------------------------------------------------
-   1. Typeface — JetBrains Mono variable (OFL 1.1), self-hosted.
+   1. Typeface — Space Grotesk variable (OFL 1.1), self-hosted.
 
-   The whole site is monospaced. Every glyph carries the same 0.6em advance, so
-   the catalogue sets itself: numbers, durations and years fall into columns
-   with no tabular feature needed, and every label lands on the same rhythm.
+   Previously the site was set entirely in a monospace, which let the catalogue
+   column itself: every glyph reserved the same advance, so years and durations
+   fell into line without asking. Space Grotesk is proportional, so that
+   alignment is now stated rather than inherited — `tabular-nums` wherever
+   figures have to stack.
 
-   The face carries weights 100-800 and a true italic, so hierarchy still uses
-   weight. What it does not have is a narrow or expanded cut, so the width axis
-   the old system leaned on is gone: hierarchy is now size, weight, case,
-   letter-spacing and space. Because characters are wide, measures run shorter
-   in `ch` than they would in a proportional face — the tokens below account
-   for that.
+   What it gives back is a voice. A grotesque with odd, deliberate details in
+   the a, g and y, it is the face this corner of electronic and experimental
+   music actually uses, and it says something a neutral mono did not.
+
+   Variable across 300-700 with no italic, so hierarchy is weight, size, case,
+   tracking and space. Proportional glyphs run narrower than mono, so measures
+   in `ch` hold more characters and the display steps climb back up.
    -------------------------------------------------------------------------- */
 
 @font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Space Grotesk';
   font-style: normal;
-  font-weight: 100 800;
+  font-weight: 300 700;
   font-display: swap;
-  src: url('/fonts/jetbrains-latin.woff2') format('woff2');
+  src: url('/fonts/space-grotesk-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
     U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: 'JetBrains Mono';
+  font-family: 'Space Grotesk';
   font-style: normal;
-  font-weight: 100 800;
+  font-weight: 300 700;
   font-display: swap;
-  src: url('/fonts/jetbrains-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
-    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
-    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: italic;
-  font-weight: 100 800;
-  font-display: swap;
-  src: url('/fonts/jetbrains-italic-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-    U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: italic;
-  font-weight: 100 800;
-  font-display: swap;
-  src: url('/fonts/jetbrains-italic-latin-ext.woff2') format('woff2');
+  src: url('/fonts/space-grotesk-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
     U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
     U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
@@ -70,11 +51,10 @@
   --color-line: #b8b4aa;
   --color-accent: #873b32;
 
-  /* One family for everything. The fallback stack is monospaced too, so a
-     failed font load degrades into the same rhythm rather than a proportional
-     one. It also carries the Greek and musical symbols JetBrains Mono omits. */
-  --font-sans: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo,
-    Consolas, monospace;
+  /* One family for everything. The fallback is a system grotesque so a failed
+     load degrades into similar proportions rather than into a monospace. */
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Helvetica, Arial, sans-serif;
 
   /* Modular scale, fluid between 22.5rem and 90rem viewports */
   --step--2: clamp(0.64rem, 0.62rem + 0.09vw, 0.7rem);
@@ -83,10 +63,10 @@
   --step-1: clamp(1.16rem, 1.08rem + 0.38vw, 1.4rem);
   --step-2: clamp(1.44rem, 1.28rem + 0.72vw, 1.9rem);
   --step-3: clamp(1.78rem, 1.5rem + 1.28vw, 2.6rem);
-  /* Mono glyphs are ~20% wider than proportional ones, so the display steps
-     come back down: KURTULUŞ is eight characters at 0.6em each. */
-  --step-4: clamp(1.9rem, 1.4rem + 2.4vw, 3.4rem);
-  --step-5: clamp(2.3rem, 1.5rem + 4vw, 5rem);
+  /* Proportional glyphs are narrower than the mono these were set for, so the
+     display steps climb back up without the wordmark overrunning the line. */
+  --step-4: clamp(2.15rem, 1.55rem + 2.9vw, 4rem);
+  --step-5: clamp(2.7rem, 1.7rem + 4.8vw, 6.2rem);
 
   /* 8px base unit — every vertical measure is a multiple */
   --u: 0.5rem;
@@ -104,8 +84,9 @@
   --grid-columns: 12;
   --grid-gap: clamp(1rem, 2.2vw, 2rem);
   --page-margin: clamp(1.25rem, 5vw, 5.5rem);
-  /* 62ch of mono is physically much wider than 62ch of a proportional face. */
-  --measure: 52ch;
+  /* Proportional: the same physical measure now carries more characters, and
+     66 lands in the readable 60-75 band. */
+  --measure: 66ch;
 
   /* Rules — category weight is carried by line thickness, not colour */
   --rule-hair: 0.5px;
@@ -270,22 +251,21 @@ button {
   text-wrap: balance;
 }
 
-/* Mono sets loose at display sizes because every glyph reserves the same
-   advance — including the narrow ones. Negative tracking pulls it back into
-   a mass instead of a row of separated letters. */
+/* A grotesque already sets tight; it needs far less negative tracking than the
+   mono did, and overdoing it here closes the counters. */
 .display {
   font-size: var(--step-5);
   font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.06em;
+  line-height: 0.94;
+  letter-spacing: -0.038em;
   text-transform: uppercase;
 }
 
 .title-l {
   font-size: var(--step-4);
   font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: -0.045em;
+  line-height: 1.03;
+  letter-spacing: -0.032em;
   text-transform: uppercase;
 }
 
@@ -293,7 +273,7 @@ button {
   font-size: var(--step-2);
   font-weight: 600;
   line-height: 1.15;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.022em;
 }
 
 /* Section headers — the catalogue voice. */
@@ -305,12 +285,14 @@ button {
   color: var(--color-muted);
 }
 
-/* Metadata: instrumentation, durations, years, technology. Mono already has an
-   even rhythm, so this needs far less tracking than a proportional face would. */
+/* Metadata: instrumentation, durations, years, technology. Uppercase in a
+   proportional face needs real tracking to stop the letters colliding.
+   Figures here sit in columns, so they are held tabular by hand. */
 .meta {
   font-size: var(--step--1);
-  font-weight: 400;
-  letter-spacing: 0.04em;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--color-muted);
   line-height: 1.5;
@@ -321,10 +303,11 @@ button {
   text-transform: none;
 }
 
-/* Catalogue numbers. Every mono figure is already tabular. */
+/* Catalogue numbers. A proportional face has to be told. */
 .index {
   font-size: var(--step--1);
   font-weight: 500;
+  font-variant-numeric: tabular-nums;
   letter-spacing: 0.1em;
   color: var(--color-muted);
 }

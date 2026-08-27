@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkRow from '../components/WorkRow.astro';
 import { CATEGORY_META } from '../content.config';
-import { SITE } from '../config';
+import { CURRENT, SITE } from '../config';
 import {
   byCategory,
   categoryCounts,
@@ -54,6 +54,24 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
       </div>
     </div>
   </section>
+
+  {
+    CURRENT && (
+      <section class="section shell current" aria-labelledby="current-heading">
+        <div class="head">
+          <h2 id="current-heading" class="eyebrow">
+            {CURRENT.eyebrow}
+          </h2>
+          <p class="head__count index">{CURRENT.until}</p>
+        </div>
+        <a class="current__link" href={CURRENT.href}>
+          <span class="current__title title-m">{CURRENT.title}</span>
+          <span class="current__blurb">{CURRENT.blurb}</span>
+          <span class="current__cta">{CURRENT.cta} →</span>
+        </a>
+      </section>
+    )
+  }
 
   <section class="section shell" aria-labelledby="recent-heading">
     <div class="head">
@@ -137,7 +155,7 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
 
   .hero__aside {
     grid-column: 1 / -1;
-    max-width: 34ch;
+    max-width: 42ch;
   }
 
   .hero__role {
@@ -281,5 +299,51 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
     font-size: var(--step--1);
     line-height: 1.5;
     color: var(--color-muted);
+  }
+
+  /* The open call is louder than a work row on purpose: it has a deadline and
+     it is the one thing on this page a visitor can act on today. It is still
+     not a nav entry — when the call closes, CURRENT goes to null and the block
+     leaves without a trace. */
+  .current__link {
+    display: block;
+    border: var(--rule-medium) solid var(--color-line);
+    padding: var(--space-m);
+    transition: border-color 120ms linear, background-color 120ms linear;
+  }
+
+  .current__link:hover {
+    border-color: var(--color-accent);
+    background-color: var(--color-surface);
+  }
+
+  .current__title {
+    display: block;
+    margin-bottom: var(--space-xs);
+  }
+
+  .current__blurb {
+    display: block;
+    max-width: 62ch;
+    font-size: var(--step--1);
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .current__cta {
+    display: inline-block;
+    margin-top: var(--space-s);
+    font-size: var(--step--2);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  /* The date line is prose, not a catalogue figure, so it should not be
+     tracked out like one. */
+  .current .head__count {
+    letter-spacing: 0.04em;
+    text-transform: none;
   }
 </style>
