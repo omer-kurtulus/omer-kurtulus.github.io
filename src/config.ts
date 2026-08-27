@@ -12,7 +12,7 @@ export const SITE = {
   url: 'https://omerkurtulus.com',
   locale: 'en',
   /** Set to an address to show it on the contact page; leave empty to hide. */
-  email: 'okurtul@bgsu.edu',
+  email: 'contact@omerkurtulus.com',
 } as const;
 
 /**
