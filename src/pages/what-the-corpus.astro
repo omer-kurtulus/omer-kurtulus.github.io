@@ -1,0 +1,601 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SoundCloudPlayer from '../components/SoundCloudPlayer.astro';
+import { OPEN_CALL } from '../config';
+import { CONTRIBUTORS } from '../lib/contributors';
+
+const tallySrc = OPEN_CALL.tallyFormId
+  ? `https://tally.so/embed/${OPEN_CALL.tallyFormId}?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1`
+  : null;
+
+const description =
+  'Open call: send a recording, and it becomes part of the corpus a machine-listening system plays through. An album by Ömer Kurtuluş built from contributed sound.';
+
+/** The recording brief. Every line here came out of building a corpus that worked. */
+const BRIEF = [
+  ['Format', 'WAV. 44.1 or 48 kHz, 24-bit preferred — 16-bit is fine. Mono or stereo, either works.'],
+  ['Dry', 'No reverb, no compression, no EQ, no noise reduction. Nothing that cannot be undone.'],
+  ['Level', 'Peak around −6 dBFS. Leave headroom; never clip.'],
+  ['Room', 'The quietest one you have. Traffic and fans end up in the corpus too.'],
+  [
+    'Let it ring',
+    'Do not trim the decay. The tail of a bell, a plate, a string is the most useful part of it — cut tails make a corpus that can only tick.',
+  ],
+  [
+    'Leave silence',
+    'A second or two between events. The system slices on attacks, and events that run together cannot be told apart.',
+  ],
+  [
+    'Bowed and rubbed sounds',
+    'A sound that fades up out of silence has no attack, and an attack is what the slicer looks for. Either start it decisively, or tell me in the form and I will handle it.',
+  ],
+  ['One per file', 'A separate file for each technique. 30 seconds to 3 minutes each.'],
+  ['Naming', 'surname_source_technique.wav — e.g. kurtulus_cymbal_bowed.wav'],
+];
+
+/** The pipeline, in the four steps that actually constrain what a recording must be. */
+const PIPELINE = [
+  ['01', 'Cut', 'Your file is sliced at its attacks. Each slice is one usable fragment — roughly half a second to five.'],
+  ['02', 'Analyse', 'Every slice is measured: pitch, pitch class, spectral shape. That measurement is the only way the system knows it exists.'],
+  ['03', 'Navigate', 'A driving sound — an exciter — is fed in live. The system matches what it hears against the corpus and plays the closest slices, in an order the corpus never had.'],
+  ['04', 'Fix', 'One continuous pass is recorded, then edited and mastered. That take becomes the track.'],
+];
+
+const FAQ = [
+  [
+    'Do I need to be a musician?',
+    'No. Objects, surfaces, metal, wood, glass, paper, water, breath, voice — anything that sounds. Several of the most useful things in a corpus are not instruments.',
+  ],
+  [
+    'Do I need to read music?',
+    'No. What you get is a page of graphic notation: simple prompts, shapes and words. There is no staff to read.',
+  ],
+  [
+    'Will I hear my own sound in the piece?',
+    'Probably not as itself. The system does not play your recording back — it takes its shape apart and re-speaks it through the rest of the corpus. You may recognise a gesture rather than a sound.',
+  ],
+  [
+    'Can I still use my recording elsewhere?',
+    'Yes, anywhere, for anything. You keep the copyright. What you give me is permission, not ownership.',
+  ],
+  [
+    'How much should I send?',
+    'One good file is a real contribution. Five is generous. There is no minimum.',
+  ],
+];
+---
+
+<BaseLayout title={OPEN_CALL.title} description={description}>
+  <PageHeader
+    title="What the C*rp*s"
+    eyebrow="Open call"
+    lead="An album assembled from recordings sent by people I have mostly never met. Send a sound; it becomes part of the body the system speaks with."
+  />
+
+  <div class="shell">
+    <div class="body grid">
+      <div class="body__main">
+        <section class="prose">
+          <p>
+            I am making an album called <em>What the C*rp*s</em>, and I would rather make it with
+            people than with a sample library. This page is the invitation and the instructions.
+          </p>
+
+          <h2>What a corpus is</h2>
+          <p>
+            A corpus is a body of recorded sound that has been cut into slices and analysed one
+            slice at a time — pitch, brightness, spectral shape. It is not a playlist and not a
+            sample pack. It is the material a listening system is allowed to reach for.
+          </p>
+          <p>
+            I work with <strong>Somax2</strong>, developed at IRCAM. It listens continuously to an
+            incoming sound and, in real time, navigates the corpus looking for slices that match
+            what it is hearing — then plays them, in an order the corpus never had. It does not
+            reproduce your recording. It learns its shape and answers in other material.
+          </p>
+          <p>
+            Which means the corpus is the instrument. Whatever goes into it is what the system is
+            able to say. Right now I am collecting it.
+          </p>
+
+          <h2>Where it stands, and why I need you</h2>
+          <p>
+            The pieces below already exist. I built them to find out whether the idea holds, and
+            their corpora were assembled from Creative Commons recordings on Freesound — a dripping
+            tap, bowed crotales, a prepared piano someone else recorded years ago. They work. They
+            are also, in a sense I cannot argue my way out of, made of other people's leftovers.
+          </p>
+          <p>
+            <strong>That is the part I want to replace.</strong> The album is meant to be extended and
+            remade with material recorded by actual people, for this, on purpose — not scavenged
+            from an archive. A corpus built from strangers who agreed to be in it is a different
+            object from one built from search results, and I think you can hear the difference.
+            These tracks are the proof of concept. What comes next should be the real thing.
+          </p>
+        </section>
+
+        <section class="section" aria-labelledby="listen">
+          <h2 id="listen" class="section__title">Listen</h2>
+          <p class="section__intro">
+            The Freesound-based studies — where the album is now, before you.
+          </p>
+          <div class="listen">
+            <SoundCloudPlayer
+              url={OPEN_CALL.playlist}
+              workTitle="What the C*rp*s"
+              note="Preliminary studies built from Creative Commons material. The album proper is to be made from contributed recordings."
+            />
+          </div>
+        </section>
+
+        <section class="prose prose--continued">
+          <h2>What I am asking for</h2>
+          <p>
+            Recordings. They do not have to be instruments — and some of the best material is not.
+            Objects, surfaces, metal, wood, glass, paper, water, voice, breath. Extended techniques
+            are very welcome: bowing something that is not meant to be bowed, scraping, rubbing,
+            preparing, striking, blowing across rather than into.
+          </p>
+          <p>
+            You do not need to read music. Once you sign up I will send a page of graphic notation —
+            short prompts, no staff, no traditional score — along with these recording notes.
+          </p>
+        </section>
+
+        <section class="section" aria-labelledby="brief">
+          <h2 id="brief" class="section__title">Recording notes</h2>
+          <p class="section__intro">
+            A recording made at home is completely fine. These are not standards to live up to — they
+            are the handful of things that decide whether a recording can be sliced into a corpus at
+            all.
+          </p>
+          <dl class="brief">
+            {
+              BRIEF.map(([term, detail]) => (
+                <div class="brief__row">
+                  <dt class="brief__term">{term}</dt>
+                  <dd class="brief__detail">{detail}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </section>
+
+        <section class="section" aria-labelledby="pipeline">
+          <h2 id="pipeline" class="section__title">What happens to your recording</h2>
+          <ol class="pipeline">
+            {
+              PIPELINE.map(([n, term, detail]) => (
+                <li class="pipeline__step">
+                  <span class="pipeline__index">{n}</span>
+                  <span class="pipeline__body">
+                    <span class="pipeline__term">{term}</span>
+                    <span class="pipeline__detail">{detail}</span>
+                  </span>
+                </li>
+              ))
+            }
+          </ol>
+          <p class="section__intro pipeline__coda">
+            Two rules fall out of steps 01 and 02, and they are the whole reason the notes above
+            look the way they do: <strong>a slice with no attack never gets cut</strong>, and
+            <strong>a slice with a chopped tail is measured as something it is not</strong>. Dry,
+            spaced, and left to ring — everything else is taste.
+          </p>
+        </section>
+
+        <section class="section" aria-labelledby="rights">
+          <h2 id="rights" class="section__title">Your rights</h2>
+          <div class="prose">
+            <p>
+              <strong>You keep the copyright in your recording.</strong> You are not signing it over.
+              You are giving me permission to use it, and that permission is not exclusive — the
+              recording stays entirely yours to release, sell or reuse anywhere else.
+            </p>
+            <p>The form asks you to agree to exactly this:</p>
+            <blockquote>
+              The contributor retains copyright in the recording. The contributor grants Ömer
+              Kurtuluş a worldwide, perpetual, royalty-free, non-exclusive licence to use, adapt,
+              transform and recombine the recording within the corpus, and to publish the resulting
+              works. The contributor may continue to use the recording for any purpose. The
+              contributor is credited on the release.
+            </blockquote>
+            <p>
+              Two things I want to be plain about rather than bury. <strong>The album is released
+              under a Creative Commons licence</strong>, so the finished pieces can be reused by
+              other people — not your recording, but what the system makes out of it. And the album
+              may be sold, on Bandcamp and elsewhere. If either of those is not something you want
+              your sound inside, this is the moment to say no, and no hard feelings.
+            </p>
+            <p>
+              The licence is perpetual because a release cannot be unpicked after the fact. Your
+              legal name is collected so the permission means something; only your credit name is
+              published.
+            </p>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="submit">
+          <h2 id="submit" class="section__title">Send a recording</h2>
+          {
+            tallySrc ? (
+              <div class="form">
+                <iframe
+                  data-tally-src={tallySrc}
+                  loading="lazy"
+                  width="100%"
+                  height="500"
+                  title="Submission form"
+                />
+              </div>
+            ) : (
+              <div class="notice">
+                <p class="notice__text">
+                  The submission form opens shortly. Until then, write to me and I will send the
+                  notation and the recording notes directly.
+                </p>
+                <p>
+                  <a class="link link--strong" href={`mailto:${OPEN_CALL.contactEmail}`}>
+                    {OPEN_CALL.contactEmail}
+                  </a>
+                </p>
+              </div>
+            )
+          }
+          <p class="form__note">
+            Files larger than 200 MB will not upload — the form has a field for a Drive, Dropbox or
+            WeTransfer link instead. Your name and email are used for this project only, are not
+            shared with anyone, and I will delete them on request.
+          </p>
+        </section>
+
+        <section class="section" aria-labelledby="faq">
+          <h2 id="faq" class="section__title">Questions people ask</h2>
+          <dl class="brief">
+            {
+              FAQ.map(([q, a]) => (
+                <div class="brief__row">
+                  <dt class="brief__term brief__term--q">{q}</dt>
+                  <dd class="brief__detail">{a}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </section>
+
+        <section class="section" aria-labelledby="contributors">
+          <h2 id="contributors" class="section__title">Contributors</h2>
+          {
+            CONTRIBUTORS.length > 0 ? (
+              <ul class="contributors">
+                {CONTRIBUTORS.map((c) => (
+                  <li class="contributors__item">
+                    <span class="contributors__name">{c.name}</span>
+                    {c.location && <span class="contributors__meta">{c.location}</span>}
+                    {c.material && <span class="contributors__meta">{c.material}</span>}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="section__intro">
+                The list opens with the first submission. Everyone who sends a recording is named
+                here and on the release.
+              </p>
+            )
+          }
+        </section>
+      </div>
+
+      <div class="body__aside">
+        {
+          OPEN_CALL.deadline && (
+            <section class="panel">
+              <h2 class="eyebrow">Deadline</h2>
+              <p class="panel__value">{OPEN_CALL.deadline}</p>
+            </section>
+          )
+        }
+
+        <section class="panel">
+          <h2 class="eyebrow">In short</h2>
+          <ul class="panel__list">
+            <li>WAV, 44.1 or 48 kHz</li>
+            <li>Dry — no processing</li>
+            <li>Peak ≈ −6 dBFS</li>
+            <li>30 s – 3 min per file</li>
+            <li>Let the decay ring out</li>
+            <li>You keep your copyright</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h2 class="eyebrow">The system</h2>
+          <p class="panel__text">
+            Somax2, developed at IRCAM — a co-creative agent that listens continuously and navigates
+            a corpus in real time.
+          </p>
+          <p class="panel__value">
+            <a
+              class="link"
+              href="https://forum.ircam.fr/projects/detail/somax-2/"
+              rel="noopener noreferrer"
+              target="_blank">Somax2 at IRCAM →</a
+            >
+          </p>
+        </section>
+
+        <section class="panel">
+          <h2 class="eyebrow">For the curious</h2>
+          <p class="panel__text">
+            The Max patcher I use for this album, as it actually runs. It needs Max 9 and the Somax
+            2.7 package installed; it will not open usefully without them.
+          </p>
+          <p class="panel__value">
+            <a class="link link--strong" href={OPEN_CALL.patcher} download
+              >Download the patcher →</a
+            >
+          </p>
+          <p class="panel__text">
+            Ask me anything about how it works. I would rather explain it than have it look like a
+            trick.
+          </p>
+        </section>
+
+        <section class="panel">
+          <h2 class="eyebrow">Ask</h2>
+          <p class="panel__value">
+            <a class="link link--strong" href={`mailto:${OPEN_CALL.contactEmail}`}>
+              {OPEN_CALL.contactEmail}
+            </a>
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  {tallySrc && <script is:inline async src="https://tally.so/widgets/embed.js" />}
+</BaseLayout>
+
+<style>
+  .body {
+    row-gap: var(--space-l);
+    padding-block: var(--space-l) var(--space-2xl);
+  }
+
+  .body__main {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+
+  .body__aside {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: var(--space-m);
+    align-content: start;
+  }
+
+  @media (min-width: 56rem) {
+    .body__main {
+      grid-column: 1 / 8;
+    }
+    .body__aside {
+      grid-column: 9 / -1;
+      /* Without align-self the grid item stretches to the row height, which
+         leaves sticky no range to travel and the panels scroll away after one
+         screen. */
+      align-self: start;
+      position: sticky;
+      top: calc(var(--space-l) + 2rem);
+    }
+  }
+
+  .section {
+    margin-top: var(--space-l);
+    padding-top: var(--space-s);
+    border-top: var(--rule-thin) solid var(--color-line);
+  }
+
+  .section__title {
+    font-size: var(--step-1);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.03em;
+  }
+
+  .section__intro {
+    max-width: var(--measure);
+    margin-top: var(--space-s);
+    font-size: var(--step-0);
+    line-height: 1.7;
+    color: var(--color-muted);
+  }
+
+  /* Term and detail sit in two columns on wide screens so the brief reads as a
+     specification rather than as more prose. */
+  .brief {
+    margin-top: var(--space-m);
+    max-width: var(--measure);
+  }
+
+  .brief__row + .brief__row {
+    margin-top: var(--space-s);
+    padding-top: var(--space-s);
+    border-top: var(--rule-hair) solid var(--color-line);
+  }
+
+  .brief__term {
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .brief__term--q {
+    letter-spacing: 0.06em;
+    text-transform: none;
+    font-size: var(--step--1);
+  }
+
+  .brief__detail {
+    margin-top: var(--space-2xs);
+    font-size: var(--step-0);
+    line-height: 1.7;
+  }
+
+  @media (min-width: 44rem) {
+    .brief__row {
+      display: grid;
+      grid-template-columns: 12ch 1fr;
+      gap: var(--space-s);
+      align-items: baseline;
+    }
+    .brief__row:has(.brief__term--q) {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .brief__detail {
+      margin-top: 0;
+    }
+  }
+
+  .listen {
+    margin-top: var(--space-m);
+    max-width: var(--measure);
+  }
+
+  /* A set needs room for its track list; the shared player sizes for one track. */
+  .listen :global(iframe) {
+    height: 320px;
+  }
+
+  .prose--continued {
+    margin-top: var(--space-l);
+  }
+
+  .pipeline {
+    margin-top: var(--space-m);
+    max-width: var(--measure);
+    display: grid;
+    gap: var(--space-s);
+    list-style: none;
+  }
+
+  .pipeline__step {
+    display: grid;
+    grid-template-columns: 4ch 1fr;
+    gap: var(--space-s);
+    align-items: baseline;
+  }
+
+  .pipeline__index {
+    font-size: var(--step--2);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+  }
+
+  .pipeline__body {
+    display: block;
+  }
+
+  .pipeline__term {
+    display: block;
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .pipeline__detail {
+    display: block;
+    margin-top: var(--space-2xs);
+    font-size: var(--step-0);
+    line-height: 1.7;
+  }
+
+  .pipeline__coda {
+    margin-top: var(--space-m);
+    color: var(--color-text);
+  }
+
+  .form {
+    margin-top: var(--space-m);
+  }
+
+  .form :global(iframe) {
+    border: 0;
+    display: block;
+  }
+
+  .form__note {
+    margin-top: var(--space-s);
+    max-width: var(--measure);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .notice {
+    margin-top: var(--space-m);
+    padding: var(--space-s);
+    background-color: var(--color-surface);
+    border-left: var(--rule-thick) solid var(--color-accent);
+  }
+
+  .notice__text {
+    max-width: var(--measure);
+    font-size: var(--step-0);
+    line-height: 1.7;
+    margin-bottom: var(--space-xs);
+  }
+
+  .contributors {
+    margin-top: var(--space-m);
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .contributors__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-xs);
+    padding-bottom: var(--space-2xs);
+    border-bottom: var(--rule-hair) solid var(--color-line);
+  }
+
+  .contributors__name {
+    font-weight: 600;
+  }
+
+  .contributors__meta {
+    font-size: var(--step--1);
+    color: var(--color-muted);
+  }
+
+  .panel {
+    border-top: var(--rule-thin) solid var(--color-line);
+    padding-top: var(--space-xs);
+  }
+
+  .panel__value {
+    margin-top: var(--space-xs);
+  }
+
+  .panel__text {
+    margin-top: var(--space-xs);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .panel__list {
+    display: grid;
+    gap: var(--space-2xs);
+    margin-top: var(--space-xs);
+    font-size: var(--step--1);
+    color: var(--color-muted);
+  }
+</style>

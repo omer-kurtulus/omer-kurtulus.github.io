@@ -28,6 +28,7 @@ export const OPENING_TRACK: { url: string; label: string } | null = {
 
 export const NAV = [
   { label: 'Works', href: '/works' },
+  { label: 'Open Call', href: '/what-the-corpus' },
   { label: 'About', href: '/about' },
   { label: 'CV', href: '/cv' },
   { label: 'Writing', href: '/research' },
@@ -42,3 +43,21 @@ export const PROFILES = [
     url: 'https://drive.google.com/drive/folders/1TVLEtLhu0pgR1o5KFMcE_nSEQj_jGfAZ?usp=drive_link',
   },
 ] as const;
+
+/**
+ * Open call for the album "What the C*rp*s".
+ *
+ * `tallyFormId` is the id from the Tally form's share URL
+ * (tally.so/r/XXXXXX → 'XXXXXX'). While it is empty the page shows a
+ * "submissions open shortly" notice instead of a broken embed, so the page can
+ * ship before the form exists. `deadline` is free text and the panel hides
+ * when it is empty — leave it blank rather than inventing a date.
+ */
+export const OPEN_CALL = {
+  title: 'What the C*rp*s',
+  tallyFormId: '',
+  playlist: 'https://soundcloud.com/mer-kurtulu-399116903/sets/what-the-crps',
+  deadline: '',
+  contactEmail: SITE.email,
+  patcher: '/what-the-corpus/SomaxVocalMorph_V2.maxpat',
+} as const;
