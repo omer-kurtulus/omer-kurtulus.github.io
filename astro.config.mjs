@@ -3,9 +3,10 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
-// User site (omer-kurtulus.github.io) — served from the domain root, so no `base`.
+// Custom domain, served from the root. GitHub still hosts it; only the address
+// changed, so there is still no `base`.
 export default defineConfig({
-  site: 'https://omer-kurtulus.github.io',
+  site: 'https://omerkurtulus.com',
   trailingSlash: 'ignore',
   integrations: [
     mdx(),
