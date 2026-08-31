@@ -12,7 +12,7 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 
 <header class="site">
   <div class="shell">
-    <div class="site__inner">
+    <div class="site__top">
     {
       /* The name is the page's h1 on the home page and a link everywhere else,
          so every page carries the same masthead without claiming two h1s. */
@@ -30,6 +30,7 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
     }
 
     <p class="tagline">{SITE.tagline}</p>
+    </div>
 
     <nav class="tabs" aria-label="Primary">
       {
@@ -40,7 +41,6 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
         ))
       }
     </nav>
-    </div>
   </div>
 </header>
 
@@ -51,10 +51,21 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
   .site {
     padding-top: var(--space-m);
     margin-bottom: var(--space-m);
+    border-bottom: var(--rule-thick) solid var(--color-text);
   }
 
-  .site__inner {
-    border-bottom: var(--rule-thick) solid var(--color-text);
+  /* Name and tagline sit across the page, the tabs on the rule under them. */
+  .site__top {
+    display: grid;
+    gap: var(--space-2xs) var(--grid-gap);
+    align-items: end;
+    margin-bottom: var(--space-s);
+  }
+
+  @media (min-width: 56rem) {
+    .site__top {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    }
   }
 
   .site__h1 {
@@ -66,7 +77,7 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 
   .brand {
     display: block;
-    font-size: var(--step-3);
+    font-size: var(--step-4);
     font-weight: 700;
     letter-spacing: -0.035em;
     line-height: 1.05;
@@ -74,11 +85,17 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
   }
 
   .tagline {
-    margin: 0 0 var(--space-s);
-    max-width: 40rem;
+    margin: 0;
+    max-width: 48ch;
     color: var(--color-muted);
     font-size: var(--step--1);
     line-height: 1.5;
+  }
+
+  @media (min-width: 56rem) {
+    .tagline {
+      padding-bottom: 0.5em;
+    }
   }
 
   .tabs {

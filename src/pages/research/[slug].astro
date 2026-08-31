@@ -93,13 +93,24 @@ const jsonLd = {
 
 <style>
   .usage-note {
+    max-width: 62ch;
     margin-bottom: var(--space-m);
     letter-spacing: 0;
     text-transform: none;
   }
 
   .body {
-    padding-block: var(--space-m) var(--space-l);
+    row-gap: var(--space-l);
+    padding-block: var(--space-l);
+  }
+
+  @media (min-width: 56rem) {
+    .body__main {
+      grid-column: 1 / 8;
+    }
+    .body__aside {
+      grid-column: 9 / -1;
+    }
   }
 
   .body__main {

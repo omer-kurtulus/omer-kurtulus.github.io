@@ -12,9 +12,11 @@ const label = [eyebrow, index].filter(Boolean).join(' · ');
 ---
 
 <header class="page-head">
-  <div class="shell">
-    {label && <p class="eyebrow page-head__label">{label}</p>}
-    <h1 class="title-l">{title}</h1>
+  <div class="shell page-head__inner">
+    <div class="page-head__title">
+      {label && <p class="eyebrow page-head__label">{label}</p>}
+      <h1 class="title-l">{title}</h1>
+    </div>
     {lead && <p class="page-head__lead">{lead}</p>}
   </div>
 </header>
@@ -31,8 +33,22 @@ const label = [eyebrow, index].filter(Boolean).join(' · ');
     margin-bottom: var(--space-2xs);
   }
 
+  @media (min-width: 56rem) {
+    .page-head__inner {
+      display: grid;
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      column-gap: var(--grid-gap);
+      align-items: end;
+    }
+
+    .page-head__lead {
+      margin-top: 0;
+      padding-bottom: 0.4em;
+    }
+  }
+
   .page-head__lead {
-    max-width: 40rem;
+    max-width: 52ch;
     margin-top: var(--space-s);
     font-size: var(--step-1);
     line-height: 1.5;

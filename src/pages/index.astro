@@ -39,14 +39,18 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
   {
     CURRENT && (
       <section class="section--tight shell current" aria-labelledby="current-heading">
-        <a class="note current__link" href={CURRENT.href}>
-          <span class="eyebrow">{CURRENT.eyebrow}</span>
-          <span id="current-heading" class="current__title title-m">
-            {CURRENT.title}
+        <a class="current__link" href={CURRENT.href}>
+          <span class="current__main">
+            <span class="eyebrow">{CURRENT.eyebrow}</span>
+            <span id="current-heading" class="current__title title-l">
+              {CURRENT.title}
+            </span>
+            <span class="current__blurb">{CURRENT.blurb}</span>
           </span>
-          <span class="current__blurb">{CURRENT.blurb}</span>
-          <span class="current__until">{CURRENT.until}</span>
-          <span class="current__cta">{CURRENT.cta} →</span>
+          <span class="current__aside">
+            <span class="current__until">{CURRENT.until}</span>
+            <span class="current__cta">{CURRENT.cta} →</span>
+          </span>
         </a>
       </section>
     )
@@ -129,6 +133,7 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
   }
 
   .head__note {
+    max-width: 62ch;
     margin-top: var(--space-2xs);
     margin-bottom: var(--space-s);
   }
@@ -142,8 +147,16 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
     border-bottom: var(--rule-thin) solid var(--color-line);
   }
 
-  /* Three fields, three rules, one under the other. At this measure they are
-     a list, not a set of cards. */
+  /* Three fields, three rules, side by side once there is room. */
+  @media (min-width: 48rem) {
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--grid-gap);
+      border-bottom: 0;
+    }
+  }
+
   .field {
     border-top: var(--rule-thin) solid var(--color-line);
   }
@@ -158,6 +171,7 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
 
   .field__link {
     display: block;
+    height: 100%;
     padding-block: var(--space-s);
     transition: background-color 100ms linear;
   }
@@ -192,10 +206,25 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
   /* The open call is the one thing on this page a visitor can act on today,
      so it gets the language's loudest element: the two-pixel box. */
   .current__link {
-    display: block;
+    display: grid;
+    gap: var(--space-m) var(--grid-gap);
     border: var(--rule-thick) solid var(--color-text);
-    padding: var(--space-s);
+    padding: var(--space-m);
     transition: background-color 100ms linear;
+  }
+
+  /* The call takes the whole width, so it is set as two fields: what it is
+     on the left, when it closes and how to act on the right. */
+  @media (min-width: 56rem) {
+    .current__link {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+      align-items: end;
+    }
+
+    .current__aside {
+      justify-self: end;
+      text-align: right;
+    }
   }
 
   .current__link:hover {
@@ -210,21 +239,25 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
 
   .current__blurb {
     display: block;
+    max-width: 68ch;
     font-size: var(--step--1);
     line-height: 1.55;
     color: var(--color-muted);
   }
 
+  .current__aside {
+    display: block;
+  }
+
   .current__until {
     display: block;
-    margin-top: var(--space-xs);
     font-size: var(--step--1);
     color: var(--color-muted);
   }
 
   .current__cta {
     display: inline-block;
-    margin-top: var(--space-s);
+    margin-top: var(--space-xs);
     font-size: var(--step--2);
     font-weight: 700;
     letter-spacing: 0.16em;

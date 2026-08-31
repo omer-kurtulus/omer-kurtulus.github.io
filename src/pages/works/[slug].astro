@@ -346,6 +346,7 @@ const jsonLd = {
   }
 
   .work-head__lead {
+    max-width: 52ch;
     margin-top: var(--space-s);
     font-size: var(--step-1);
     line-height: 1.5;
@@ -394,6 +395,18 @@ const jsonLd = {
     margin-top: var(--space-m);
   }
 
+  @media (min-width: 56rem) {
+    .work-head {
+      padding-top: var(--space-l);
+    }
+    .work-head__title {
+      grid-column: 1 / 8;
+    }
+    .specs {
+      grid-column: 9 / -1;
+    }
+  }
+
 
 
   .players {
@@ -402,7 +415,17 @@ const jsonLd = {
   }
 
   .body {
-    padding-block: var(--space-m) var(--space-l);
+    row-gap: var(--space-xl);
+    padding-block: var(--space-l);
+  }
+
+  @media (min-width: 56rem) {
+    .body__main {
+      grid-column: 1 / 8;
+    }
+    .body__aside {
+      grid-column: 9 / -1;
+    }
   }
 
   .body__main {
@@ -418,8 +441,6 @@ const jsonLd = {
 
 
 
-  /* The aside is under the text now rather than beside it, so each panel
-     has to announce itself: a black hairline and a tracked-out label. */
   .panel {
     border-top: var(--rule-medium) solid var(--color-text);
     padding-top: var(--space-xs);

@@ -64,7 +64,7 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'l
   .note__link {
     display: grid;
     grid-template-columns: 2.25rem minmax(0, 1fr);
-    column-gap: var(--space-xs);
+    column-gap: var(--grid-gap);
     row-gap: var(--space-2xs);
     padding-block: var(--space-s);
     transition: background-color 120ms linear;
@@ -84,6 +84,7 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'l
 
   .note__summary {
     display: block;
+    max-width: 62ch;
     margin-top: var(--space-2xs);
     font-size: var(--step--1);
     line-height: 1.5;
@@ -101,7 +102,20 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'l
   }
 
   .usage-note {
+    max-width: 62ch;
     text-transform: none;
     letter-spacing: 0;
+  }
+
+  @media (min-width: 56rem) {
+    .note__link {
+      grid-template-columns: 4rem minmax(0, 7fr) minmax(0, 4fr);
+    }
+
+    .note__date {
+      grid-column: 3;
+      margin-top: 0;
+      padding-top: 0.5em;
+    }
   }
 </style>

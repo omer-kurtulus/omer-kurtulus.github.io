@@ -23,7 +23,8 @@ const { Content } = await render(entry);
 
 <style>
   .body {
-    padding-block: var(--space-m) var(--space-l);
+    row-gap: var(--space-m);
+    padding-block: var(--space-l);
   }
 
   .body__main {
@@ -31,5 +32,10 @@ const { Content } = await render(entry);
   }
 
   /* The red bar that used to sit opposite this text is gone with the
-     accent; the masthead rule is the only mark the page needs. */
+     accent; the column it sat in is given back to the text. */
+  @media (min-width: 56rem) {
+    .body__main {
+      grid-column: 2 / 10;
+    }
+  }
 </style>

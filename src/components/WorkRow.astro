@@ -78,9 +78,8 @@ const facts = [
 </article>
 
 <style>
-  /* One column now, so a row is a number, a block of text and a line of
-     metadata under it. The three-field desktop grid the old layout used
-     needed twelve columns to sit in and no longer has them. */
+  /* Number, work, metadata — three fields across the page from the medium
+     breakpoint, stacked below it. */
   .row {
     border-top: var(--rule-thin) solid var(--color-line);
   }
@@ -104,7 +103,7 @@ const facts = [
   .row__link {
     display: grid;
     grid-template-columns: 2.25rem minmax(0, 1fr);
-    column-gap: var(--space-xs);
+    column-gap: var(--grid-gap);
     row-gap: var(--space-2xs);
     padding-block: var(--space-s);
     transition: background-color 100ms linear;
@@ -173,6 +172,7 @@ const facts = [
 
   .row__description {
     display: block;
+    max-width: 62ch;
     margin-top: var(--space-2xs);
     font-size: var(--step--1);
     line-height: 1.5;
@@ -206,5 +206,34 @@ const facts = [
 
   .row__fact + .row__fact::before {
     content: '';
+  }
+
+  @media (min-width: 56rem) {
+    .row__link {
+      grid-template-columns: 4rem minmax(0, 7fr) minmax(0, 4fr);
+      align-items: start;
+    }
+
+    /* Beside the work rather than under it, so the hairline that separated
+       them in one column is no longer doing any work. */
+    .row__aside {
+      grid-column: 3;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 0;
+      padding-top: 0.5em;
+      border-top: 0;
+    }
+
+    .row--compact .row__aside {
+      flex-direction: row;
+      align-items: baseline;
+      padding-top: 0.35em;
+    }
+
+    .row__facts {
+      flex-direction: column;
+      gap: var(--space-2xs);
+    }
   }
 </style>
