@@ -2,82 +2,41 @@
 interface Props {
   title: string;
   lead?: string;
-  /** Small catalogue figure shown opposite the title. */
+  /** Small catalogue figure shown above the title. */
   index?: string;
   eyebrow?: string;
 }
 
 const { title, lead, index, eyebrow } = Astro.props;
+const label = [eyebrow, index].filter(Boolean).join(' · ');
 ---
 
-<header class="masthead-page">
+<header class="page-head">
   <div class="shell">
-    <div class="masthead-page__grid grid">
-      <div class="masthead-page__title">
-        {eyebrow && <p class="eyebrow masthead-page__eyebrow">{eyebrow}</p>}
-        <h1 class="title-l">{title}</h1>
-      </div>
-
-      {
-        (lead || index) && (
-          <div class="masthead-page__aside">
-            {index && <p class="index masthead-page__index">{index}</p>}
-            {lead && <p class="masthead-page__lead">{lead}</p>}
-          </div>
-        )
-      }
-    </div>
-    <hr class="rule rule--thick masthead-page__rule" />
+    {label && <p class="eyebrow page-head__label">{label}</p>}
+    <h1 class="title-l">{title}</h1>
+    {lead && <p class="page-head__lead">{lead}</p>}
   </div>
 </header>
 
 <style>
-  .masthead-page {
-    padding-top: var(--space-l);
+  /* No rule of its own: the masthead bar is directly above, and a second
+     black line four lines below it would read as a mistake. */
+  .page-head {
+    padding-top: var(--space-s);
+    padding-bottom: var(--space-s);
   }
 
-  .masthead-page__grid {
-    row-gap: var(--space-s);
-    align-items: end;
-  }
-
-  .masthead-page__title {
-    grid-column: 1 / -1;
-  }
-
-  .masthead-page__eyebrow {
-    margin-bottom: var(--space-xs);
-  }
-
-  .masthead-page__aside {
-    grid-column: 1 / -1;
-    max-width: 50ch;
-  }
-
-  .masthead-page__index {
+  .page-head__label {
     margin-bottom: var(--space-2xs);
   }
 
-  .masthead-page__lead {
-    font-size: var(--step--1);
-    line-height: 1.55;
+  .page-head__lead {
+    max-width: 40rem;
+    margin-top: var(--space-s);
+    font-size: var(--step-1);
+    line-height: 1.5;
+    letter-spacing: -0.015em;
     color: var(--color-muted);
-  }
-
-  .masthead-page__rule {
-    margin-top: var(--space-m);
-  }
-
-  @media (min-width: 56rem) {
-    .masthead-page {
-      padding-top: var(--space-xl);
-    }
-    .masthead-page__title {
-      grid-column: 1 / 9;
-    }
-    .masthead-page__aside {
-      grid-column: 9 / -1;
-      padding-bottom: 0.4em;
-    }
   }
 </style>

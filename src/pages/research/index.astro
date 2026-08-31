@@ -50,7 +50,6 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'l
 
 <style>
   .usage-note {
-    max-width: 52ch;
     margin-bottom: var(--space-m);
   }
 
@@ -59,13 +58,13 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'l
   }
 
   .note {
-    border-top: var(--rule-medium) solid var(--color-line);
+    border-top: var(--rule-thin) solid var(--color-line);
   }
 
   .note__link {
     display: grid;
-    grid-template-columns: 2.5rem minmax(0, 1fr);
-    column-gap: var(--grid-gap);
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    column-gap: var(--space-xs);
     row-gap: var(--space-2xs);
     padding-block: var(--space-s);
     transition: background-color 120ms linear;
@@ -76,16 +75,15 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'l
   }
 
   .note__index {
-    padding-top: 0.35em;
+    padding-top: 0.5em;
   }
 
   .note__link:hover .note__index {
-    color: var(--color-accent);
+    color: var(--color-text);
   }
 
   .note__summary {
     display: block;
-    max-width: 52ch;
     margin-top: var(--space-2xs);
     font-size: var(--step--1);
     line-height: 1.5;
@@ -94,6 +92,7 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'l
 
   .note__date {
     grid-column: 2;
+    margin-top: var(--space-2xs);
   }
 
   .empty {
@@ -101,13 +100,8 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'l
     color: var(--color-muted);
   }
 
-  @media (min-width: 56rem) {
-    .note__link {
-      grid-template-columns: 4rem minmax(0, 7fr) minmax(0, 4fr);
-    }
-    .note__date {
-      grid-column: 3;
-      padding-top: 0.5em;
-    }
+  .usage-note {
+    text-transform: none;
+    letter-spacing: 0;
   }
 </style>

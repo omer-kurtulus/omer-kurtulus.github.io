@@ -93,13 +93,13 @@ const jsonLd = {
 
 <style>
   .usage-note {
-    max-width: 52ch;
     margin-bottom: var(--space-m);
+    letter-spacing: 0;
+    text-transform: none;
   }
 
   .body {
-    row-gap: var(--space-l);
-    padding-block: var(--space-l);
+    padding-block: var(--space-m) var(--space-l);
   }
 
   .body__main {
@@ -113,17 +113,8 @@ const jsonLd = {
     align-content: start;
   }
 
-  @media (min-width: 56rem) {
-    .body__main {
-      grid-column: 1 / 8;
-    }
-    .body__aside {
-      grid-column: 9 / -1;
-    }
-  }
-
   .panel {
-    border-top: var(--rule-thin) solid var(--color-line);
+    border-top: var(--rule-medium) solid var(--color-text);
     padding-top: var(--space-xs);
   }
 

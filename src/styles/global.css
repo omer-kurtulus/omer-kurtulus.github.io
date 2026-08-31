@@ -1,19 +1,9 @@
 /* --------------------------------------------------------------------------
    1. Typeface — Space Grotesk variable (OFL 1.1), self-hosted.
 
-   Previously the site was set entirely in a monospace, which let the catalogue
-   column itself: every glyph reserved the same advance, so years and durations
-   fell into line without asking. Space Grotesk is proportional, so that
-   alignment is now stated rather than inherited — `tabular-nums` wherever
-   figures have to stack.
-
-   What it gives back is a voice. A grotesque with odd, deliberate details in
-   the a, g and y, it is the face this corner of electronic and experimental
-   music actually uses, and it says something a neutral mono did not.
-
-   Variable across 300-700 with no italic, so hierarchy is weight, size, case,
-   tracking and space. Proportional glyphs run narrower than mono, so measures
-   in `ch` hold more characters and the display steps climb back up.
+   The same face the open call is set in, and now the same treatment: one
+   family, no italic, hierarchy carried entirely by weight, size, case,
+   tracking and space. Figures are held tabular by hand wherever they stack.
    -------------------------------------------------------------------------- */
 
 @font-face {
@@ -39,34 +29,38 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. Tokens
+   2. Tokens — the open call's black and white, extended to a catalogue.
+
+   The paper palette and its single red accent are gone. Nothing on the site
+   is coloured now: emphasis is black, recession is grey, and the only
+   remaining signals are rule weight, case and space. Dark mode is a straight
+   inversion rather than a second palette.
    -------------------------------------------------------------------------- */
 
 :root {
-  /* Palette — matte, paper-like. Accent is the only chromatic note. */
-  --color-background: #f1efe8;
-  --color-surface: #e4e1d8;
-  --color-text: #171716;
-  --color-muted: #6d6b65;
-  --color-line: #b8b4aa;
-  --color-accent: #873b32;
+  --color-background: #ffffff;
+  --color-surface: #f4f4f2;
+  --color-text: #000000;
+  --color-muted: #565656;
+  --color-line: #cfcfcf;
+  /* Kept as a token so no rule has to be hunted down, but it is no longer a
+     colour — it resolves to the text black. */
+  --color-accent: #000000;
 
-  /* One family for everything. The fallback is a system grotesque so a failed
-     load degrades into similar proportions rather than into a monospace. */
   --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Helvetica, Arial, sans-serif;
 
-  /* Modular scale, fluid between 22.5rem and 90rem viewports */
-  --step--2: clamp(0.64rem, 0.62rem + 0.09vw, 0.7rem);
-  --step--1: clamp(0.76rem, 0.72rem + 0.16vw, 0.86rem);
-  --step-0: clamp(0.94rem, 0.9rem + 0.2vw, 1.06rem);
-  --step-1: clamp(1.16rem, 1.08rem + 0.38vw, 1.4rem);
-  --step-2: clamp(1.44rem, 1.28rem + 0.72vw, 1.9rem);
-  --step-3: clamp(1.78rem, 1.5rem + 1.28vw, 2.6rem);
-  /* Proportional glyphs are narrower than the mono these were set for, so the
-     display steps climb back up without the wordmark overrunning the line. */
-  --step-4: clamp(2.15rem, 1.55rem + 2.9vw, 4rem);
-  --step-5: clamp(2.7rem, 1.7rem + 4.8vw, 6.2rem);
+  /* Space Grotesk has a tall x-height, so the same nominal size reads larger
+     than a system sans; the scale is set for it. Fixed rather than fluid —
+     a 43rem column does not need the text to breathe with the viewport. */
+  --step--2: 0.7rem;
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.75rem, 1.3rem + 2vw, 2.4rem);
+  --step-4: clamp(1.75rem, 1.3rem + 2vw, 2.4rem);
+  --step-5: clamp(2rem, 1.5rem + 2.4vw, 3rem);
 
   /* 8px base unit — every vertical measure is a multiple */
   --u: 0.5rem;
@@ -75,44 +69,39 @@
   --space-s: calc(var(--u) * 3);
   --space-m: calc(var(--u) * 5);
   --space-l: calc(var(--u) * 8);
-  /* The two largest steps scale with the viewport: 104px of air between
-     sections reads as composition on a desktop and as a dead zone on a phone. */
-  --space-xl: clamp(3.5rem, 8vw, 6.5rem);
-  --space-2xl: clamp(5rem, 13vw, 10.5rem);
+  --space-xl: clamp(2.75rem, 7vw, 4.5rem);
+  --space-2xl: clamp(3.5rem, 9vw, 6rem);
 
-  /* Grid */
-  --grid-columns: 12;
-  --grid-gap: clamp(1rem, 2.2vw, 2rem);
-  --page-margin: clamp(1.25rem, 5vw, 5.5rem);
-  /* Proportional: the same physical measure now carries more characters, and
-     66 lands in the readable 60-75 band. */
-  --measure: 66ch;
+  /* One column, the width of the open call's. Every page is set in it. */
+  --grid-gap: clamp(1rem, 2.2vw, 1.5rem);
+  --page-margin: 1.25rem;
+  --measure: 43rem;
 
-  /* Rules — category weight is carried by line thickness, not colour */
-  --rule-hair: 0.5px;
+  /* Three weights only: a grey hairline, a black hairline, a black bar. */
+  --rule-hair: 1px;
   --rule-thin: 1px;
-  --rule-medium: 1.5px;
-  --rule-thick: 2.5px;
+  --rule-medium: 1px;
+  --rule-thick: 2px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --color-background: #131312;
-    --color-surface: #1e1e1c;
-    --color-text: #eceadf;
-    --color-muted: #928e84;
-    --color-line: #3b3a36;
-    --color-accent: #b05548;
+    --color-background: #000000;
+    --color-surface: #121212;
+    --color-text: #ffffff;
+    --color-muted: #9a9a9a;
+    --color-line: #333333;
+    --color-accent: #ffffff;
   }
 }
 
 :root[data-theme='dark'] {
-  --color-background: #131312;
-  --color-surface: #1e1e1c;
-  --color-text: #eceadf;
-  --color-muted: #928e84;
-  --color-line: #3b3a36;
-  --color-accent: #b05548;
+  --color-background: #000000;
+  --color-surface: #121212;
+  --color-text: #ffffff;
+  --color-muted: #9a9a9a;
+  --color-line: #333333;
+  --color-accent: #ffffff;
 }
 
 /* --------------------------------------------------------------------------
@@ -148,15 +137,14 @@ html {
 
 body {
   min-height: 100vh;
-  /* Long URLs and technical strings must never widen the page. */
   overflow-wrap: break-word;
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: var(--step-0);
   font-weight: 400;
-  line-height: 1.65;
-  /* Real weights exist across 100-800; never let the browser fake one. */
+  line-height: 1.58;
+  letter-spacing: -0.006em;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -190,17 +178,21 @@ button {
 }
 
 :focus-visible {
-  outline: var(--rule-medium) solid var(--color-accent);
-  outline-offset: 3px;
+  outline: var(--rule-thick) solid var(--color-text);
+  outline-offset: 2px;
 }
 
 ::selection {
-  background: var(--color-accent);
+  background: var(--color-text);
   color: var(--color-background);
 }
 
 /* --------------------------------------------------------------------------
    4. Layout primitives
+
+   The 12-column field is gone. Everything is one measured column, so `.grid`
+   survives only as a flow container: the span utilities scattered through the
+   pages become inert rather than having to be deleted one by one.
    -------------------------------------------------------------------------- */
 
 .page {
@@ -211,16 +203,17 @@ button {
 
 .shell {
   width: 100%;
-  max-width: 96rem;
+  max-width: var(--measure);
   margin-inline: auto;
   padding-inline: var(--page-margin);
 }
 
-/* The 12-column field. Children opt into spans via .col-* utilities. */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
-  column-gap: var(--grid-gap);
+  display: block;
+}
+
+.grid > * + * {
+  margin-top: var(--space-m);
 }
 
 .skip-link {
@@ -240,10 +233,12 @@ button {
 
 /* --------------------------------------------------------------------------
    5. Typographic roles
+
+   A grotesque display face wants negative tracking and sentence case. The
+   uppercase display type of the old site is gone; capitals are kept for the
+   micro labels, where they do actual work.
    -------------------------------------------------------------------------- */
 
-/* Titles like ARUNDO_TRACHEA have no natural break, so every display role
-   is allowed to break inside a word rather than push the page sideways. */
 .display,
 .title-l,
 .title-m {
@@ -251,95 +246,101 @@ button {
   text-wrap: balance;
 }
 
-/* A grotesque already sets tight; it needs far less negative tracking than the
-   mono did, and overdoing it here closes the counters. */
 .display {
   font-size: var(--step-5);
   font-weight: 700;
-  line-height: 0.94;
+  line-height: 1.02;
   letter-spacing: -0.038em;
-  text-transform: uppercase;
 }
 
 .title-l {
-  font-size: var(--step-4);
+  font-size: var(--step-3);
   font-weight: 700;
-  line-height: 1.03;
-  letter-spacing: -0.032em;
-  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
 }
 
 .title-m {
   font-size: var(--step-2);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.022em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
 }
 
-/* Section headers — the catalogue voice. */
+/* The micro label: nav tabs, section heads, field names, catalogue figures.
+   One treatment, used everywhere a word is acting as a label. */
 .eyebrow {
   font-size: var(--step--2);
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-muted);
 }
 
-/* Metadata: instrumentation, durations, years, technology. Uppercase in a
-   proportional face needs real tracking to stop the letters colliding.
-   Figures here sit in columns, so they are held tabular by hand. */
 .meta {
   font-size: var(--step--1);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-muted);
   line-height: 1.5;
 }
 
+/* Prose wearing the metadata class — sentence case, no tracking. */
 .meta--tight {
   letter-spacing: 0;
   text-transform: none;
 }
 
-/* Catalogue numbers. A proportional face has to be told. */
 .index {
-  font-size: var(--step--1);
-  font-weight: 500;
+  font-size: var(--step--2);
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.1em;
   color: var(--color-muted);
 }
 
 .prose {
-  max-width: var(--measure);
+  max-width: none;
   font-size: var(--step-0);
-  line-height: 1.7;
+  line-height: 1.58;
 }
 
 .prose > * + * {
   margin-top: var(--space-s);
 }
 
-/* With one weight available, a heading is marked by the rule above it and the
-   space around it rather than by getting darker. */
 .prose h2 {
   margin-top: var(--space-l);
   padding-top: var(--space-s);
   border-top: var(--rule-thin) solid var(--color-line);
-  font-size: var(--step-1);
+  font-size: var(--step-2);
   font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.03em;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
 }
 
 .prose h3 {
   margin-top: var(--space-m);
-  font-size: var(--step-0);
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-size: var(--step--2);
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li {
+  margin-bottom: 0.45rem;
 }
 
 .prose a {
@@ -347,11 +348,11 @@ button {
   text-decoration-thickness: var(--rule-thin);
   text-underline-offset: 0.22em;
   text-decoration-color: var(--color-line);
-  transition: text-decoration-color 120ms linear;
+  transition: text-decoration-color 100ms linear;
 }
 
 .prose a:hover {
-  text-decoration-color: var(--color-accent);
+  text-decoration-color: var(--color-text);
 }
 
 .prose em {
@@ -363,9 +364,18 @@ button {
 }
 
 .prose blockquote {
-  padding-left: var(--space-s);
-  border-left: var(--rule-thick) solid var(--color-line);
-  color: var(--color-muted);
+  padding: var(--space-s) var(--space-s);
+  border-left: 3px solid var(--color-text);
+  background: var(--color-surface);
+  font-size: var(--step--1);
+  line-height: 1.55;
+}
+
+.prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  background: var(--color-surface);
+  padding: 0.1em 0.32em;
 }
 
 .prose hr {
@@ -375,7 +385,7 @@ button {
 }
 
 .accent {
-  color: var(--color-accent);
+  color: var(--color-text);
 }
 
 .muted {
@@ -394,9 +404,13 @@ button {
 .rule--hair {
   border-top-width: var(--rule-hair);
 }
+
+/* The middle weight is a black hairline, not a thicker grey one. */
 .rule--medium {
   border-top-width: var(--rule-medium);
+  border-top-color: var(--color-text);
 }
+
 .rule--thick {
   border-top-width: var(--rule-thick);
   border-top-color: var(--color-text);
@@ -408,7 +422,7 @@ button {
   flex: none;
   width: var(--space-xs);
   height: var(--space-xs);
-  border: var(--rule-medium) solid currentColor;
+  border: var(--rule-thick) solid currentColor;
 }
 
 .mark--ai {
@@ -422,7 +436,7 @@ button {
   transform: rotate(45deg);
 }
 .mark--acoustic {
-  height: var(--rule-medium);
+  height: var(--rule-thick);
   border: 0;
   background: currentColor;
   align-self: center;
@@ -434,23 +448,44 @@ button {
 
 .link {
   display: inline-block;
-  font-size: var(--step--1);
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-size: var(--step--2);
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  color: var(--color-muted);
   padding-bottom: 0.15em;
   border-bottom: var(--rule-thin) solid var(--color-line);
-  transition: border-color 120ms linear, color 120ms linear;
+  transition: border-color 100ms linear, color 100ms linear;
 }
 
 .link:hover {
-  color: var(--color-accent);
-  border-bottom-color: var(--color-accent);
+  color: var(--color-text);
+  border-bottom-color: var(--color-text);
 }
 
 .link--strong {
-  border-bottom-width: var(--rule-medium);
+  color: var(--color-text);
+  border-bottom-width: var(--rule-thick);
   border-bottom-color: var(--color-text);
+}
+
+/* The one filled element in the language: a black box that inverts on hover. */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.4rem;
+  border: var(--rule-thick) solid var(--color-text);
+  background: var(--color-text);
+  color: var(--color-background);
+  font: inherit;
+  font-weight: 700;
+  font-size: var(--step--1);
+  letter-spacing: -0.01em;
+  transition: background 100ms linear, color 100ms linear;
+}
+
+.btn:hover {
+  background: var(--color-background);
+  color: var(--color-text);
 }
 
 /* --------------------------------------------------------------------------
@@ -473,11 +508,11 @@ button {
 }
 
 .section {
-  padding-block: var(--space-xl);
+  padding-block: var(--space-l);
 }
 
 .section--tight {
-  padding-block: var(--space-l);
+  padding-block: var(--space-m);
 }
 
 .scroll-x {

@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkRow from '../components/WorkRow.astro';
 import { CATEGORY_META } from '../content.config';
-import { CURRENT, SITE } from '../config';
+import { CURRENT } from '../config';
 import {
   byCategory,
   categoryCounts,
@@ -33,47 +33,26 @@ const shownAbove = new Set([...recentIds, ...featured.map((w) => w.id)]);
 const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w.id));
 ---
 
+{/* The name and the tagline are in the masthead on every page now, this one
+    included, so the home page opens on the work rather than on a wordmark. */}
 <BaseLayout isHome jsonLd={undefined}>
-  <section class="hero">
-    <div class="shell">
-      <div class="hero__grid grid">
-        <h1 class="hero__name display">
-          Ömer<br />Kurtuluş
-        </h1>
-
-        <div class="hero__aside">
-          <p class="hero__role eyebrow">{SITE.role}</p>
-          <p class="hero__tagline">{SITE.tagline}</p>
-        </div>
-
-        <!-- Structural marks: they sit on the grid, they do not decorate it. -->
-        <div class="hero__marks" aria-hidden="true">
-          <span class="hero__bar"></span>
-          <span class="hero__dot"></span>
-        </div>
-      </div>
-    </div>
-  </section>
-
   {
     CURRENT && (
-      <section class="section shell current" aria-labelledby="current-heading">
-        <div class="head">
-          <h2 id="current-heading" class="eyebrow">
-            {CURRENT.eyebrow}
-          </h2>
-          <p class="head__count index">{CURRENT.until}</p>
-        </div>
-        <a class="current__link" href={CURRENT.href}>
-          <span class="current__title title-m">{CURRENT.title}</span>
+      <section class="section--tight shell current" aria-labelledby="current-heading">
+        <a class="note current__link" href={CURRENT.href}>
+          <span class="eyebrow">{CURRENT.eyebrow}</span>
+          <span id="current-heading" class="current__title title-m">
+            {CURRENT.title}
+          </span>
           <span class="current__blurb">{CURRENT.blurb}</span>
+          <span class="current__until">{CURRENT.until}</span>
           <span class="current__cta">{CURRENT.cta} →</span>
         </a>
       </section>
     )
   }
 
-  <section class="section shell" aria-labelledby="recent-heading">
+  <section class="section--tight shell" aria-labelledby="recent-heading">
     <div class="head">
       <h2 id="recent-heading" class="eyebrow">Recent</h2>
       <p class="head__count index">{published[0]?.data.year}</p>
@@ -85,10 +64,10 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
 
   {
     featured.length > 0 && (
-      <section class="section shell" aria-labelledby="featured-heading">
+      <section class="section--tight shell" aria-labelledby="featured-heading">
         <div class="head">
           <h2 id="featured-heading" class="eyebrow">
-            Featured Works
+            Featured works
           </h2>
           <a class="link" href="/works">
             All works →
@@ -103,8 +82,10 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
     )
   }
 
-  <section class="section shell" aria-labelledby="fields-heading">
-    <h2 id="fields-heading" class="eyebrow">Fields of work</h2>
+  <section class="section--tight shell" aria-labelledby="fields-heading">
+    <div class="head">
+      <h2 id="fields-heading" class="eyebrow">Fields of work</h2>
+    </div>
     <ul class="fields">
       {
         foreground.map(({ category, count }) => (
@@ -125,8 +106,8 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
     </ul>
   </section>
 
-  <section class="section shell" aria-labelledby="acoustic-heading">
-    <div class="head head--quiet">
+  <section class="section--tight shell" aria-labelledby="acoustic-heading">
+    <div class="head">
       <h2 id="acoustic-heading" class="eyebrow">Acoustic — archive</h2>
       <a class="link" href={categoryPath('acoustic')}>Open archive →</a>
     </div>
@@ -138,118 +119,31 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: var(--space-l);
-    padding-bottom: var(--space-s);
-  }
-
-  .hero__grid {
-    row-gap: var(--space-m);
-    align-items: end;
-  }
-
-  .hero__name {
-    grid-column: 1 / -1;
-    margin: 0;
-  }
-
-  .hero__aside {
-    grid-column: 1 / -1;
-    max-width: 42ch;
-  }
-
-  .hero__role {
-    margin-bottom: var(--space-xs);
-  }
-
-  .hero__tagline {
-    font-size: var(--step-0);
-    line-height: 1.5;
-    color: var(--color-muted);
-  }
-
-  .hero__marks {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-  }
-
-  .hero__bar {
-    flex: 1 1 auto;
-    height: var(--rule-thick);
-    background: var(--color-text);
-  }
-
-  .hero__dot {
-    flex: none;
-    width: var(--space-s);
-    height: var(--space-s);
-    border-radius: 50%;
-    background: var(--color-accent);
-  }
-
-  /* Asymmetry comes from column skips, not from offsets. */
-  @media (min-width: 56rem) {
-    .hero {
-      padding-top: var(--space-xl);
-    }
-
-    .hero__name {
-      grid-column: 1 / 9;
-    }
-
-    .hero__aside {
-      grid-column: 9 / -1;
-      padding-bottom: 0.4em;
-    }
-
-    .hero__marks {
-      grid-column: 1 / 9;
-    }
-  }
-
   .head {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: var(--space-xs) var(--space-m);
-    padding-bottom: var(--space-s);
-  }
-
-  .head--quiet {
-    border-bottom: var(--rule-hair) solid var(--color-line);
+    gap: var(--space-2xs) var(--space-s);
+    padding-bottom: var(--space-xs);
   }
 
   .head__note {
-    max-width: 52ch;
-    margin-top: var(--space-s);
+    margin-top: var(--space-2xs);
+    margin-bottom: var(--space-s);
   }
 
   .list {
+    border-bottom: var(--rule-thin) solid var(--color-line);
+  }
+
+  .fields {
     margin-top: var(--space-2xs);
     border-bottom: var(--rule-thin) solid var(--color-line);
   }
 
-  .list--quiet {
-    margin-top: var(--space-m);
-    border-bottom-width: var(--rule-hair);
-  }
-
-  .fields {
-    display: grid;
-    gap: var(--space-m);
-    margin-top: var(--space-m);
-  }
-
-  @media (min-width: 48rem) {
-    .fields {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--grid-gap);
-    }
-  }
-
+  /* Three fields, three rules, one under the other. At this measure they are
+     a list, not a set of cards. */
   .field {
     border-top: var(--rule-thin) solid var(--color-line);
   }
@@ -259,18 +153,13 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
     border-top-color: var(--color-text);
   }
   .field--electroacoustic {
-    border-top-width: var(--rule-medium);
-  }
-  .field--electronic {
-    border-top-width: var(--rule-thin);
+    border-top-color: var(--color-text);
   }
 
   .field__link {
     display: block;
-    height: 100%;
-    padding-top: var(--space-s);
-    padding-bottom: var(--space-s);
-    transition: background-color 120ms linear;
+    padding-block: var(--space-s);
+    transition: background-color 100ms linear;
   }
 
   .field__link:hover {
@@ -281,7 +170,7 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
     display: flex;
     align-items: center;
     gap: var(--space-2xs);
-    margin-bottom: var(--space-s);
+    margin-bottom: var(--space-2xs);
   }
 
   .field__count {
@@ -290,43 +179,46 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
 
   .field__label {
     display: block;
-    text-wrap: balance;
   }
 
   .field__blurb {
     display: block;
-    margin-top: var(--space-xs);
+    margin-top: var(--space-2xs);
     font-size: var(--step--1);
     line-height: 1.5;
     color: var(--color-muted);
   }
 
-  /* The open call is louder than a work row on purpose: it has a deadline and
-     it is the one thing on this page a visitor can act on today. It is still
-     not a nav entry — when the call closes, CURRENT goes to null and the block
-     leaves without a trace. */
+  /* The open call is the one thing on this page a visitor can act on today,
+     so it gets the language's loudest element: the two-pixel box. */
   .current__link {
     display: block;
-    border: var(--rule-medium) solid var(--color-line);
-    padding: var(--space-m);
-    transition: border-color 120ms linear, background-color 120ms linear;
+    border: var(--rule-thick) solid var(--color-text);
+    padding: var(--space-s);
+    transition: background-color 100ms linear;
   }
 
   .current__link:hover {
-    border-color: var(--color-accent);
     background-color: var(--color-surface);
   }
 
   .current__title {
     display: block;
+    margin-top: var(--space-2xs);
     margin-bottom: var(--space-xs);
   }
 
   .current__blurb {
     display: block;
-    max-width: 62ch;
     font-size: var(--step--1);
-    line-height: 1.6;
+    line-height: 1.55;
+    color: var(--color-muted);
+  }
+
+  .current__until {
+    display: block;
+    margin-top: var(--space-xs);
+    font-size: var(--step--1);
     color: var(--color-muted);
   }
 
@@ -337,13 +229,7 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--color-accent);
-  }
-
-  /* The date line is prose, not a catalogue figure, so it should not be
-     tracked out like one. */
-  .current .head__count {
-    letter-spacing: 0.04em;
-    text-transform: none;
+    border-bottom: var(--rule-thick) solid var(--color-text);
+    padding-bottom: 0.15em;
   }
 </style>

@@ -10,91 +10,103 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 ---
 
-<header class="masthead">
-  <div class="shell masthead__inner">
-    <a class="masthead__name" href="/" aria-current={path === '/' ? 'page' : undefined}>
-      {isHome ? <span class="visually-hidden">{SITE.name}</span> : SITE.name}
-    </a>
+<header class="site">
+  <div class="shell">
+    <div class="site__inner">
+    {
+      /* The name is the page's h1 on the home page and a link everywhere else,
+         so every page carries the same masthead without claiming two h1s. */
+      isHome ? (
+        <h1 class="site__h1">
+          <a class="brand" href="/">
+            {SITE.name}
+          </a>
+        </h1>
+      ) : (
+        <a class="brand" href="/" aria-current={path === '/' ? 'page' : undefined}>
+          {SITE.name}
+        </a>
+      )
+    }
 
-    <nav class="masthead__nav" aria-label="Primary">
-      <ul class="masthead__list">
-        {
-          NAV.map((item) => (
-            <li>
-              <a
-                class:list={['masthead__link', isActive(item.href) && 'is-active']}
-                href={item.href}
-                aria-current={isActive(item.href) ? 'page' : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+    <p class="tagline">{SITE.tagline}</p>
+
+    <nav class="tabs" aria-label="Primary">
+      {
+        NAV.map((item) => (
+          <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))
+      }
     </nav>
+    </div>
   </div>
 </header>
 
 <style>
-  .masthead {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background-color: var(--color-background);
-    border-bottom: var(--rule-thin) solid var(--color-line);
+  /* Two-pixel black bar under the masthead, the way the open call sets it.
+     Not sticky: the page is one column and the nav is four lines from the top
+     of every screen anyway. */
+  .site {
+    padding-top: var(--space-m);
+    margin-bottom: var(--space-m);
   }
 
-  .masthead__inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-xs) var(--space-m);
-    padding-block: var(--space-xs);
+  .site__inner {
+    border-bottom: var(--rule-thick) solid var(--color-text);
   }
 
-  .masthead__name {
-    flex: none;
-    font-size: var(--step--1);
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+  .site__h1 {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
   }
 
-  /* Without min-width:0 the nav refuses to shrink and pushes the page
-     wider than the viewport on narrow screens. */
-  .masthead__nav {
-    min-width: 0;
-  }
-
-  .masthead__list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2xs) var(--space-s);
-    margin: 0;
-  }
-
-  .masthead__link {
+  .brand {
     display: block;
-    padding-block: 0.2em;
-    font-size: var(--step--2);
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
+    font-size: var(--step-3);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    margin-bottom: var(--space-2xs);
+  }
+
+  .tagline {
+    margin: 0 0 var(--space-s);
+    max-width: 40rem;
     color: var(--color-muted);
-    border-bottom: var(--rule-medium) solid transparent;
-    transition: color 120ms linear, border-color 120ms linear;
+    font-size: var(--step--1);
+    line-height: 1.5;
   }
 
-  .masthead__link:hover {
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-s);
+  }
+
+  .tabs a {
+    display: block;
+    padding: 0.55rem 0;
+    color: var(--color-muted);
+    font-size: var(--step--2);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    border-bottom: 3px solid transparent;
+    /* Sits the active underline on the masthead bar rather than above it. */
+    margin-bottom: calc(var(--rule-thick) * -1);
+    transition: color 100ms linear;
+  }
+
+  .tabs a:hover {
     color: var(--color-text);
-    border-bottom-color: var(--color-line);
   }
 
-  /* Accent appears here and almost nowhere else. */
-  .masthead__link.is-active {
-    color: var(--color-accent);
-    border-bottom-color: var(--color-accent);
+  .tabs a[aria-current='page'] {
+    color: var(--color-text);
+    border-bottom-color: var(--color-text);
   }
 </style>

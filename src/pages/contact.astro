@@ -53,8 +53,7 @@ const { Content } = await render(entry);
 
 <style>
   .body {
-    row-gap: var(--space-l);
-    padding-block: var(--space-l) var(--space-2xl);
+    padding-block: var(--space-m) var(--space-l);
   }
 
   .body__main {
@@ -68,14 +67,7 @@ const { Content } = await render(entry);
     align-content: start;
   }
 
-  @media (min-width: 56rem) {
-    .body__main {
-      grid-column: 1 / 7;
-    }
-    .body__aside {
-      grid-column: 9 / -1;
-    }
-  }
+
 
   .panel {
     border-top: var(--rule-thin) solid var(--color-line);

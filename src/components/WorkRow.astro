@@ -78,32 +78,36 @@ const facts = [
 </article>
 
 <style>
+  /* One column now, so a row is a number, a block of text and a line of
+     metadata under it. The three-field desktop grid the old layout used
+     needed twelve columns to sit in and no longer has them. */
   .row {
     border-top: var(--rule-thin) solid var(--color-line);
   }
 
-  /* Category is signalled by rule weight, never by colour. */
+  /* Category is still signalled by the rule, but the range is the open
+     call's: a grey hairline, a black hairline, a black bar. */
   .row--cat-ai {
     border-top-width: var(--rule-thick);
     border-top-color: var(--color-text);
   }
   .row--cat-electroacoustic {
-    border-top-width: var(--rule-medium);
+    border-top-color: var(--color-text);
   }
   .row--cat-electronic {
-    border-top-width: var(--rule-thin);
+    border-top-color: var(--color-line);
   }
   .row--cat-acoustic {
-    border-top-width: var(--rule-hair);
+    border-top-color: var(--color-line);
   }
 
   .row__link {
     display: grid;
-    grid-template-columns: 2.5rem minmax(0, 1fr);
-    column-gap: var(--grid-gap);
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    column-gap: var(--space-xs);
     row-gap: var(--space-2xs);
     padding-block: var(--space-s);
-    transition: background-color 120ms linear;
+    transition: background-color 100ms linear;
   }
 
   .row--large .row__link {
@@ -118,12 +122,11 @@ const facts = [
   }
 
   .row__index {
-    padding-top: 0.35em;
-    color: var(--color-muted);
+    padding-top: 0.5em;
   }
 
   .row__link:hover .row__index {
-    color: var(--color-accent);
+    color: var(--color-text);
   }
 
   .row__body {
@@ -155,7 +158,6 @@ const facts = [
 
   .row__part {
     font-variant-numeric: tabular-nums;
-    color: var(--color-accent);
   }
 
   .row__title {
@@ -166,26 +168,34 @@ const facts = [
   .row--compact .row__title {
     font-size: var(--step-0);
     font-weight: 500;
-    text-transform: none;
-    letter-spacing: 0;
+    letter-spacing: -0.01em;
   }
 
   .row__description {
     display: block;
-    max-width: 57ch;
     margin-top: var(--space-2xs);
     font-size: var(--step--1);
     line-height: 1.5;
     color: var(--color-muted);
   }
 
+  /* Metadata sits under the title in the same column, separated by a rule
+     rather than by a gutter. */
   .row__aside {
     grid-column: 2;
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     gap: var(--space-2xs) var(--space-s);
+    margin-top: var(--space-xs);
+    padding-top: var(--space-2xs);
+    border-top: var(--rule-hair) solid var(--color-line);
+  }
+
+  .row--compact .row__aside {
     margin-top: var(--space-2xs);
+    padding-top: 0;
+    border-top: 0;
   }
 
   .row__facts {
@@ -196,32 +206,5 @@ const facts = [
 
   .row__fact + .row__fact::before {
     content: '';
-  }
-
-  /* From the medium breakpoint the row becomes a true three-field grid:
-     number / title / metadata, aligned to the 12-column field. */
-  @media (min-width: 56rem) {
-    .row__link {
-      grid-template-columns: 4rem minmax(0, 7fr) minmax(0, 4fr);
-      align-items: start;
-    }
-
-    .row__aside {
-      grid-column: 3;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-top: 0;
-      padding-top: 0.35em;
-    }
-
-    .row--compact .row__aside {
-      flex-direction: row;
-      align-items: baseline;
-    }
-
-    .row__facts {
-      flex-direction: column;
-      gap: var(--space-2xs);
-    }
   }
 </style>
