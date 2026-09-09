@@ -47,7 +47,14 @@ export const CATEGORY_META: Record<
 };
 
 /** Non-work public activity: conferences, panels, talks, workshops. */
-export const ACTIVITY_KINDS = ['conference', 'panel', 'talk', 'workshop', 'residency'] as const;
+export const ACTIVITY_KINDS = [
+  'conference',
+  'panel',
+  'talk',
+  'workshop',
+  'residency',
+  'catalogue',
+] as const;
 
 export type ActivityKind = (typeof ACTIVITY_KINDS)[number];
 
@@ -58,6 +65,7 @@ export const ACTIVITY_KIND_META: Record<ActivityKind, { label: string }> = {
   talk: { label: 'Talk' },
   workshop: { label: 'Workshop' },
   residency: { label: 'Residency' },
+  catalogue: { label: 'Catalogue' },
 };
 
 const mediaItem = z.object({
