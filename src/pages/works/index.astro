@@ -55,15 +55,20 @@ let running = 0;
     albums.length > 0 && (
       <section class="section--tight shell" aria-labelledby="albums-heading">
         <h2 id="albums-heading" class="eyebrow albums__heading">
-          Albums
+          Albums and projects
         </h2>
         <ul class="albums">
           {albums.map(({ album, members }) => (
             <li class="album">
               <a class="album__link" href={seriesPath(album.id)}>
                 <span class="album__head">
-                  <span class="index">{String(members.length).padStart(2, '0')} works</span>
-                  <span class="index">{album.data.year}</span>
+                  <span class="index">
+                    {String(members.length).padStart(2, '0')} works
+                    {album.data.ongoing && ' so far'}
+                  </span>
+                  <span class="index">
+                    {album.data.ongoing ? `${album.data.year} — ongoing` : album.data.year}
+                  </span>
                 </span>
                 <span class="album__name title-m">{album.data.title}</span>
                 {album.data.summary && <span class="album__summary">{album.data.summary}</span>}

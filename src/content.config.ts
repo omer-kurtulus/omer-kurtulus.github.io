@@ -177,6 +177,14 @@ const series = defineCollection({
     title: z.string(),
     year: z.number().int().min(1900).max(2200),
     summary: z.string().optional(),
+
+    /**
+     * Still being written. `year` becomes the year it opened rather than the
+     * year it was finished, and the site says so instead of printing a closed
+     * date range over work that is not closed.
+     */
+    ongoing: z.boolean().default(false),
+
     status: z.enum(STATUSES).default('draft'),
     links: z.array(linkItem).default([]),
     needsReview: z.boolean().default(false),

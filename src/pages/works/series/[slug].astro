@@ -46,10 +46,12 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <PageHeader
-    eyebrow="Album"
+    eyebrow={album.data.ongoing ? 'Ongoing project' : 'Album'}
     title={album.data.title}
     lead={album.data.summary}
-    index={`${String(works.length).padStart(2, '0')} · ${album.data.year}`}
+    index={`${String(works.length).padStart(2, '0')} · ${
+      album.data.ongoing ? `since ${album.data.year}` : album.data.year
+    }`}
   />
 
   <div class="shell">

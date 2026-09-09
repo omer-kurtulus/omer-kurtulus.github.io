@@ -187,6 +187,7 @@ fails the build rather than shipping a broken link. To start a new album, create
 ---
 title: Album Name
 year: 2026
+ongoing: false      # true for a project still being written — see below
 status: published
 summary: >-
   One sentence describing the album.
@@ -198,6 +199,12 @@ The album note, in Markdown.
 The album then gets its own page at `/works/series/<slug>`, appears in the Albums
 block on `/works`, shows in each member work's sidebar, and ranks its siblings
 first in Related Works.
+
+Set `ongoing: true` for a project that is still open rather than a finished
+album. The site then prints an open range instead of a closed year — "03 works
+so far · 2026 — ongoing" in the Albums block, "Ongoing project · 03 · since
+2026" on its own page — and the heading on `/works` reads "Albums and projects".
+Clear the flag when the project closes.
 
 ### 7. Check every link
 
