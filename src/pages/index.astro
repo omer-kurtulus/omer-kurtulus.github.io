@@ -5,6 +5,7 @@ import ActivityRow from '../components/ActivityRow.astro';
 import { CATEGORY_META } from '../content.config';
 import { CURRENT } from '../config';
 import { getPublishedActivity } from '../lib/activity';
+import { RECENT_WINDOW_MONTHS, groupByMonth, recentFeed } from '../lib/recent';
 import {
   byCategory,
   categoryCounts,
@@ -17,30 +18,22 @@ import {
 const published = await getPublishedWorks();
 const visible = await getVisibleWorks();
 
-// The three newest works, recording or not. `date` is the sort key that
-// decides this, so keep it truthful and never post-date a work to push it up
-// the page — a future date would silently take the top of the home page.
-const recent = published.slice(0, 3);
-const recentIds = new Set(recent.map((w) => w.id));
+// Everything from the last three months in one chronological run — works and
+// activity together, newest first. `date` is the sort key that decides this, so
+// keep it truthful and never post-date a work to push it up the page.
+const { items: recent, windowed } = recentFeed(published, await getPublishedActivity());
 
-// Conferences, panels and talks share the Recent block with the newest works.
-// Two at most, and only recent ones: an old talk sitting above this year's work
-// would misreport what Ömer is doing now.
-const ACTIVITY_WINDOW_MONTHS = 18;
-const activityCutoff = new Date();
-activityCutoff.setMonth(activityCutoff.getMonth() - ACTIVITY_WINDOW_MONTHS);
-
-const activity = (await getPublishedActivity())
-  .filter((entry) => entry.data.date >= activityCutoff)
-  .slice(0, 2);
-
-// The Recent block's year marker is the newest thing in it, whichever kind.
-const recentYear = Math.max(
-  ...[
-    ...activity.map((entry) => entry.data.date.getUTCFullYear()),
-    ...recent.map((work) => work.data.year),
-  ],
+const recentIds = new Set(
+  recent.filter((item) => item.kind === 'work').map((item) => item.work.id),
 );
+
+// The marker beside the heading says what the block is actually showing: the
+// window when the window is in force, the year of the newest row when it is not.
+const recentMarker = windowed
+  ? `Last ${RECENT_WINDOW_MONTHS} months`
+  : String(recent[0]?.date.getUTCFullYear() ?? '');
+
+const recentMonths = groupByMonth(recent);
 
 // Featured works that the Recent block has not already shown.
 const featured = selectFeatured(published, 8).filter((w) => !recentIds.has(w.id));
@@ -80,14 +73,30 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
   <section class="section--tight shell" aria-labelledby="recent-heading">
     <div class="head">
       <h2 id="recent-heading" class="eyebrow">Recent</h2>
-      <p class="head__count index">{Number.isFinite(recentYear) ? recentYear : undefined}</p>
+      <p class="head__count index">{recentMarker}</p>
     </div>
     <div class="list">
-      {activity.map((entry, i) => <ActivityRow entry={entry} index={i} />)}
       {
-        recent.map((work, i) => (
-          <WorkRow work={work} index={activity.length + i} variant="large" />
-        ))
+        /* The running index is the position in the whole feed, not in the
+           month, so the numbers read straight down the page. */
+        recentMonths.map((month, groupIndex) => {
+          const offset = recentMonths
+            .slice(0, groupIndex)
+            .reduce((n, m) => n + m.items.length, 0);
+
+          return (
+            <div class="month">
+              <h3 class="month__label eyebrow">{month.label}</h3>
+              {month.items.map((item, i) =>
+                item.kind === 'activity' ? (
+                  <ActivityRow entry={item.entry} index={offset + i} />
+                ) : (
+                  <WorkRow work={item.work} index={offset + i} />
+                ),
+              )}
+            </div>
+          );
+        })
       }
     </div>
   </section>
@@ -166,6 +175,18 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
 
   .list {
     border-bottom: var(--rule-thin) solid var(--color-line);
+  }
+
+  /* The month is a spine for the feed, not a heading in its own right: a
+     hairline, the month, and the rows beneath it. */
+  .month__label {
+    padding-top: var(--space-m);
+    padding-bottom: var(--space-2xs);
+    color: var(--color-muted);
+  }
+
+  .month:first-child .month__label {
+    padding-top: var(--space-xs);
   }
 
   .fields {

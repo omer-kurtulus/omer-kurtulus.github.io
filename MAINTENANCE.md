@@ -53,7 +53,12 @@ needsReview: true         # until a public record of it is confirmed
 least one; with none it renders as a plain, unclickable row rather than a dead
 link. Never invent a URL to make it clickable.
 
-Only entries from the last 18 months appear on the home page, two at most.
+The home page's Recent block is one chronological feed: every work and every
+activity entry from the last three months, newest first, cut into months. Works
+and activity are interleaved by `date`, so an activity entry needs a truthful
+date for the same reason a work does. A quiet quarter falls back to the three
+newest items so the block is never empty.
+
 Add the same event to `## Conferences and panels` in `src/content/pages/cv.md`
 by hand — the CV is one written document, not a generated listing.
 
