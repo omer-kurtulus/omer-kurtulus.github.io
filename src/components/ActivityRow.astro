@@ -1,0 +1,165 @@
+---
+import { ACTIVITY_KIND_META } from '../content.config';
+import { catalogueNumber } from '../lib/works';
+import { activityDate, type Activity } from '../lib/activity';
+
+interface Props {
+  entry: Activity;
+  index: number;
+}
+
+const { entry, index } = Astro.props;
+const { data } = entry;
+const kind = ACTIVITY_KIND_META[data.kind];
+
+// An entry with a public record links out; one without is a plain row rather
+// than a dead link. Nothing here fabricates a destination.
+const primaryLink = data.links[0];
+const Tag = primaryLink ? 'a' : 'div';
+
+const facts = [data.role, data.location].filter(Boolean) as string[];
+---
+
+<article class="row">
+  <Tag class="row__link" href={primaryLink?.url}>
+    <span class="row__index index">{catalogueNumber(index)}</span>
+
+    <span class="row__body">
+      <span class="row__kind meta">
+        <span class="mark" aria-hidden="true"></span>
+        {kind.label}
+        {
+          data.organiser && (
+            <span class="row__org">
+              <span class="row__sep" aria-hidden="true">
+                /
+              </span>
+              {data.organiser}
+            </span>
+          )
+        }
+      </span>
+
+      <span class="row__title title-m">{data.title}</span>
+
+      {data.summary && <span class="row__description">{data.summary}</span>}
+    </span>
+
+    <span class="row__aside">
+      <span class="row__date index">{activityDate(entry)}</span>
+      {
+        facts.length > 0 && (
+          <span class="row__facts meta meta--tight">
+            {facts.map((fact) => (
+              <span class="row__fact">{fact}</span>
+            ))}
+          </span>
+        )
+      }
+    </span>
+  </Tag>
+</article>
+
+<style>
+  /* Same three fields as a work row, but a hairline rule and no category
+     colour: this is not part of the catalogue and should not read as a work. */
+  .row {
+    border-top: var(--rule-hair) solid var(--color-line);
+  }
+
+  .row__link {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    column-gap: var(--grid-gap);
+    row-gap: var(--space-2xs);
+    padding-block: var(--space-s);
+    transition: background-color 100ms linear;
+  }
+
+  a.row__link:hover {
+    background-color: var(--color-surface);
+  }
+
+  .row__index {
+    padding-top: 0.5em;
+  }
+
+  a.row__link:hover .row__index {
+    color: var(--color-text);
+  }
+
+  .row__body {
+    display: block;
+    min-width: 0;
+  }
+
+  .row__kind {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .row__org {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4em;
+    color: var(--color-text);
+  }
+
+  .row__sep {
+    color: var(--color-line);
+  }
+
+  .row__title {
+    display: block;
+    text-wrap: balance;
+  }
+
+  .row__description {
+    display: block;
+    max-width: 62ch;
+    margin-top: var(--space-2xs);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  .row__aside {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2xs) var(--space-s);
+    margin-top: var(--space-xs);
+    padding-top: var(--space-2xs);
+    border-top: var(--rule-hair) solid var(--color-line);
+  }
+
+  .row__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-s);
+  }
+
+  @media (min-width: 56rem) {
+    .row__link {
+      grid-template-columns: 4rem minmax(0, 7fr) minmax(0, 4fr);
+      align-items: start;
+    }
+
+    .row__aside {
+      grid-column: 3;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 0;
+      padding-top: 0.5em;
+      border-top: 0;
+    }
+
+    .row__facts {
+      flex-direction: column;
+      gap: var(--space-2xs);
+    }
+  }
+</style>

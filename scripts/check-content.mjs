@@ -51,14 +51,16 @@ const works = readEntries(join(CONTENT, 'works'));
 const pages = readEntries(join(CONTENT, 'pages'));
 const research = readEntries(join(CONTENT, 'research'));
 const series = readEntries(join(CONTENT, 'series'));
+const activity = readEntries(join(CONTENT, 'activity'));
 
-const all = [...works, ...pages, ...research, ...series];
+const all = [...works, ...pages, ...research, ...series, ...activity];
 
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 console.log(
   `\nContent: ${plural(works.length, 'work')} · ${plural(series.length, 'album')} · ` +
-    `${plural(research.length, 'note')} · ${plural(pages.length, 'page')}\n`,
+    `${plural(research.length, 'note')} · ${plural(activity.length, 'activity entry')} · ` +
+    `${plural(pages.length, 'page')}\n`,
 );
 
 const drafts = all.filter((e) => e.status === 'draft');

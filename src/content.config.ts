@@ -46,6 +46,20 @@ export const CATEGORY_META: Record<
   },
 };
 
+/** Non-work public activity: conferences, panels, talks, workshops. */
+export const ACTIVITY_KINDS = ['conference', 'panel', 'talk', 'workshop', 'residency'] as const;
+
+export type ActivityKind = (typeof ACTIVITY_KINDS)[number];
+
+/** Printed label for each kind. Order here is not significant — activity sorts by date. */
+export const ACTIVITY_KIND_META: Record<ActivityKind, { label: string }> = {
+  conference: { label: 'Conference' },
+  panel: { label: 'Panel' },
+  talk: { label: 'Talk' },
+  workshop: { label: 'Workshop' },
+  residency: { label: 'Residency' },
+};
+
 const mediaItem = z.object({
   /** `soundcloud` renders a click-to-load player; everything else renders a link. */
   type: z.enum(['soundcloud', 'youtube', 'vimeo', 'bandcamp', 'audio']),
@@ -183,4 +197,35 @@ const research = defineCollection({
   }),
 });
 
-export const collections = { works, series, pages, research };
+/**
+ * Conferences, panels and talks — things Ömer took part in that are not works
+ * and not writing. They surface in the home page's Recent block alongside the
+ * newest works, so `date` must be the real date of the event.
+ */
+const activity = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/activity' }),
+  schema: z.object({
+    title: z.string().min(1),
+    kind: z.enum(ACTIVITY_KINDS),
+
+    /** Full ISO date where known, otherwise the first of the month. */
+    date: z.coerce.date(),
+    /** Set when only the month or year is known, so the printed date stays honest. */
+    datePrecision: z.enum(['day', 'month', 'year']).default('day'),
+
+    /** Who ran it — the platform, festival or institution. */
+    organiser: z.string().optional(),
+    /** Ömer's part in it, e.g. "Active participant". */
+    role: z.string().optional(),
+    /** "Online", or a city. */
+    location: z.string().optional(),
+
+    summary: z.string().max(400).optional(),
+
+    status: z.enum(STATUSES).default('draft'),
+    links: z.array(linkItem).default([]),
+    needsReview: z.boolean().default(false),
+  }),
+});
+
+export const collections = { works, series, pages, research, activity };

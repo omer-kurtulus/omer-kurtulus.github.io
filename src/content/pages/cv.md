@@ -74,6 +74,12 @@ Gadenstätter, Yann Robin, Johannes Maria Staud
 **2013** — Istanbul University State Conservatory — workshops with Michel Merlet and
 Stephane Delplasse
 
+## Conferences and panels
+
+**2026** — *Whose Music?*, Ulysses Platform — online conference session convened
+by John Harris. Active participant: presentation and discussion of own projects,
+7 September 2026
+
 ## Selected performances
 
 **2026** · *an arche* — one cello shared by three performers, quadraphonic

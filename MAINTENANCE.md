@@ -26,6 +26,39 @@ which builds and publishes to GitHub Pages at <https://omer-kurtulus.github.io/>
 
 ---
 
+## Workflow: adding a conference, panel or talk
+
+These are not works and must never be filed as one — a fake work file would
+distort the category counts, `/works` and the JSON-LD graph. They live in
+`src/content/activity/` and share the home page's Recent block with the newest
+works.
+
+```yaml
+---
+title: Whose Music?
+kind: conference          # conference | panel | talk | workshop | residency
+date: 2026-09-07
+datePrecision: day        # day | month | year — cut to what is actually known
+organiser: Ulysses Platform
+role: Active participant
+location: Online          # "Online", or a city
+summary: >-
+  One or two sentences, under 400 characters.
+status: published
+needsReview: true         # until a public record of it is confirmed
+---
+```
+
+`links` takes the same shape as a work's. The row links out when there is at
+least one; with none it renders as a plain, unclickable row rather than a dead
+link. Never invent a URL to make it clickable.
+
+Only entries from the last 18 months appear on the home page, two at most.
+Add the same event to `## Conferences and panels` in `src/content/pages/cv.md`
+by hand — the CV is one written document, not a generated listing.
+
+---
+
 ## Workflow: adding a new work
 
 ### 1. Read the source

@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkRow from '../components/WorkRow.astro';
+import ActivityRow from '../components/ActivityRow.astro';
 import { CATEGORY_META } from '../content.config';
 import { CURRENT } from '../config';
+import { getPublishedActivity } from '../lib/activity';
 import {
   byCategory,
   categoryCounts,
@@ -20,6 +22,25 @@ const visible = await getVisibleWorks();
 // the page — a future date would silently take the top of the home page.
 const recent = published.slice(0, 3);
 const recentIds = new Set(recent.map((w) => w.id));
+
+// Conferences, panels and talks share the Recent block with the newest works.
+// Two at most, and only recent ones: an old talk sitting above this year's work
+// would misreport what Ömer is doing now.
+const ACTIVITY_WINDOW_MONTHS = 18;
+const activityCutoff = new Date();
+activityCutoff.setMonth(activityCutoff.getMonth() - ACTIVITY_WINDOW_MONTHS);
+
+const activity = (await getPublishedActivity())
+  .filter((entry) => entry.data.date >= activityCutoff)
+  .slice(0, 2);
+
+// The Recent block's year marker is the newest thing in it, whichever kind.
+const recentYear = Math.max(
+  ...[
+    ...activity.map((entry) => entry.data.date.getUTCFullYear()),
+    ...recent.map((work) => work.data.year),
+  ],
+);
 
 // Featured works that the Recent block has not already shown.
 const featured = selectFeatured(published, 8).filter((w) => !recentIds.has(w.id));
@@ -59,10 +80,15 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
   <section class="section--tight shell" aria-labelledby="recent-heading">
     <div class="head">
       <h2 id="recent-heading" class="eyebrow">Recent</h2>
-      <p class="head__count index">{published[0]?.data.year}</p>
+      <p class="head__count index">{Number.isFinite(recentYear) ? recentYear : undefined}</p>
     </div>
     <div class="list">
-      {recent.map((work, i) => <WorkRow work={work} index={i} variant="large" />)}
+      {activity.map((entry, i) => <ActivityRow entry={entry} index={i} />)}
+      {
+        recent.map((work, i) => (
+          <WorkRow work={work} index={activity.length + i} variant="large" />
+        ))
+      }
     </div>
   </section>
 
