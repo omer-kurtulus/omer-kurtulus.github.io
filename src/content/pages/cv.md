@@ -63,6 +63,11 @@ Garda (*Terra Incognito*)
 
 ## Festivals, workshops and residencies
 
+**2027 (upcoming)** — *praelocutio.exordium.prolusio I.*, .abeceda Institute —
+selected participant with *What the C\*rp\*s*; online project development in 2026,
+followed by an on-site residency and public presentation at the Seventh Bled
+Contemporary Music Week, Bled, Slovenia, 14–25 June 2027
+
 **2026** — KEAR Electroacoustic Residency, Bowling Green State University
 **2025** — 46th Bowling Green New Music Festival, composer workshop with Marcos Balter
 **2025** — Flash Mass / Siteworks, Ensemble Ipse, Central Park, New York
