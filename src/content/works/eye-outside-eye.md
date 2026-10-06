@@ -12,24 +12,24 @@ secondaryTags:
 featured: true
 featuredOrder: 8
 status: published
-instrumentation: Double bass and voice with live interactive electronics
+instrumentation: Voice and live interactive electronics, with a pre-recorded double-bass and voice corpus
 shortDescription: >-
-  A corpus built from Işıl Kök Kohl's double-bass and voice recordings, navigated
-  live by SoMax 2 against the performers in the room.
+  A corpus built from Joëlle Léandre's double-bass and voice recordings made for
+  Somax2 at IRCAM, navigated live by SoMax 2 against the performer in the room.
 technology:
   - Max/MSP
   - SoMax 2
 credits:
-  - role: Composition and live electronics
+  - role: Composition, voice and live electronics
     name: Ömer Kurtuluş
-  - role: Double bass and voice
-    name: Işıl Kök Kohl
+  - role: Corpus recordings (double bass and voice, Somax2 residency at IRCAM)
+    name: Joëlle Léandre
 performances:
   - date: "2025-09-30"
     venue: Bryan Hall, Bowling Green State University
     city: Bowling Green, OH
     country: USA
-    performers: Işıl Kök Kohl, double bass and voice; Ömer Kurtuluş, live electronics
+    performers: Ömer Kurtuluş, voice and live electronics
 media:
   - type: youtube
     url: https://www.youtube.com/watch?v=pcQN7-qgK7Q
@@ -42,8 +42,9 @@ needsReview: true
 *eye | outside | eye* ⟂⟂⟟𒅆𒇽𒅆 is written for voice and live interactive
 electronics, built in Max/MSP with SoMax 2 for pre-recorded corpus–system
 interaction. The corpus is constructed from double-bass and voice recordings by
-Işıl Kök Kohl; the composer performs the live voice and electronics layer.
+Joëlle Léandre, made for Somax2 during her residency at IRCAM; the composer
+performs the live voice and electronics layer.
 
 The system does not accompany the performer. It listens, searches the archive of
-her own earlier playing, and answers with material she has already made — so what
-returns is recognisably hers and no longer under her control.
+Léandre's recorded playing, and answers with material she has already made — so
+what returns is recognisably hers, recombined by the system in real time.

@@ -106,8 +106,8 @@ University, OH, November 2025
 **2025** · *Focus* — FLYDLPHN sextet and fixed media. Bryan Hall, Bowling Green State
 University, OH
 
-**2025** · *eye | outside | eye* — Işıl Kök Kohl, double bass and voice; Ömer
-Kurtuluş, live electronics. Bryan Hall, Bowling Green State University, OH,
+**2025** · *eye | outside | eye* — Ömer Kurtuluş, voice and live electronics; corpus of
+Joëlle Léandre's double-bass and voice recordings (Somax2, IRCAM). Bryan Hall, Bowling Green State University, OH,
 30 September 2025
 
 **2025** · *A Music for People to Relax* — Ensemble Ipse, "Siteworks: Flash Mass".
