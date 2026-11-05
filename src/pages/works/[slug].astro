@@ -4,6 +4,7 @@ import { getEntry, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WorkRow from '../../components/WorkRow.astro';
 import SoundCloudPlayer from '../../components/SoundCloudPlayer.astro';
+import WorkInterest from '../../components/WorkInterest.astro';
 import { CATEGORY_META } from '../../content.config';
 import { SITE } from '../../config';
 import {
@@ -174,6 +175,7 @@ const jsonLd = {
         </div>
 
         <aside class="body__aside">
+          <WorkInterest title={data.title} />
           {
             album && (
               <section class="panel panel--album">

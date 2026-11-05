@@ -1,0 +1,74 @@
+---
+/**
+ * The address, and every way to use it: the visitor's own mail app, Gmail,
+ * Outlook, or a one-click copy for anything else. Used on the contact page and
+ * under each work, so a message can always be started in one step.
+ */
+import { gmailHref, mailtoHref, outlookHref } from '../lib/contact';
+
+interface Props {
+  to: string;
+  subject?: string;
+  body?: string;
+}
+
+const { to, subject, body } = Astro.props;
+const compose = { to, subject, body };
+---
+
+<div class="contact-options" data-contact-options>
+  <p class="contact-options__address">
+    <a class="link link--strong" href={mailtoHref(compose)}>{to}</a>
+  </p>
+  <p class="contact-options__ways">
+    <button class="contact-options__copy link" type="button" data-copy={to} aria-live="polite">Copy address</button>
+    <a class="link" href={gmailHref(compose)} rel="noopener noreferrer" target="_blank">Gmail →</a>
+    <a class="link" href={outlookHref(compose)} rel="noopener noreferrer" target="_blank">Outlook →</a>
+  </p>
+</div>
+
+<style>
+  .contact-options {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .contact-options__address {
+    margin-top: var(--space-xs);
+    overflow-wrap: anywhere;
+  }
+
+  .contact-options__ways {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-s);
+  }
+
+  /* A button that reads as one of the small uppercase links beside it. */
+  .contact-options__copy {
+    background: none;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    cursor: pointer;
+    font-family: inherit;
+  }
+</style>
+
+<script>
+  // Copy the address; say so in the button itself, then put the label back.
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-copy]')) {
+    const label = button.textContent ?? 'Copy address';
+    button.addEventListener('click', async () => {
+      const text = button.dataset.copy ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+        button.textContent = 'Copied';
+      } catch {
+        // No clipboard permission: show the address so it can be selected by hand.
+        button.textContent = text;
+      }
+      window.setTimeout(() => (button.textContent = label), 2000);
+    });
+  }
+</script>

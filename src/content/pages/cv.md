@@ -9,6 +9,9 @@ description: >-
 
 **2026 – present** · Freelance composer and artist
 
+**2026 – present** · Founder, [The Agora of New Music](https://theagoraofnewmusic.com) —
+a free meeting place for composers and performers of contemporary music
+
 ## Education
 
 **2024 – 2026** · Master of Music in Composition

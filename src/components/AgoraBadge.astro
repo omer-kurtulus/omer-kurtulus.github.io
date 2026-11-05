@@ -1,0 +1,100 @@
+---
+/**
+ * Top-right badge: the mark of The Agora of New Music with "Founder" beneath,
+ * linking to the Agora. Black and white like the rest of the site, with the
+ * mark's orchestra dot and stage line in red. Founder only — never "editor".
+ *
+ * The mark is the Agora's own: five staff lines become the five tiers of an
+ * ancient theatre seen from above, cut by radial aisles; the dot is the
+ * orchestra, the line beneath it the stage.
+ */
+import { AGORA } from '../config';
+
+const CX = 30, CY = 29;
+const radii = [11, 14.6, 18.2, 21.8, 25.4];
+const AISLES = [36, 72, 108, 144]; // degrees, left to right over the top
+const GAP = 1.9; // aisle width
+
+const pt = (r: number, deg: number) => {
+  const a = Math.PI - (deg * Math.PI) / 180;
+  return `${(CX + r * Math.cos(a)).toFixed(2)} ${(CY - r * Math.sin(a)).toFixed(2)}`;
+};
+const segments = radii.flatMap((r) => {
+  const half = (GAP / 2 / r) * (180 / Math.PI);
+  const cuts = [0, ...AISLES, 180];
+  return cuts.slice(0, -1).map((a0, i) => {
+    const s = i === 0 ? a0 : a0 + half;
+    const e = i === cuts.length - 2 ? cuts[i + 1] : cuts[i + 1] - half;
+    return `M${pt(r, s)}A${r} ${r} 0 0 1 ${pt(r, e)}`;
+  });
+});
+---
+
+<a
+  class="agora"
+  href={AGORA.url}
+  rel="noopener noreferrer"
+  target="_blank"
+  aria-label={`${AGORA.role}, ${AGORA.name} (opens the Agora's website)`}
+  title={`${AGORA.role}, ${AGORA.name}`}
+>
+  <svg class="agora__mark" viewBox="0 0 60 36" aria-hidden="true" focusable="false">
+    <g fill="none" stroke="currentColor" stroke-width="1.7">
+      {segments.map((d) => <path d={d} />)}
+    </g>
+    <circle class="agora__dot" cx={CX} cy={CY} r="4.2" />
+    <line class="agora__stage" x1="2.5" y1="34.4" x2="57.5" y2="34.4" stroke-width="1.7" />
+  </svg>
+  <span class="agora__role">{AGORA.role}</span>
+  <span class="agora__name">{AGORA.name}</span>
+</a>
+
+<style>
+  .agora {
+    --agora-red: #d0021b;
+    display: inline-grid;
+    justify-items: center;
+    gap: 0.2rem;
+    color: var(--color-text);
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .agora__mark {
+    width: 2.6rem;
+    height: auto;
+    transition: transform 150ms ease;
+  }
+
+  .agora__dot {
+    fill: var(--agora-red);
+  }
+
+  .agora__stage {
+    stroke: var(--agora-red);
+  }
+
+  .agora__role {
+    font-size: var(--step--2);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--agora-red);
+  }
+
+  .agora__name {
+    font-size: var(--step--2);
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    transition: color 100ms linear;
+  }
+
+  .agora:hover .agora__name,
+  .agora:focus-visible .agora__name {
+    color: var(--color-text);
+  }
+
+  .agora:hover .agora__mark {
+    transform: translateY(-1px);
+  }
+</style>

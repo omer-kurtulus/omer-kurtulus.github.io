@@ -1,0 +1,60 @@
+---
+/**
+ * "Interested in this work?" — the moment someone has just listened is the
+ * moment they are most likely to write. Each request opens a message with the
+ * work's title already in the subject, so nobody has to work out what to say.
+ */
+import ContactOptions from './ContactOptions.astro';
+import { SITE } from '../config';
+import { mailtoHref } from '../lib/contact';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const to = SITE.email;
+const requests = [
+  { label: 'Request the score or performance materials', subject: `Score request: ${title}` },
+  { label: 'Perform or programme this work', subject: `Performing ${title}` },
+  { label: 'Request a recording or multichannel master', subject: `Recording request: ${title}` },
+];
+---
+
+{
+  to && (
+    <section class="interest" aria-labelledby="interest-heading">
+      <h2 id="interest-heading" class="eyebrow">Interested in this work?</h2>
+      <ul class="interest__list">
+        {requests.map((r) => (
+          <li>
+            <a class="link link--strong" href={mailtoHref({ to, subject: r.subject })}>
+              {r.label} →
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="interest__note meta">No mail app? Use any of these, with the title in the subject:</p>
+      <ContactOptions to={to} subject={`About ${title}`} />
+    </section>
+  )
+}
+
+<style>
+  .interest {
+    border-top: var(--rule-thick) solid var(--color-text);
+    padding-top: var(--space-xs);
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .interest__list {
+    display: grid;
+    gap: var(--space-xs);
+    margin-top: var(--space-2xs);
+  }
+
+  .interest__note {
+    margin-top: var(--space-xs);
+  }
+</style>

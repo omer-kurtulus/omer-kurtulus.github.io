@@ -2,19 +2,19 @@
 import { soundcloudEmbedSrc } from '../lib/works';
 
 interface Props {
-  /** SoundCloud track the site plays to every visitor. */
+  /** SoundCloud track offered to every visitor. */
   url: string;
   label: string;
 }
 
 const { url, label } = Astro.props;
-const embedSrc = soundcloudEmbedSrc(url);
+const embedSrc = soundcloudEmbedSrc(url, { autoPlay: false });
 ---
 
 <!--
-  The track plays for everyone; nothing about it is shown. The only visible
-  trace is the browser's own tab audio indicator, which is also the visitor's
-  way out — the page offers no control of its own, by design.
+  The site's track, offered rather than imposed: a small visible control in
+  the corner starts and stops it. Nothing plays until the visitor asks; once
+  they have, it carries on across pages until they stop it.
 -->
 <iframe
   class="ambient"
@@ -24,6 +24,12 @@ const embedSrc = soundcloudEmbedSrc(url);
   allow="autoplay"
   tabindex="-1"
   aria-hidden="true"></iframe>
+
+<button class="ambient-toggle" type="button" data-ambient-toggle aria-pressed="false" hidden>
+  <span class="ambient-toggle__icon" aria-hidden="true" data-ambient-icon>▶</span>
+  <span class="ambient-toggle__label">{label}</span>
+  <span class="visually-hidden" data-ambient-state>play</span>
+</button>
 
 <style>
   .ambient {
@@ -36,25 +42,61 @@ const embedSrc = soundcloudEmbedSrc(url);
     opacity: 0;
     pointer-events: none;
   }
+
+  .ambient-toggle {
+    position: fixed;
+    left: var(--space-s);
+    bottom: var(--space-s);
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.45rem 0.8rem;
+    border: var(--rule-thin) solid var(--color-text);
+    background: var(--color-background);
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--step--2);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 100ms linear, color 100ms linear;
+  }
+
+  .ambient-toggle:hover,
+  .ambient-toggle[aria-pressed='true'] {
+    background: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .ambient-toggle[hidden] {
+    display: none;
+  }
+
+  /* Room under the footer so the fixed button never covers its last lines. */
+  :global(.page) {
+    padding-bottom: calc(var(--space-s) * 2 + 2.5rem);
+  }
 </style>
 
 <script>
   /**
-   * Starts the site's track for every visitor.
+   * The site's track, started only by its own button.
    *
-   * No browser permits audible autoplay before the visitor has interacted with
-   * the origin, so a bare `play()` on load succeeds only for someone the
-   * browser already trusts with this domain. For everyone else the first
-   * pointer or key event anywhere on the page starts it — no button, no label,
-   * nothing to click deliberately. The playhead is kept in sessionStorage, so
-   * moving between pages resumes rather than restarting, and a work's own
-   * player pauses it instead of talking over it.
+   * Once the visitor has pressed play, the choice is kept in sessionStorage:
+   * the next page resumes from the same playhead (or on their first gesture
+   * there, if the browser wants one). Pressing again stops it for the rest of
+   * the visit. A work's own player pauses it instead of talking over it.
    */
   const KEY_POSITION = 'ambient:position';
-  const KEY_SILENCED = 'ambient:silenced';
+  const KEY_PLAYING = 'ambient:playing';
   const API = 'https://w.soundcloud.com/player/api.js';
 
   const frame = document.querySelector<HTMLIFrameElement>('[data-ambient-frame]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-ambient-toggle]');
+  const icon = document.querySelector<HTMLElement>('[data-ambient-icon]');
+  const state = document.querySelector<HTMLElement>('[data-ambient-state]');
 
   const read = (key: string) => {
     try {
@@ -71,7 +113,14 @@ const embedSrc = soundcloudEmbedSrc(url);
     }
   };
 
-  if (frame) {
+  const show = (playing: boolean) => {
+    if (!toggle || !icon || !state) return;
+    toggle.setAttribute('aria-pressed', String(playing));
+    icon.textContent = playing ? '❚❚' : '▶';
+    state.textContent = playing ? 'pause' : 'play';
+  };
+
+  if (frame && toggle) {
     const script = document.createElement('script');
     script.src = API;
     script.async = true;
@@ -83,43 +132,51 @@ const embedSrc = soundcloudEmbedSrc(url);
       // @ts-expect-error
       const Events = SC.Widget.Events;
 
-      let ready = false;
-
-      const start = () => {
-        if (!ready || read(KEY_SILENCED) === '1') return;
-        widget.play();
-      };
-
       widget.bind(Events.READY, () => {
-        ready = true;
+        toggle.hidden = false;
 
         const saved = Number(read(KEY_POSITION) ?? 0);
         if (saved > 0) widget.seekTo(saved);
 
-        // Succeeds only where the browser already trusts this origin.
-        start();
+        // Only a visitor who already pressed play hears it carry on.
+        if (read(KEY_PLAYING) === '1') {
+          widget.play();
+          const events = ['pointerdown', 'keydown', 'touchstart'] as const;
+          const resume = (e: Event) => {
+            if (e.target instanceof Node && toggle.contains(e.target)) return;
+            if (read(KEY_PLAYING) === '1') widget.play();
+            for (const type of events) document.removeEventListener(type, resume);
+          };
+          for (const type of events) document.addEventListener(type, resume, { passive: true });
+        }
       });
 
-      // The first real interaction anywhere on the page grants permission.
-      const events = ['pointerdown', 'keydown', 'touchstart'] as const;
-      const onFirstGesture = () => {
-        start();
-        for (const type of events) document.removeEventListener(type, onFirstGesture);
-      };
-      for (const type of events) {
-        document.addEventListener(type, onFirstGesture, { passive: true });
-      }
+      toggle.addEventListener('click', () => {
+        widget.isPaused((paused: boolean) => {
+          if (paused) {
+            write(KEY_PLAYING, '1');
+            widget.play();
+          } else {
+            write(KEY_PLAYING, '0');
+            widget.pause();
+          }
+        });
+      });
 
+      widget.bind(Events.PLAY, () => show(true));
+      widget.bind(Events.PAUSE, () => show(false));
       widget.bind(Events.PLAY_PROGRESS, (data: { currentPosition: number }) => {
         write(KEY_POSITION, String(Math.floor(data.currentPosition)));
       });
+      widget.bind(Events.FINISH, () => {
+        write(KEY_POSITION, '0');
+        write(KEY_PLAYING, '0');
+        show(false);
+      });
 
-      widget.bind(Events.FINISH, () => write(KEY_POSITION, '0'));
-
-      // A work's own player takes over: never two streams at once, and the
-      // site track stays quiet for the rest of the visit once that happens.
+      // A work's own player takes over: never two streams at once.
       document.addEventListener('ambient:yield', () => {
-        write(KEY_SILENCED, '1');
+        write(KEY_PLAYING, '0');
         widget.pause();
       });
     });

@@ -147,11 +147,12 @@ export function primaryListenUrl(work: Work): string | undefined {
 }
 
 /** Extracts a SoundCloud track path for the click-to-load player. */
-export function soundcloudEmbedSrc(url: string): string {
+/** `autoPlay: false` for an embed that must stay silent until its own button is pressed. */
+export function soundcloudEmbedSrc(url: string, { autoPlay = true }: { autoPlay?: boolean } = {}): string {
   const params = new URLSearchParams({
     url,
     color: '%23873b32',
-    auto_play: 'true',
+    auto_play: String(autoPlay),
     hide_related: 'true',
     show_comments: 'false',
     show_user: 'true',

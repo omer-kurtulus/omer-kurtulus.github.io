@@ -3,7 +3,7 @@ import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import AmbientPlayer from '../components/AmbientPlayer.astro';
-import { SITE, OPENING_TRACK } from '../config';
+import { AGORA, SITE, OPENING_TRACK } from '../config';
 
 interface Props {
   title?: string;
@@ -27,6 +27,8 @@ const personLd = {
   description: SITE.description,
   url: SITE.url,
   sameAs: ['https://soundcloud.com/mer-kurtulu-399116903'],
+  // Founder of The Agora of New Music (shown as founder, never as an editor).
+  affiliation: { '@type': 'Organization', name: AGORA.name, url: AGORA.url, foundingDate: String(AGORA.since) },
 };
 ---
 

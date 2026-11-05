@@ -16,6 +16,9 @@ const { Content } = await render(entry);
     <div class="body grid">
       <div class="body__main prose">
         <Content />
+        <p class="invite">
+          <a class="link link--strong" href="/contact">Commissions, scores and collaborations → Contact</a>
+        </p>
       </div>
     </div>
   </div>
@@ -29,6 +32,10 @@ const { Content } = await render(entry);
 
   .body__main {
     grid-column: 1 / -1;
+  }
+
+  .invite {
+    margin-top: var(--space-l);
   }
 
   /* The red bar that used to sit opposite this text is gone with the

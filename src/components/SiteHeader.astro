@@ -1,5 +1,6 @@
 ---
 import { NAV, SITE } from '../config';
+import AgoraBadge from './AgoraBadge.astro';
 
 interface Props {
   isHome?: boolean;
@@ -11,7 +12,10 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 ---
 
 <header class="site">
-  <div class="shell">
+  <div class="shell site__shell">
+    <div class="site__agora">
+      <AgoraBadge />
+    </div>
     <div class="site__top">
     {
       /* The name is the page's h1 on the home page and a link everywhere else,
@@ -52,6 +56,33 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
     padding-top: var(--space-m);
     margin-bottom: var(--space-m);
     border-bottom: var(--rule-thick) solid var(--color-text);
+  }
+
+  /* The Agora badge: top right. On narrow screens it sits in the flow above
+     the name; from 56rem it is pinned to the corner so the masthead keeps its
+     height. */
+  .site__shell {
+    position: relative;
+  }
+
+  .site__agora {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: var(--space-2xs);
+  }
+
+  @media (min-width: 56rem) {
+    .site__agora {
+      position: absolute;
+      top: 0;
+      right: var(--page-margin);
+      margin: 0;
+    }
+
+    /* Keep the tagline clear of the badge. */
+    .site__top {
+      padding-right: 11rem;
+    }
   }
 
   /* Name and tagline sit across the page, the tabs on the rule under them. */

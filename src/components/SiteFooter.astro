@@ -1,5 +1,5 @@
 ---
-import { NAV, PROFILES, SITE } from '../config';
+import { AGORA, FOLLOW, NAV, PROFILES, SITE } from '../config';
 
 const year = new Date().getFullYear();
 ---
@@ -7,7 +7,13 @@ const year = new Date().getFullYear();
 <footer class="site">
   <div class="shell">
     <div class="colophon">
-    <p class="colophon__name">{SITE.name} — {SITE.role}</p>
+    <div class="colophon__id">
+      <p class="colophon__name">{SITE.name} — {SITE.role}</p>
+      <p class="colophon__agora">
+        {AGORA.role}, <a href={AGORA.url} rel="noopener noreferrer" target="_blank">{AGORA.name}</a>
+      </p>
+      {SITE.email && <p class="colophon__email"><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>}
+    </div>
 
     <nav class="colophon__row" aria-label="Footer">
       {NAV.map((item) => <a href={item.href}>{item.label}</a>)}
@@ -21,6 +27,7 @@ const year = new Date().getFullYear();
           </a>
         ))
       }
+      <a href={FOLLOW.url} rel="noopener noreferrer" target="_blank">{FOLLOW.label}</a>
     </div>
 
     <p class="colophon__legal">© {year} {SITE.name}</p>
@@ -66,6 +73,23 @@ const year = new Date().getFullYear();
     font-weight: 700;
     letter-spacing: -0.01em;
     margin-bottom: var(--space-xs);
+  }
+
+  .colophon__agora,
+  .colophon__email {
+    margin-bottom: var(--space-2xs);
+  }
+
+  .colophon__agora a,
+  .colophon__email a {
+    color: var(--color-text);
+    border-bottom: var(--rule-thin) solid var(--color-line);
+    transition: border-color 100ms linear;
+  }
+
+  .colophon__agora a:hover,
+  .colophon__email a:hover {
+    border-bottom-color: var(--color-text);
   }
 
   .colophon__row {

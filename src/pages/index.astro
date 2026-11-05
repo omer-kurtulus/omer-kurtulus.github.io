@@ -15,6 +15,9 @@ import {
   selectFeatured,
 } from '../lib/works';
 
+// The open call disappears after its last day: at build time here, and in the
+// visitor's browser too (below), since nothing rebuilds the site on that date.
+const currentOpen = CURRENT ? Date.now() <= Date.parse(`${CURRENT.endsOn}T23:59:59Z`) : false;
 const published = await getPublishedWorks();
 const visible = await getVisibleWorks();
 
@@ -51,8 +54,8 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
     included, so the home page opens on the work rather than on a wordmark. */}
 <BaseLayout isHome jsonLd={undefined}>
   {
-    CURRENT && (
-      <section class="section--tight shell current" aria-labelledby="current-heading">
+    currentOpen && CURRENT && (
+      <section class="section--tight shell current" aria-labelledby="current-heading" data-ends-on={CURRENT.endsOn}>
         <a class="current__link" href={CURRENT.href}>
           <span class="current__main">
             <span class="eyebrow">{CURRENT.eyebrow}</span>
@@ -155,6 +158,12 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
       {acoustic.map((work, i) => <WorkRow work={work} index={i} variant="compact" />)}
     </div>
   </section>
+  <script is:inline>
+    (() => {
+      const block = document.querySelector('[data-ends-on]');
+      if (block && Date.now() > Date.parse(block.getAttribute('data-ends-on') + 'T23:59:59Z')) block.remove();
+    })();
+  </script>
 </BaseLayout>
 
 <style>

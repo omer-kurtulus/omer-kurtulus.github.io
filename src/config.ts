@@ -16,15 +16,28 @@ export const SITE = {
 } as const;
 
 /**
- * The track every visitor hears. Nothing about it is shown on the page — no
- * control, no title. Browsers refuse audible autoplay until the visitor has
- * interacted with the origin, so it starts on their first click or keypress
- * anywhere on the site. Set to `null` to remove it entirely.
+ * The site's track, offered to every visitor through a small play/stop button
+ * in the corner (its title is the button's label). Nothing plays until the
+ * visitor presses it. Set to `null` to remove it entirely.
  */
 export const OPENING_TRACK: { url: string; label: string } | null = {
   url: 'https://soundcloud.com/mer-kurtulu-399116903/p-re-cise',
   label: 'P(re)cise',
 };
+
+/**
+ * The Agora of New Music, which Ömer founded. He appears there as its founder,
+ * never as one of its editors — keep that wording wherever it is shown.
+ */
+export const AGORA = {
+  name: 'The Agora of New Music',
+  url: 'https://theagoraofnewmusic.com',
+  email: 'info@theagoraofnewmusic.com',
+  role: 'Founder',
+  since: 2026,
+  blurb:
+    'A free meeting place for composers and performers of contemporary music: performers find new works to play, composers find performers. No prizes, no juries, no entry fees.',
+} as const;
 
 export const NAV = [
   { label: 'Works', href: '/works' },
@@ -55,6 +68,8 @@ export const CURRENT: {
   href: string;
   cta: string;
   until: string;
+  /** Last day the block is shown (YYYY-MM-DD). After it the block hides itself, even before the next deploy. */
+  endsOn: string;
 } | null = {
   eyebrow: 'Open call',
   title: 'What the C*rp*s',
@@ -63,4 +78,8 @@ export const CURRENT: {
   href: '/what-the-corpus/',
   cta: 'Take part',
   until: 'Open until 30 November 2026 · Bandcamp release February 2027',
+  endsOn: '2026-11-30',
 };
+
+/** Where visitors can follow new releases. */
+export const FOLLOW = { label: 'Follow on Bandcamp', url: 'https://merkurtulu.bandcamp.com/' } as const;

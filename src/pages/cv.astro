@@ -29,6 +29,7 @@ const last = works[0]?.data.year;
 
     <p class="body__more">
       <a class="link link--strong" href="/works">Complete catalogue →</a>
+      <a class="link link--strong" href="/contact">Commissions, scores and collaborations → Contact</a>
     </p>
   </div>
 </BaseLayout>
@@ -50,6 +51,9 @@ const last = works[0]?.data.year;
 
   .body__more {
     padding-bottom: var(--space-xl);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s) var(--space-l);
   }
 
 

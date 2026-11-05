@@ -2,7 +2,8 @@
 import { getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
-import { PROFILES, SITE } from '../config';
+import ContactOptions from '../components/ContactOptions.astro';
+import { AGORA, FOLLOW, PROFILES, SITE } from '../config';
 
 const entry = await getEntry('pages', 'contact');
 if (!entry) throw new Error('Missing src/content/pages/contact.md');
@@ -23,11 +24,7 @@ const { Content } = await render(entry);
           SITE.email && (
             <section class="panel">
               <h2 class="eyebrow">Email</h2>
-              <p class="panel__value">
-                <a class="link link--strong" href={`mailto:${SITE.email}`}>
-                  {SITE.email}
-                </a>
-              </p>
+              <ContactOptions to={SITE.email} />
             </section>
           )
         }
@@ -44,6 +41,31 @@ const { Content } = await render(entry);
                 </li>
               ))
             }
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h2 class="eyebrow">Stay in touch</h2>
+          <p class="panel__value">
+            <a class="link link--strong" href={FOLLOW.url} rel="noopener noreferrer" target="_blank">
+              {FOLLOW.label} →
+            </a>
+          </p>
+          <p class="panel__note meta">New releases, the moment they are out.</p>
+        </section>
+
+        <section class="panel">
+          <h2 class="eyebrow">{AGORA.role}, {AGORA.name}</h2>
+          <p class="panel__note">{AGORA.blurb}</p>
+          <ul class="panel__list">
+            <li>
+              <a class="link" href={AGORA.url} rel="noopener noreferrer" target="_blank">
+                Visit the Agora →
+              </a>
+            </li>
+            <li>
+              <a class="link" href={`mailto:${AGORA.email}`}>{AGORA.email}</a>
+            </li>
           </ul>
         </section>
       </div>
@@ -85,6 +107,10 @@ const { Content } = await render(entry);
   }
 
   .panel__value {
+    margin-top: var(--space-xs);
+  }
+
+  .panel__note {
     margin-top: var(--space-xs);
   }
 

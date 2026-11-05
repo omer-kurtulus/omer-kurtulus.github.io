@@ -69,6 +69,11 @@ Christopher Dietz, Marilyn Shrude, Elainie Lillios and Piyawat Louilarpprasert,
 where he was also a Graduate Teaching Assistant in the composition area. He now
 works as a freelance composer and artist.
 
+In 2026 he founded [The Agora of New Music](https://theagoraofnewmusic.com), a free
+meeting place for composers and performers of contemporary music, where performers
+find new works to play and composers find performers — with no prizes, no juries
+and no entry fees.
+
 His music has been performed by the Toledo Symphony Orchestra, TAK Ensemble,
 Ensemble Ipse, FLYDLPHN and Flam-a Duo, in venues including Kobacker Hall and Bryan
 Hall at Bowling Green State University, the Great Lawn of Central Park in New York,
