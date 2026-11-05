@@ -46,7 +46,7 @@ export const CATEGORY_META: Record<
   },
 };
 
-/** Non-work public activity: conferences, panels, talks, workshops. */
+/** Non-work public activity: conferences, panels, talks, workshops, and what he has founded. */
 export const ACTIVITY_KINDS = [
   'conference',
   'panel',
@@ -54,6 +54,7 @@ export const ACTIVITY_KINDS = [
   'workshop',
   'residency',
   'catalogue',
+  'founded',
 ] as const;
 
 export type ActivityKind = (typeof ACTIVITY_KINDS)[number];
@@ -66,6 +67,8 @@ export const ACTIVITY_KIND_META: Record<ActivityKind, { label: string }> = {
   workshop: { label: 'Workshop' },
   residency: { label: 'Residency' },
   catalogue: { label: 'Catalogue' },
+  // Something Ömer founded and runs (The Agora of New Music). Founder, never "editor".
+  founded: { label: 'Founded' },
 };
 
 const mediaItem = z.object({
