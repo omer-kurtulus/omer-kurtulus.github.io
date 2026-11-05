@@ -119,6 +119,8 @@ const works = defineCollection({
       date: z.coerce.date(),
 
       primaryCategory: z.enum(CATEGORIES),
+      /** Other category pages the work is also listed on (its own category stays primaryCategory). */
+      alsoIn: z.array(z.enum(CATEGORIES)).default([]),
       secondaryTags: z.array(z.string()).default([]),
 
       featured: z.boolean().default(false),

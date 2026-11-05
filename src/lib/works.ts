@@ -88,15 +88,20 @@ export function selectFeatured(works: Work[], limit?: number): Work[] {
   return limit ? featured.slice(0, limit) : featured;
 }
 
+/** A work belongs to its primary category and to any listed in `alsoIn`. */
+export function inCategory(work: Work, category: Category): boolean {
+  return work.data.primaryCategory === category || work.data.alsoIn.includes(category);
+}
+
 export function byCategory(works: Work[], category: Category): Work[] {
-  return works.filter((w) => w.data.primaryCategory === category);
+  return works.filter((w) => inCategory(w, category));
 }
 
 /** Counts for every category, including empty ones, in site-wide order. */
 export function categoryCounts(works: Work[]): Array<{ category: Category; count: number }> {
   return CATEGORIES.map((category) => ({
     category,
-    count: works.filter((w) => w.data.primaryCategory === category).length,
+    count: works.filter((w) => inCategory(w, category)).length,
   }));
 }
 

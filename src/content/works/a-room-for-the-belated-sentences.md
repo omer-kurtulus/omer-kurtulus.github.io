@@ -3,6 +3,8 @@ title: A Room For The Belated Sentences
 year: 2026
 date: 2026-04-24T17:49:09Z
 primaryCategory: ai
+alsoIn:
+  - electroacoustic
 secondaryTags:
   - SoMax 2
   - FluCoMa
