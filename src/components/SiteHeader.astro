@@ -1,7 +1,6 @@
 ---
-import { NAV, SITE } from '../config';
+import { AGORA, NAV, SITE } from '../config';
 import AgoraBadge from './AgoraBadge.astro';
-import { mailtoHref } from '../lib/contact';
 
 interface Props {
   isHome?: boolean;
@@ -35,13 +34,9 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 
     <div class="site__agora">
       <AgoraBadge />
-      {
-        SITE.email && (
-          <a class="commission" href={mailtoHref({ to: SITE.email, subject: 'Commission enquiry' })}>
-            Commission a new work →
-          </a>
-        )
-      }
+      <a class="commission" href={AGORA.commissionUrl} rel="noopener noreferrer" target="_blank">
+        Commission a new work →
+      </a>
     </div>
     </div>
 
@@ -80,8 +75,8 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
     gap: var(--space-2xs);
   }
 
-  /* The way to commission a work — under the badge, and separate from it:
-     the badge goes to the Agora, this line writes to Ömer. */
+  /* The way to commission a work — under the badge: opens the commission
+     form on the Agora with Ömer already chosen as the composer. */
   .commission {
     padding-top: var(--space-2xs);
     border-top: var(--rule-thin) solid var(--color-line);

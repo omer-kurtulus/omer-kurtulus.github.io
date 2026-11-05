@@ -33,6 +33,9 @@ export const AGORA = {
   name: 'The Agora of New Music',
   url: 'https://theagoraofnewmusic.com',
   email: 'info@theagoraofnewmusic.com',
+  /** Ömer's composer profile on the Agora, and its commission form with him already chosen. */
+  profileUrl: 'https://theagoraofnewmusic.com/composers/omer-kurtulus/',
+  commissionUrl: 'https://theagoraofnewmusic.com/commission-offer/?composer=omer-kurtulus',
   role: 'Founder',
   since: 2026,
   blurb:
