@@ -22,7 +22,9 @@ every work page has a ready-made message for that.
 
 ## The Agora of New Music
 
-I founded [The Agora of New Music](https://theagoraofnewmusic.com), a free
-meeting place where performers find new works to play and composers find
-performers — no prizes, no juries, no entry fees. For anything about the Agora,
-write to [info@theagoraofnewmusic.com](mailto:info@theagoraofnewmusic.com).
+[The Agora of New Music](https://theagoraofnewmusic.com) is a free meeting
+place for composers and performers of contemporary music, which I started in
+2026: performers find new works to play, and composers find people to play
+theirs — with no prizes, no juries and no entry fees. If you would like to know
+more about it, the Agora is always glad to hear from you at
+[info@theagoraofnewmusic.com](mailto:info@theagoraofnewmusic.com).
