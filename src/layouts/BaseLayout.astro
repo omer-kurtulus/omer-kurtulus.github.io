@@ -58,6 +58,8 @@ const personLd = {
 
     <script is:inline type="application/ld+json" set:html={JSON.stringify(personLd)} />
     {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <!-- Cloudflare Web Analytics: çerezsiz ziyaretçi sayacı (site Cloudflare'den geçmediği için elle eklenir). -->
+    <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc19a6d3dc944b318f4291854e12dc77"}'></script>
   </head>
 
   <body>
