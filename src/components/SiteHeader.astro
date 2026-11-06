@@ -62,24 +62,25 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
     border-bottom: var(--rule-thick) solid var(--color-text);
   }
 
-  /* The Agora badge has its own column, right of the tagline, behind a
-     hairline — it never shares space with the text. On narrow screens it
-     moves above the name, aligned right. */
+  /* The Agora badge. On phones and tablets it is a quiet strip under the
+     tagline — mark and "Founder" on the left, the commission link on the
+     right — so the name stays the first thing on the page. From 64rem it
+     takes its own column, right of the tagline, behind a hairline. */
   .site__agora {
-    order: -1;
     grid-column: 1 / -1;
-    justify-self: end;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-2xs);
+    justify-content: space-between;
+    gap: var(--space-xs) var(--space-s);
+    margin-top: var(--space-xs);
+    padding-top: var(--space-xs);
+    border-top: var(--rule-thin) solid var(--color-line);
   }
 
-  /* The way to commission a work — under the badge: opens the commission
-     form on the Agora with Ömer already chosen as the composer. */
+  /* The way to commission a work: opens the commission form on the Agora
+     with Ömer already chosen as the composer. */
   .commission {
-    padding-top: var(--space-2xs);
-    border-top: var(--rule-thin) solid var(--color-line);
     font-size: var(--step--2);
     font-weight: 700;
     letter-spacing: 0.12em;
@@ -95,12 +96,23 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 
   @media (min-width: 64rem) {
     .site__agora {
-      order: 0;
       grid-column: auto;
       align-self: stretch;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: center;
       justify-content: flex-start;
+      gap: var(--space-2xs);
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
       padding-left: var(--space-m);
       border-left: var(--rule-thin) solid var(--color-line);
+    }
+
+    .commission {
+      padding-top: var(--space-2xs);
+      border-top: var(--rule-thin) solid var(--color-line);
     }
   }
 
