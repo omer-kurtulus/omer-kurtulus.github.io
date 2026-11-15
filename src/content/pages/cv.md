@@ -39,7 +39,8 @@ Principal instructors: Emel Çelebioğlu, Özkan Manav
 KEAR Electroacoustic Residency) · Commission: *an arche*, Liam Battle — cello, three
 performers, quadraphonic diffusion and light · Commission: *Fazz*, Mikayla Farmer — oboe,
 electronics and light · Commission: *Yörüngeler*, Duo Latitude — two saxophones and
-fixed media
+fixed media · Commission: *Assemblage*, Markus Wenninger — disassembled
+flute and electronics
 
 **2025** — Selected Composer, Toledo Symphony Orchestra (*Animal*) · Commission:
 *Focus*, FLYDLPHN Ensemble · Selected Composer, Flash Mass / Siteworks, Ensemble
