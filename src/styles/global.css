@@ -4,9 +4,10 @@
    A white room. Small, calm type; a great deal of space; nothing that is not
    information. No boxes, no shadows, no ornament. Every section is set the
    same way — a quiet label on the left, what it names on the right — and
-   every change from one part to the next is marked by a short red line.
-   Red is also the line the repertoire runs under; selected text turns yellow.
-   Those two are the only colours.
+   every change from one part to the next is marked by a short electric-blue
+   line. Blue is also the line the repertoire runs under; selected text turns
+   yellow. The ground is a light grey, so the site never reads as the white
+   paper, black and red of The Agora of New Music.
 
    The one picture is the repertoire: in a narrow column at the right edge, one
    of Ömer's scores runs past as the page goes down, exactly as engraved.
@@ -60,14 +61,30 @@
 :root {
   color-scheme: light;
 
-  --white: #ffffff;
+  /* The palette. Every colour on the site comes from these few names, so the
+     whole site can be recoloured here (and, in a test build, by the palette
+     trial). */
+  /* Light grey and electric blue, chosen by Ömer on the test site
+     (15 Nov 2026) so the site is clearly not the Agora. */
+  --ground: #e7e7e5;
   --ink: #111111;
-  --grey: #8a8a8a;
-  --hair: #e8e8e8;
-  /* A clear signal red — not the Agora's dark crimson — and a highlighter
-     yellow used only behind selected text. */
-  --red: #e3241b;
+  --grey: #6e6e6b;
+  --hair: #d0d0cd;
+  /* The short lines between parts and the line the repertoire runs under. */
+  --line: #1f3cff;
+  /* Behind selected text (his request: yellow, the words stay black). */
   --yellow: #ffe14a;
+  --select-ink: #111111;
+  /* The Agora box in the header: a filled block a shade darker than the
+     ground, not a thin outlined box like the Agora's own. */
+  --panel: #d9d9d6;
+  --panel-line: transparent;
+  /* Half-transparent ground, for small labels laid over the score. */
+  --glass: rgba(231, 231, 229, 0.9);
+  /* How the engraved score sits on the ground: as it is on a light ground,
+     turned light-on-dark on a dark one. */
+  --score-filter: none;
+  --score-blend: multiply;
 
   --face: 'Hanken Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
@@ -109,7 +126,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  background: var(--white);
+  background: var(--ground);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -122,7 +139,7 @@ html {
 
 body {
   min-height: 100vh;
-  background: var(--white);
+  background: var(--ground);
   color: var(--ink);
   font-family: var(--face);
   font-size: var(--fs);
@@ -167,7 +184,7 @@ h4 {
 /* Selected text is highlighted yellow; the words stay black. */
 ::selection {
   background: var(--yellow);
-  color: var(--ink);
+  color: var(--select-ink);
 }
 
 :focus-visible {
@@ -192,7 +209,7 @@ h4 {
   z-index: 100;
   padding: 0.5rem 0.8rem;
   background: var(--ink);
-  color: var(--white);
+  color: var(--ground);
   transform: translateY(-250%);
 }
 
@@ -229,8 +246,8 @@ h4 {
   margin-top: var(--sec);
 }
 
-/* Every change from one part to the next: a short red line, halfway down the
-   space between them. */
+/* Every change from one part to the next: a short blue line, halfway down
+   the space between them. */
 .sec::before {
   content: '';
   position: absolute;
@@ -238,7 +255,7 @@ h4 {
   left: var(--pad);
   width: 2.75rem;
   height: 2px;
-  background: var(--red);
+  background: var(--line);
   pointer-events: none;
 }
 
@@ -335,7 +352,7 @@ h4 {
 }
 
 /* A list of entries, one under another with room between them, and a
-   shorter red line between each two. */
+   shorter blue line between each two. */
 .entries {
   display: grid;
   gap: 2.4rem;
@@ -352,7 +369,7 @@ h4 {
   left: 0;
   width: 1.1rem;
   height: 1px;
-  background: var(--red);
+  background: var(--line);
 }
 
 .entries--small {
@@ -604,7 +621,7 @@ h4 {
   height: 15vh;
   min-height: 6rem;
   overflow: hidden;
-  background: var(--white);
+  background: var(--ground);
   border-bottom: 1px solid var(--hair);
 }
 
@@ -614,19 +631,21 @@ h4 {
   width: auto;
   max-width: none;
   margin-top: -15%;
+  filter: var(--score-filter);
+  mix-blend-mode: var(--score-blend);
   will-change: transform;
   user-select: none;
   -webkit-user-drag: none;
 }
 
-/* The line it runs under, in red. */
+/* The line it runs under, in blue. */
 .score__head {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 30%;
   width: 2px;
-  background: var(--red);
+  background: var(--line);
   pointer-events: none;
 }
 
@@ -636,7 +655,7 @@ h4 {
   bottom: 0.4rem;
   max-width: 60%;
   padding: 0.1rem 0.35rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--glass);
   color: var(--grey);
   font-size: 0.6875rem;
   line-height: 1.35;

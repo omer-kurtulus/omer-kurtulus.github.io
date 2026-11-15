@@ -80,10 +80,12 @@ against `src/content/series/` at build time.
 ## Design
 
 A white gallery. Small, calm type, a great deal of space, nothing that is not
-information: no boxes, no shadows, no ornament. Every change from one part to
-the next is marked by a short red line (`.sec::before`, and a shorter one
-between entries); red is also the line the repertoire runs under, and selected
-text is highlighted yellow. Those are the only colours. Every section is set
+information: no shadows, no ornament. A light grey ground with near-black text;
+every change from one part to the next is marked by a short electric-blue line
+(`.sec::before`, and a shorter one between entries); blue is also the line the
+repertoire runs under, and selected text is highlighted yellow. Every colour is
+a name in `:root` (`--ground`, `--ink`, `--grey`, `--hair`, `--line`,
+`--yellow`, `--panel`, …), so the palette is changed in one place. Every section is set
 the same way — a quiet grey label on the left, what it names on the right
 (`.sec`, `.sec__label`, `.sec__body` in `src/styles/global.css`). Works and
 events are entries: a title, a grey line saying what and when, and what it is.
