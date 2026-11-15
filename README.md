@@ -81,8 +81,8 @@ against `src/content/series/` at build time.
 
 A white gallery. Small, calm type, a great deal of space, nothing that is not
 information: no shadows, no ornament. A pale sage ground with dark green-black
-text; every change from one part to the next is marked by a short violet line
-(`.sec::before`, and a shorter one between entries); violet is also the line
+text; every change from one part to the next is marked by a short orange line
+(`.sec::before`, and a shorter one between entries); orange is also the line
 the repertoire runs under, and selected text is highlighted yellow. Every colour is
 a name in `:root` (`--ground`, `--ink`, `--grey`, `--hair`, `--line`,
 `--yellow`, `--panel`, …), so the palette is changed in one place. Every section is set
