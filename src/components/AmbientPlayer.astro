@@ -25,7 +25,7 @@ const embedSrc = soundcloudEmbedSrc(url, { autoPlay: false });
   tabindex="-1"
   aria-hidden="true"></iframe>
 
-<button class="ambient-toggle" type="button" data-ambient-toggle aria-pressed="false" hidden>
+<button class="ambient-toggle" type="button" data-ambient-toggle aria-pressed="false" title={label} hidden>
   <span class="ambient-toggle__icon" aria-hidden="true" data-ambient-icon>▶</span>
   <span class="ambient-toggle__label">{label}</span>
   <span class="visually-hidden" data-ambient-state>play</span>
@@ -43,40 +43,46 @@ const embedSrc = soundcloudEmbedSrc(url, { autoPlay: false });
     pointer-events: none;
   }
 
+  /* The site's track: a few small words in the corner of the repertoire,
+     never over the text. */
   .ambient-toggle {
     position: fixed;
-    left: var(--space-s);
-    bottom: var(--space-s);
-    z-index: 10;
+    right: 0.5rem;
+    top: 0.5rem;
+    z-index: 45;
     display: inline-flex;
     align-items: center;
-    gap: 0.5em;
-    padding: 0.45rem 0.8rem;
-    border: var(--rule-thin) solid var(--color-text);
-    background: var(--color-background);
-    color: var(--color-text);
-    font: inherit;
-    font-size: var(--step--2);
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    gap: 0.4em;
+    padding: 0.2rem 0.45rem;
+    border: 0;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--ink);
+    font-family: var(--face);
+    font-size: 0.75rem;
+    line-height: 1.3;
     cursor: pointer;
-    transition: background 100ms linear, color 100ms linear;
   }
 
-  .ambient-toggle:hover,
-  .ambient-toggle[aria-pressed='true'] {
-    background: var(--color-text);
-    color: var(--color-background);
+  .ambient-toggle__icon {
+    font-size: 0.8em;
+  }
+
+  .ambient-toggle:hover .ambient-toggle__label,
+  .ambient-toggle[aria-pressed='true'] .ambient-toggle__label {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
   }
 
   .ambient-toggle[hidden] {
     display: none;
   }
 
-  /* Room under the footer so the fixed button never covers its last lines. */
-  :global(.page) {
-    padding-bottom: calc(var(--space-s) * 2 + 2.5rem);
+  @media (min-width: 64rem) {
+    .ambient-toggle {
+      right: 0.75rem;
+      top: 0.75rem;
+      font-size: 0.8125rem;
+    }
   }
 </style>
 

@@ -1,8 +1,8 @@
 ---
 /**
- * Top-right badge: the mark of The Agora of New Music with "Founder" beneath,
- * linking to the Agora. Black and white like the rest of the site, with the
- * mark's orchestra dot and stage line in red. Founder only — never "editor".
+ * The mark of The Agora of New Music with "Founder" beside it, linking to the
+ * Agora: small, black, with the mark's own red orchestra dot and stage line.
+ * Founder only — never "editor".
  *
  * The mark is the Agora's own: five staff lines become the five tiers of an
  * ancient theatre seen from above, cut by radial aisles; the dot is the
@@ -52,18 +52,17 @@ const segments = radii.flatMap((r) => {
 <style>
   .agora {
     --agora-red: #d0021b;
-    display: inline-grid;
-    justify-items: center;
-    gap: 0.2rem;
-    color: var(--color-text);
-    text-align: center;
-    line-height: 1.2;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.2rem 0.45rem;
+    color: var(--ink);
+    line-height: 1.3;
   }
 
   .agora__mark {
-    width: 2.6rem;
+    width: 1.5rem;
     height: auto;
-    transition: transform 150ms ease;
   }
 
   .agora__dot {
@@ -75,43 +74,12 @@ const segments = radii.flatMap((r) => {
   }
 
   .agora__role {
-    font-size: var(--step--2);
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--agora-red);
+    color: var(--grey);
   }
 
-  .agora__name {
-    font-size: var(--step--2);
-    letter-spacing: 0.04em;
-    color: var(--color-muted);
-    transition: color 100ms linear;
-  }
-
-  .agora:hover .agora__name,
-  .agora:focus-visible .agora__name {
-    color: var(--color-text);
-  }
-
-  .agora:hover .agora__mark {
-    transform: translateY(-1px);
-  }
-
-  /* Narrow screens: one compact row — the mark, then "Founder" over the name. */
-  @media (max-width: 63.99rem) {
-    .agora {
-      grid-template-columns: auto auto;
-      justify-items: start;
-      align-items: center;
-      column-gap: 0.6rem;
-      row-gap: 0.1rem;
-      text-align: left;
-    }
-
-    .agora__mark {
-      grid-row: 1 / span 2;
-      width: 2.2rem;
-    }
+  .agora:hover .agora__name {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
   }
 </style>

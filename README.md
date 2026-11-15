@@ -63,8 +63,11 @@ src/
   components/            SiteHeader, SiteFooter, WorkRow, PageHeader, SoundCloudPlayer
   pages/                 routes
   styles/global.css      the entire design system
-public/fonts/            JetBrains Mono, self-hosted
-scripts/                 new-work.mjs, check-content.mjs
+assets/fonts/           Hanken Grotesk — self-hosted
+  assets/score/           the score strips
+  lib/paths.ts            href(): base-aware internal links
+  lib/score.ts            which score strip a page gets
+scripts/                 new-work.mjs, check-content.mjs, make-strips.py
 ```
 
 ### Content model
@@ -76,22 +79,36 @@ against `src/content/series/` at build time.
 
 ## Design
 
-Contemporary Bauhaus: a modular twelve-column grid, strong typographic hierarchy,
-controlled asymmetry, wide negative space, editorial catalogue discipline.
+A white gallery. Small, calm type, a great deal of space, nothing that is not
+information: no boxes, no shadows, no ornament. Every change from one part to
+the next is marked by a short red line (`.sec::before`, and a shorter one
+between entries); red is also the line the repertoire runs under, and selected
+text is highlighted yellow. Those are the only colours. Every section is set
+the same way — a quiet grey label on the left, what it names on the right
+(`.sec`, `.sec__label`, `.sec__body` in `src/styles/global.css`). Works and
+events are entries: a title, a grey line saying what and when, and what it is.
 
-There is no photography, notation, waveform or musical iconography anywhere.
-Ornament is CSS-only geometry. Categories are distinguished by rule weight,
-geometric mark, numbering and spacing rather than by colour — the single accent
-(matte oxide red, `#873B32`) is used sparingly.
+The one picture is the repertoire: in a narrow column at the right edge (a low
+band across the top on a phone) one of Ömer's scores runs past under a thin
+line as the page is scrolled (`BaseLayout.astro`). `scripts/make-strips.py`
+builds the strips straight from the score PDFs, trimming only the running head
+and foot; `src/lib/score.ts` picks one per page. They are not the scores of the
+works whose pages they run beside, and the caption under the column says so.
 
-Typography is **JetBrains Mono**, used for the entire site. Every glyph carries
-the same advance width, so the catalogue sets itself: numbers, durations and
-years fall into columns without any tabular feature, and every label lands on the
-same rhythm. It is variable across weights 100–800 with a true italic, so
-hierarchy uses weight alongside size, case, letter-spacing and space.
+Typeface: **Hanken Grotesk** (chosen by Ömer on the test site from five
+candidates), self-hosted.
 
-The palette and every token live in `src/styles/global.css`, with a dark-mode
-block driven by `prefers-color-scheme`.
+### Test publication
+
+Every internal link goes through `href()` (`src/lib/paths.ts`), so the same
+code can be built for a subfolder without touching the live site:
+
+```bash
+SITE_BASE=/test/ SITE_TEST=1 npx astro build --outDir dist-test
+```
+
+`SITE_TEST=1` adds `noindex`, and leaves out the sitemap and the visitor
+counter. Delete `dist-test/CNAME` before publishing a test build anywhere.
 
 ## Deployment
 
@@ -101,5 +118,5 @@ publishes it to GitHub Pages. Nothing is deployed by hand.
 ## Licence
 
 Site code: MIT. Music, program notes, recordings and all other content:
-© Ömer Kurtuluş, all rights reserved. JetBrains Mono is used under the SIL Open Font
-License 1.1 — see `public/fonts/LICENSE.txt`.
+© Ömer Kurtuluş, all rights reserved. Hanken Grotesk is used under the SIL Open Font
+License 1.1 — see the `OFL-*.txt` files in `src/assets/fonts/`.

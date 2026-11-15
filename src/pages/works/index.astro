@@ -35,16 +35,16 @@ let running = 0;
     index={String(works.length).padStart(2, '0')}
   />
 
-  <section class="section--tight shell" aria-label="Filter by category">
-    <ul class="filters">
+  <section class="shell sec" aria-label="Filter by category">
+    <p class="sec__label">Fields</p>
+    <ul class="sec__body filters">
       {
         counts.map(({ category, count }) => (
           <li>
-            <a class="filter" href={categoryPath(category)}>
-              <span class:list={['mark', `mark--${category}`]} aria-hidden="true" />
-              <span class="filter__label">{CATEGORY_META[category].short}</span>
-              <span class="filter__count index">{String(count).padStart(2, '0')}</span>
+            <a class="link" href={categoryPath(category)}>
+              {CATEGORY_META[category].short}
             </a>
+            <span class="filters__count index"> {String(count).padStart(2, '0')}</span>
           </li>
         ))
       }
@@ -53,15 +53,16 @@ let running = 0;
 
   {
     albums.length > 0 && (
-      <section class="section--tight shell" aria-labelledby="albums-heading">
-        <h2 id="albums-heading" class="eyebrow albums__heading">
+      <section class="shell sec" aria-labelledby="albums-heading">
+        <h2 id="albums-heading" class="sec__label">
           Albums and projects
         </h2>
-        <ul class="albums">
+        <ul class="sec__body entries">
           {albums.map(({ album, members }) => (
-            <li class="album">
-              <a class="album__link" href={seriesPath(album.id)}>
-                <span class="album__head">
+            <li>
+              <a class="album" href={seriesPath(album.id)}>
+                <span class="album__name title-m">{album.data.title}</span>
+                <span class="album__line">
                   <span class="index">
                     {String(members.length).padStart(2, '0')} works
                     {album.data.ongoing && ' so far'}
@@ -70,11 +71,8 @@ let running = 0;
                     {album.data.ongoing ? `${album.data.year} — ongoing` : album.data.year}
                   </span>
                 </span>
-                <span class="album__name title-m">{album.data.title}</span>
                 {album.data.summary && <span class="album__summary">{album.data.summary}</span>}
-                <span class="album__members meta meta--tight">
-                  {members.map((m) => m.data.title).join(' · ')}
-                </span>
+                <span class="album__members small">{members.map((m) => m.data.title).join(' · ')}</span>
               </a>
             </li>
           ))}
@@ -83,141 +81,80 @@ let running = 0;
     )
   }
 
-  <div class="shell">
-    {
-      years.map(({ year, works: entries }) => {
-        const start = running;
-        running += entries.length;
-        return (
-          <section class="year" aria-labelledby={`year-${year}`}>
-            <div class="year__head">
-              <h2 id={`year-${year}`} class="year__label eyebrow">
-                {year}
-              </h2>
-              <span class="index">{String(entries.length).padStart(2, '0')}</span>
-            </div>
-            <div class="year__list">
-              {entries.map((work, i) => (
-                <WorkRow work={work} index={start + i} />
-              ))}
-            </div>
-          </section>
-        );
-      })
-    }
-  </div>
+  {
+    years.map(({ year, works: entries }) => {
+      const start = running;
+      running += entries.length;
+      return (
+        <section class="shell sec" aria-labelledby={`year-${year}`}>
+          <div class="sec__label">
+            <h2 id={`year-${year}`} class="year__label">
+              {year}
+            </h2>
+            <span class="index">{String(entries.length).padStart(2, '0')}</span>
+          </div>
+          <div class="sec__body entries">
+            {entries.map((work, i) => (
+              <WorkRow work={work} index={start + i} />
+            ))}
+          </div>
+        </section>
+      );
+    })
+  }
 </BaseLayout>
 
 <style>
   .filters {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2xs);
+    gap: 0.3rem 1.75rem;
   }
 
-  .filter {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2xs);
-    padding: var(--space-2xs) var(--space-xs);
-    border: var(--rule-thin) solid var(--color-line);
-    font-size: var(--step--2);
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    transition: border-color 100ms linear, color 100ms linear;
-  }
-
-  .filter:hover {
-    border-color: var(--color-text);
-  }
-
-  .filter__count {
-    color: var(--color-muted);
-  }
-
-  .albums__heading {
-    padding-bottom: var(--space-s);
-  }
-
-  .albums {
-    border-bottom: var(--rule-thin) solid var(--color-line);
-  }
-
-  @media (min-width: 48rem) {
-    .albums {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: var(--grid-gap);
-      border-bottom: 0;
-    }
+  .filters__count {
+    color: var(--grey);
   }
 
   .album {
-    border-top: var(--rule-thick) solid var(--color-text);
-  }
-
-  .album__link {
-    display: block;
-    height: 100%;
-    padding-right: var(--space-s);
-    padding-block: var(--space-s);
-    transition: background-color 120ms linear;
-  }
-
-  .album__link:hover {
-    background-color: var(--color-surface);
-  }
-
-  .album__head {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-s);
-    margin-bottom: var(--space-s);
-    text-transform: uppercase;
-  }
-
-  .album__link:hover .album__head {
-    color: var(--color-text);
+    display: grid;
+    gap: 0.2rem;
+    max-width: 62ch;
   }
 
   .album__name {
-    display: block;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    transition: text-decoration-color 140ms ease;
+  }
+
+  .album:hover .album__name {
+    text-decoration-color: currentColor;
+  }
+
+  .album__line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.45rem;
+    color: var(--grey);
+  }
+
+  .album__line > * + *::before {
+    content: '·';
+    margin-right: 0.45rem;
   }
 
   .album__summary {
-    display: block;
-    max-width: 57ch;
-    margin-top: var(--space-xs);
-    font-size: var(--step--1);
-    line-height: 1.5;
-    color: var(--color-muted);
+    margin-top: 0.35rem;
   }
 
   .album__members {
-    display: block;
-    margin-top: var(--space-s);
-  }
-
-  .year {
-    padding-bottom: var(--space-l);
-  }
-
-  .year__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-m);
-    padding-block: var(--space-s);
-    border-top: var(--rule-thick) solid var(--color-text);
+    color: var(--grey);
   }
 
   .year__label {
-    color: var(--color-text);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .year__list {
-    border-bottom: var(--rule-thin) solid var(--color-line);
+    color: var(--ink);
+    font-weight: 600;
   }
 </style>

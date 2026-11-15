@@ -1,5 +1,6 @@
 ---
 import { AGORA, NAV, SITE } from '../config';
+import { href, routeOf } from '../lib/paths';
 import AgoraBadge from './AgoraBadge.astro';
 
 interface Props {
@@ -7,193 +8,114 @@ interface Props {
 }
 
 const { isHome = false } = Astro.props;
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+const path = routeOf(Astro.url.pathname);
+const isActive = (target: string) => path === target || path.startsWith(`${target}/`);
 ---
 
-<header class="site">
-  <div class="shell">
-    <div class="site__top">
+{
+  /* The name on the left; the five rooms of the site listed beside it; the
+     Agora and the way to commission a work at the far side. */
+}
+<header class="shell head">
+  <div class="head__id">
     {
-      /* The name is the page's h1 on the home page and a link everywhere else,
-         so every page carries the same masthead without claiming two h1s. */
       isHome ? (
-        <h1 class="site__h1">
-          <a class="brand" href="/">
-            {SITE.name}
-          </a>
+        <h1 class="head__name">
+          <a href={href('/')}>{SITE.name}</a>
         </h1>
       ) : (
-        <a class="brand" href="/" aria-current={path === '/' ? 'page' : undefined}>
+        <a class="head__name" href={href('/')}>
           {SITE.name}
         </a>
       )
     }
+    <p class="head__role">{SITE.role}</p>
+  </div>
 
-    <p class="tagline">{SITE.tagline}</p>
+  <nav class="head__nav" aria-label="Primary">
+    {
+      NAV.map((item) => (
+        <a class="head__item" href={href(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
 
-    <div class="site__agora">
-      <AgoraBadge />
-      <a class="commission" href={AGORA.commissionUrl} rel="noopener noreferrer" target="_blank">
-        Commission a new work →
-      </a>
-    </div>
-    </div>
-
-    <nav class="tabs" aria-label="Primary">
-      {
-        NAV.map((item) => (
-          <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
-            {item.label}
-          </a>
-        ))
-      }
-    </nav>
+  <div class="head__agora">
+    <AgoraBadge />
+    <a class="link" href={AGORA.commissionUrl} rel="noopener noreferrer" target="_blank">
+      Commission a new work →
+    </a>
   </div>
 </header>
 
 <style>
-  /* Two-pixel black bar under the masthead, the way the open call sets it.
-     Not sticky: the page is one column and the nav is four lines from the top
-     of every screen anyway. */
-  .site {
-    padding-top: var(--space-m);
-    margin-bottom: var(--space-m);
-    border-bottom: var(--rule-thick) solid var(--color-text);
-  }
-
-  /* The Agora badge. On phones and tablets it is a quiet strip under the
-     tagline — mark and "Founder" on the left, the commission link on the
-     right — so the name stays the first thing on the page. From 64rem it
-     takes its own column, right of the tagline, behind a hairline. */
-  .site__agora {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-xs) var(--space-s);
-    margin-top: var(--space-xs);
-    padding-top: var(--space-xs);
-    border-top: var(--rule-thin) solid var(--color-line);
-  }
-
-  /* The way to commission a work: opens the commission form on the Agora
-     with Ömer already chosen as the composer. */
-  .commission {
-    font-size: var(--step--2);
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-text);
-    white-space: nowrap;
-    transition: color 100ms linear;
-  }
-
-  .commission:hover {
-    color: #d0021b;
-  }
-
-  @media (min-width: 64rem) {
-    .site__agora {
-      grid-column: auto;
-      align-self: stretch;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      align-items: center;
-      justify-content: flex-start;
-      gap: var(--space-2xs);
-      margin-top: 0;
-      padding-top: 0;
-      border-top: 0;
-      padding-left: var(--space-m);
-      border-left: var(--rule-thin) solid var(--color-line);
-    }
-
-    .commission {
-      padding-top: var(--space-2xs);
-      border-top: var(--rule-thin) solid var(--color-line);
-    }
-  }
-
-  /* Name and tagline sit across the page, the tabs on the rule under them. */
-  .site__top {
+  .head {
     display: grid;
-    gap: var(--space-2xs) var(--grid-gap);
-    align-items: end;
-    margin-bottom: var(--space-s);
+    gap: 1.25rem var(--col-gap);
+    padding-top: 1.75rem;
   }
 
-  @media (min-width: 56rem) {
-    .site__top {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  @media (min-width: 52rem) {
+    .head {
+      grid-template-columns: var(--label) minmax(0, 1fr) auto;
+      align-items: start;
     }
   }
 
-  /* Wide enough for three columns: the badge takes its own, right of the tagline. */
-  @media (min-width: 64rem) {
-    .site__top {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr) auto;
-      column-gap: var(--space-l);
-    }
+  .head__name {
+    font-weight: 500;
   }
 
-  .site__h1 {
-    font-size: inherit;
-    font-weight: inherit;
-    line-height: inherit;
-    letter-spacing: inherit;
+  .head__role {
+    color: var(--grey);
   }
 
-  .brand {
-    display: block;
-    font-size: var(--step-4);
-    font-weight: 700;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-    margin-bottom: var(--space-2xs);
-  }
-
-  .tagline {
-    margin: 0;
-    max-width: 48ch;
-    color: var(--color-muted);
-    font-size: var(--step--1);
-    line-height: 1.5;
-  }
-
-  @media (min-width: 56rem) {
-    .tagline {
-      padding-bottom: 0.5em;
-    }
-  }
-
-  .tabs {
+  /* The rooms: one under another on a desk, in a line on a phone. */
+  .head__nav {
     display: flex;
     flex-wrap: wrap;
-    gap: 0 var(--space-s);
+    gap: 0.15rem 1.25rem;
   }
 
-  .tabs a {
-    display: block;
-    padding: 0.55rem 0;
-    color: var(--color-muted);
-    font-size: var(--step--2);
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    border-bottom: 3px solid transparent;
-    /* Sits the active underline on the masthead bar rather than above it. */
-    margin-bottom: calc(var(--rule-thick) * -1);
-    transition: color 100ms linear;
+  @media (min-width: 52rem) {
+    .head__nav {
+      flex-direction: column;
+    }
   }
 
-  .tabs a:hover {
-    color: var(--color-text);
+  .head__item {
+    justify-self: start;
+    width: max-content;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color 140ms ease;
   }
 
-  .tabs a[aria-current='page'] {
-    color: var(--color-text);
-    border-bottom-color: var(--color-text);
+  .head__item:hover {
+    text-decoration-color: var(--hair);
+  }
+
+  .head__item[aria-current='page'] {
+    text-decoration-color: currentColor;
+  }
+
+  /* The Agora and the way to commission a work, together in a box. */
+  .head__agora {
+    display: grid;
+    gap: 0.4rem;
+    justify-items: start;
+    justify-self: start;
+    padding: 0.75rem 0.95rem 0.8rem;
+    border: 1px solid var(--ink);
+  }
+
+  @media (min-width: 52rem) {
+    .head__agora {
+      justify-self: end;
+    }
   }
 </style>

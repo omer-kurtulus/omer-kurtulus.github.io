@@ -1,120 +1,101 @@
 ---
 import { AGORA, FOLLOW, NAV, PROFILES, SITE } from '../config';
+import { href } from '../lib/paths';
 
 const year = new Date().getFullYear();
 ---
 
-<footer class="site">
-  <div class="shell">
-    <div class="colophon">
-    <div class="colophon__id">
-      <p class="colophon__name">{SITE.name} — {SITE.role}</p>
-      <p class="colophon__agora">
-        {AGORA.role}, <a href={AGORA.url} rel="noopener noreferrer" target="_blank">{AGORA.name}</a>
+<footer class="shell foot">
+  <p class="foot__legal">{`© ${year} ${SITE.name}`}</p>
+
+  <div class="foot__body">
+    <div class="foot__id">
+      <p>{`${SITE.name} — ${SITE.role}`}</p>
+      <p class="foot__tagline">{SITE.tagline}</p>
+      <p class="foot__agora">
+        {AGORA.role}, <a class="link" href={AGORA.url} rel="noopener noreferrer" target="_blank">{AGORA.name}</a>
       </p>
-      {SITE.email && <p class="colophon__email"><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>}
+      {SITE.email && <p><a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a></p>}
     </div>
 
-    <nav class="colophon__row" aria-label="Footer">
-      {NAV.map((item) => <a href={item.href}>{item.label}</a>)}
+    <nav class="foot__col" aria-label="Footer">
+      {NAV.map((item) => <a class="link" href={href(item.href)}>{item.label}</a>)}
     </nav>
 
-    <div class="colophon__row">
+    <div class="foot__col">
       {
         PROFILES.map((profile) => (
-          <a href={profile.url} rel="me noopener noreferrer" target="_blank">
+          <a class="link" href={profile.url} rel="me noopener noreferrer" target="_blank">
             {profile.label}
           </a>
         ))
       }
-      <a href={FOLLOW.url} rel="noopener noreferrer" target="_blank">{FOLLOW.label}</a>
-    </div>
-
-    <p class="colophon__legal">© {year} {SITE.name}</p>
+      <a class="link" href={FOLLOW.url} rel="noopener noreferrer" target="_blank">{FOLLOW.label}</a>
     </div>
   </div>
 </footer>
 
 <style>
-  /* The closing bar answers the masthead: same two pixels, same black. */
-  .site {
-    margin-top: var(--space-xl);
-    padding-bottom: var(--space-l);
-    font-size: var(--step--1);
-    line-height: 1.55;
-    color: var(--color-muted);
+  .foot {
+    position: relative;
+    display: grid;
+    gap: 1.25rem var(--col-gap);
+    margin-top: var(--sec);
+    padding-bottom: 4rem;
+    color: var(--grey);
+    font-size: var(--fs-s);
   }
 
-  .colophon {
-    border-top: var(--rule-thick) solid var(--color-text);
-    padding-top: var(--space-s);
+  .foot::before {
+    content: '';
+    position: absolute;
+    top: calc(var(--sec) * -0.5);
+    left: var(--pad);
+    width: 2.75rem;
+    height: 2px;
+    background: var(--red);
   }
 
-  @media (min-width: 56rem) {
-    .colophon {
-      display: grid;
-      grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 4fr);
-      column-gap: var(--grid-gap);
-    }
-
-    .colophon__row {
-      flex-direction: column;
-      gap: var(--space-2xs);
-    }
-
-    .colophon__legal {
-      grid-column: 1 / -1;
-      margin-top: var(--space-l);
+  @media (min-width: 52rem) {
+    .foot {
+      grid-template-columns: var(--label) minmax(0, 1fr);
     }
   }
 
-  .colophon__name {
-    color: var(--color-text);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin-bottom: var(--space-xs);
+  .foot__body {
+    display: grid;
+    gap: 1.5rem var(--col-gap);
   }
 
-  .colophon__agora,
-  .colophon__email {
-    margin-bottom: var(--space-2xs);
+  @media (min-width: 44rem) {
+    .foot__body {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+    }
   }
 
-  .colophon__agora a,
-  .colophon__email a {
-    color: var(--color-text);
-    border-bottom: var(--rule-thin) solid var(--color-line);
-    transition: border-color 100ms linear;
+  .foot__id {
+    display: grid;
+    gap: 0.35rem;
+    align-content: start;
   }
 
-  .colophon__agora a:hover,
-  .colophon__email a:hover {
-    border-bottom-color: var(--color-text);
+  .foot__tagline {
+    max-width: 44ch;
   }
 
-  .colophon__row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.15rem var(--space-s);
-    margin-bottom: var(--space-2xs);
+  .foot__col {
+    display: grid;
+    gap: 0.2rem;
+    align-content: start;
+    justify-items: start;
   }
 
-  .colophon__row a {
-    font-size: var(--step--2);
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    transition: color 100ms linear;
+  .foot a:hover {
+    color: var(--ink);
   }
 
-  .colophon__row a:hover {
-    color: var(--color-text);
-  }
-
-  .colophon__legal {
-    margin-top: var(--space-m);
-    font-size: var(--step--2);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+  .foot__id :global(.link),
+  .foot__col :global(.link) {
+    overflow-wrap: anywhere;
   }
 </style>

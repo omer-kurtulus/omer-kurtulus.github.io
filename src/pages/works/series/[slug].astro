@@ -5,7 +5,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import WorkRow from '../../../components/WorkRow.astro';
 import PageHeader from '../../../components/PageHeader.astro';
 import { SITE } from '../../../config';
-import { getVisibleWorks, seriesMembers, type Work } from '../../../lib/works';
+import { getVisibleWorks, seriesMembers, workPath, type Work } from '../../../lib/works';
+import { href } from '../../../lib/paths';
 
 export const getStaticPaths = (async () => {
   const albums = await getCollection('series', ({ data }) => data.status !== 'draft');
@@ -35,7 +36,7 @@ const jsonLd = {
   track: works.map((work) => ({
     '@type': 'MusicComposition',
     name: work.data.title,
-    url: new URL(`/works/${work.data.slug ?? work.id}`, SITE.url).href,
+    url: new URL(workPath(work), SITE.url).href,
   })),
 };
 ---
@@ -54,58 +55,25 @@ const jsonLd = {
     }`}
   />
 
-  <div class="shell">
-    <div class="body grid">
-      <div class="body__main prose">
-        <Content />
-      </div>
+  <section class="shell sec">
+    <p class="sec__label">About</p>
+    <div class="sec__body prose">
+      <Content />
     </div>
+  </section>
 
-    <section aria-labelledby="album-works">
-      <div class="head">
-        <h2 id="album-works" class="eyebrow">Works in this album</h2>
-        <span class="index">{String(works.length).padStart(2, '0')}</span>
-      </div>
-      <div class="list">
+  <section class="shell sec" aria-labelledby="album-works">
+    <div class="sec__label">
+      <h2 id="album-works">Works in this album</h2>
+      <span class="index">{String(works.length).padStart(2, '0')}</span>
+    </div>
+    <div class="sec__body">
+      <div class="entries">
         {works.map((work, i) => <WorkRow work={work} index={i} hideSeries />)}
       </div>
-    </section>
-
-    <p class="back">
-      <a class="link link--strong" href="/works">All works →</a>
-    </p>
-  </div>
+      <p class="back">
+        <a class="link" href={href('/works')}>All works →</a>
+      </p>
+    </div>
+  </section>
 </BaseLayout>
-
-<style>
-  .body {
-    padding-block: var(--space-l);
-  }
-
-  .body__main {
-    grid-column: 1 / -1;
-  }
-
-  @media (min-width: 56rem) {
-    .body__main {
-      grid-column: 1 / 9;
-    }
-  }
-
-  .head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-m);
-    padding-block: var(--space-s);
-    border-top: var(--rule-thick) solid var(--color-text);
-  }
-
-  .list {
-    border-bottom: var(--rule-thin) solid var(--color-line);
-  }
-
-  .back {
-    padding-block: var(--space-xl);
-  }
-</style>

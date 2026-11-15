@@ -1,40 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { href } from '../lib/paths';
 ---
 
 <BaseLayout title="Not found" description="This page does not exist.">
-  <section class="shell notfound">
-    <p class="index">404</p>
-    <h1 class="title-l">Not found</h1>
-    <p class="notfound__lead">
-      This page does not exist. The catalogue is complete and browsable from Works.
-    </p>
-    <p class="notfound__links">
-      <a class="link link--strong" href="/works">Works →</a>
-      <a class="link" href="/">Home →</a>
-    </p>
+  <section class="shell sec notfound">
+    <p class="sec__label index">404</p>
+    <div class="sec__body">
+      <h1 class="title-l">Not found</h1>
+      <p class="notfound__lead">
+        This page does not exist. The catalogue is complete and browsable from Works.
+      </p>
+      <p class="notfound__links">
+        <a class="link link--strong" href={href('/works')}>Works →</a>
+        <a class="link" href={href('/')}>Home →</a>
+      </p>
+    </div>
   </section>
 </BaseLayout>
 
 <style>
   .notfound {
-    padding-block: var(--space-2xl);
-    max-width: 55ch;
-  }
-
-  .notfound h1 {
-    margin-top: var(--space-xs);
+    min-height: 50vh;
   }
 
   .notfound__lead {
-    margin-top: var(--space-m);
-    color: var(--color-muted);
+    max-width: 48ch;
+    margin-top: 1rem;
+    color: var(--grey);
   }
 
   .notfound__links {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-m);
-    margin-top: var(--space-l);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
   }
 </style>

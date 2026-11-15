@@ -1,116 +1,100 @@
 /* --------------------------------------------------------------------------
-   1. Typeface — Space Grotesk variable (OFL 1.1), self-hosted.
+   The gallery.
 
-   The same face the open call is set in, and now the same treatment: one
-   family, no italic, hierarchy carried entirely by weight, size, case,
-   tracking and space. Figures are held tabular by hand wherever they stack.
+   A white room. Small, calm type; a great deal of space; nothing that is not
+   information. No boxes, no shadows, no ornament. Every section is set the
+   same way — a quiet label on the left, what it names on the right — and
+   every change from one part to the next is marked by a short red line.
+   Red is also the line the repertoire runs under; selected text turns yellow.
+   Those two are the only colours.
+
+   The one picture is the repertoire: in a narrow column at the right edge, one
+   of Ömer's scores runs past as the page goes down, exactly as engraved.
    -------------------------------------------------------------------------- */
 
 @font-face {
-  font-family: 'Space Grotesk';
+  font-family: 'Hanken Grotesk';
   font-style: normal;
   font-weight: 300 700;
   font-display: swap;
-  src: url('/fonts/space-grotesk-latin.woff2') format('woff2');
+  src: url('../assets/fonts/hanken-grotesk-normal-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
     U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 @font-face {
-  font-family: 'Space Grotesk';
+  font-family: 'Hanken Grotesk';
   font-style: normal;
   font-weight: 300 700;
   font-display: swap;
-  src: url('/fonts/space-grotesk-latin-ext.woff2') format('woff2');
+  src: url('../assets/fonts/hanken-grotesk-normal-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
     U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
-    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: italic;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('../assets/fonts/hanken-grotesk-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: italic;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('../assets/fonts/hanken-grotesk-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 /* --------------------------------------------------------------------------
-   2. Tokens — the open call's black and white, extended to a catalogue.
-
-   The paper palette and its single red accent are gone. Nothing on the site
-   is coloured now: emphasis is black, recession is grey, and the only
-   remaining signals are rule weight, case and space. Dark mode is a straight
-   inversion rather than a second palette.
+   Tokens
    -------------------------------------------------------------------------- */
 
 :root {
-  --color-background: #ffffff;
-  --color-surface: #f4f4f2;
-  --color-text: #000000;
-  --color-muted: #565656;
-  --color-line: #cfcfcf;
-  /* Kept as a token so no rule has to be hunted down, but it is no longer a
-     colour — it resolves to the text black. */
-  --color-accent: #000000;
+  color-scheme: light;
 
-  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Helvetica, Arial, sans-serif;
+  --white: #ffffff;
+  --ink: #111111;
+  --grey: #8a8a8a;
+  --hair: #e8e8e8;
+  /* A clear signal red — not the Agora's dark crimson — and a highlighter
+     yellow used only behind selected text. */
+  --red: #e3241b;
+  --yellow: #ffe14a;
 
-  /* Space Grotesk has a tall x-height, so the same nominal size reads larger
-     than a system sans; the scale is set for it. Fixed rather than fluid —
-     a 43rem column does not need the text to breathe with the viewport. */
-  --step--2: 0.7rem;
-  --step--1: 0.875rem;
-  --step-0: 1.0625rem;
-  --step-1: 1.1875rem;
-  --step-2: 1.5rem;
-  --step-3: clamp(1.75rem, 1.3rem + 2vw, 2.6rem);
-  /* Display steps climb back up now that they have a page to sit on. */
-  --step-4: clamp(2.15rem, 1.55rem + 2.9vw, 4rem);
-  --step-5: clamp(2.7rem, 1.7rem + 4.8vw, 6rem);
+  --face: 'Hanken Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
-  /* 8px base unit — every vertical measure is a multiple */
-  --u: 0.5rem;
-  --space-2xs: calc(var(--u) * 1);
-  --space-xs: calc(var(--u) * 2);
-  --space-s: calc(var(--u) * 3);
-  --space-m: calc(var(--u) * 5);
-  --space-l: calc(var(--u) * 8);
-  --space-xl: clamp(2.75rem, 7vw, 4.5rem);
-  --space-2xl: clamp(3.5rem, 9vw, 6rem);
+  /* Small and calm: hierarchy is carried by place and space, hardly by size. */
+  --fs-s: 0.8125rem;
+  --fs: 0.9375rem;
+  --fs-read: 1.0625rem;
+  --fs-l: clamp(1.5rem, 1.15rem + 1.3vw, 2.25rem);
 
-  /* The full page. The open call is one narrow column because it is one
-     text; a catalogue is a field, and it uses the width it has. Only running
-     prose is held back to a readable measure, by `.prose`, not by the shell. */
-  --grid-columns: 12;
-  --grid-gap: clamp(1rem, 2.2vw, 2rem);
-  --page-margin: clamp(1.25rem, 5vw, 5.5rem);
-  --shell: 96rem;
-  --measure: 68ch;
+  --pad: clamp(1.25rem, 4vw, 3.5rem);
+  --sec: clamp(4.5rem, 10vw, 8.5rem);
+  --label: minmax(8.5rem, 13rem);
+  --col-gap: clamp(2rem, 4vw, 4rem);
+  --measure: 62ch;
 
-  /* Three weights only: a grey hairline, a black hairline, a black bar. */
-  --rule-hair: 1px;
-  --rule-thin: 1px;
-  --rule-medium: 1px;
-  --rule-thick: 2px;
+  /* The repertoire column: a low band on a phone, a narrow column on a desk. */
+  --score: 0rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --color-background: #000000;
-    --color-surface: #121212;
-    --color-text: #ffffff;
-    --color-muted: #9a9a9a;
-    --color-line: #333333;
-    --color-accent: #ffffff;
+@media (min-width: 64rem) {
+  :root {
+    --score: clamp(12rem, 19vw, 18rem);
   }
 }
 
-:root[data-theme='dark'] {
-  --color-background: #000000;
-  --color-surface: #121212;
-  --color-text: #ffffff;
-  --color-muted: #9a9a9a;
-  --color-line: #333333;
-  --color-accent: #ffffff;
-}
-
 /* --------------------------------------------------------------------------
-   3. Reset
+   Reset
    -------------------------------------------------------------------------- */
 
 *,
@@ -125,42 +109,34 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
+  background: var(--white);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
 }
 
 body {
   min-height: 100vh;
-  overflow-wrap: break-word;
-  background-color: var(--color-background);
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  font-size: var(--step-0);
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--face);
+  font-size: var(--fs);
   font-weight: 400;
-  line-height: 1.58;
-  letter-spacing: -0.006em;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
 
-img,
-svg,
-iframe {
-  display: block;
-  max-width: 100%;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 ul,
@@ -169,358 +145,525 @@ ol {
   padding: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 button {
   font: inherit;
   color: inherit;
-  background: none;
-  border: none;
-  cursor: pointer;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Selected text is highlighted yellow; the words stay black. */
+::selection {
+  background: var(--yellow);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: var(--rule-thick) solid var(--color-text);
-  outline-offset: 2px;
+  outline: 1px solid var(--ink);
+  outline-offset: 4px;
 }
 
-::selection {
-  background: var(--color-text);
-  color: var(--color-background);
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100;
+  padding: 0.5rem 0.8rem;
+  background: var(--ink);
+  color: var(--white);
+  transform: translateY(-250%);
+}
+
+.skip-link:focus {
+  transform: none;
 }
 
 /* --------------------------------------------------------------------------
-   4. Layout primitives
-
-   The 12-column field is gone. Everything is one measured column, so `.grid`
-   survives only as a flow container: the span utilities scattered through the
-   pages become inert rather than having to be deleted one by one.
+   Frame
    -------------------------------------------------------------------------- */
 
 .page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding-right: var(--score);
+}
+
+.page__main {
+  flex: 1 1 auto;
 }
 
 .shell {
   width: 100%;
-  max-width: var(--shell);
-  margin-inline: auto;
-  padding-inline: var(--page-margin);
+  max-width: 80rem;
+  padding-inline: var(--pad);
 }
 
-/* The twelve-column field. Children opt into spans via grid-column rules in
-   their own scoped styles; below the breakpoint everything is 1 / -1. */
-.grid {
+/* A section: its name on the left, what it names on the right. */
+.sec {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
-  column-gap: var(--grid-gap);
+  gap: 1.25rem var(--col-gap);
+  margin-top: var(--sec);
 }
 
-.skip-link {
+/* Every change from one part to the next: a short red line, halfway down the
+   space between them. */
+.sec::before {
+  content: '';
   position: absolute;
-  left: -9999px;
-  top: 0;
-  z-index: 100;
-  padding: var(--space-xs) var(--space-s);
-  background: var(--color-text);
-  color: var(--color-background);
+  top: calc(var(--sec) * -0.5);
+  left: var(--pad);
+  width: 2.75rem;
+  height: 2px;
+  background: var(--red);
+  pointer-events: none;
 }
 
-.skip-link:focus {
-  left: var(--page-margin);
-  top: var(--space-xs);
+/* The name of a section is black and bold; whatever follows it in the
+   label column (a count, a date range, a link) stays quiet. */
+.sec__label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.sec__label > * + * {
+  color: var(--grey);
+  font-weight: 400;
+}
+
+.sec__label a:hover {
+  color: var(--ink);
+}
+
+.sec__body {
+  min-width: 0;
+}
+
+@media (min-width: 52rem) {
+  .sec {
+    grid-template-columns: var(--label) minmax(0, 1fr);
+  }
 }
 
 /* --------------------------------------------------------------------------
-   5. Typographic roles
-
-   A grotesque display face wants negative tracking and sentence case. The
-   uppercase display type of the old site is gone; capitals are kept for the
-   micro labels, where they do actual work.
+   Type
    -------------------------------------------------------------------------- */
 
-.display,
-.title-l,
-.title-m {
-  overflow-wrap: anywhere;
-  text-wrap: balance;
-}
-
-.display {
-  font-size: var(--step-5);
-  font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: -0.038em;
-}
-
 .title-l {
-  font-size: var(--step-3);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.035em;
+  font-size: var(--fs-l);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .title-m {
-  font-size: var(--step-2);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.2rem, 1.08rem + 0.45vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
-/* The micro label: nav tabs, section heads, field names, catalogue figures.
-   One treatment, used everywhere a word is acting as a label. */
-.eyebrow {
-  font-size: var(--step--2);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-muted);
+.title-s {
+  font-size: var(--fs-read);
+  font-weight: 600;
+  line-height: 1.35;
 }
 
-.meta {
-  font-size: var(--step--1);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-muted);
+.muted {
+  color: var(--grey);
+}
+
+.small {
+  font-size: var(--fs-s);
   line-height: 1.5;
 }
 
-/* Prose wearing the metadata class — sentence case, no tracking. */
-.meta--tight {
-  letter-spacing: 0;
-  text-transform: none;
+.index {
+  font-variant-numeric: tabular-nums;
 }
 
-.index {
-  font-size: var(--step--2);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.1em;
-  color: var(--color-muted);
+/* --------------------------------------------------------------------------
+   Links: plain words; underlined only under the pointer.
+   -------------------------------------------------------------------------- */
+
+.link {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--hair);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+  transition: text-decoration-color 140ms ease;
 }
+
+.link:hover {
+  text-decoration-color: currentColor;
+}
+
+.link--strong {
+  font-weight: 500;
+}
+
+/* A list of entries, one under another with room between them, and a
+   shorter red line between each two. */
+.entries {
+  display: grid;
+  gap: 2.4rem;
+}
+
+.entries:not(.entries--small) > * + * {
+  position: relative;
+}
+
+.entries:not(.entries--small) > * + *::before {
+  content: '';
+  position: absolute;
+  top: -1.25rem;
+  left: 0;
+  width: 1.1rem;
+  height: 1px;
+  background: var(--red);
+}
+
+.entries--small {
+  gap: 0.6rem;
+}
+
+/* --------------------------------------------------------------------------
+   Reading
+   -------------------------------------------------------------------------- */
 
 .prose {
   max-width: var(--measure);
-  font-size: var(--step-0);
-  line-height: 1.58;
+  font-size: var(--fs-read);
+  line-height: 1.7;
 }
 
 .prose > * + * {
-  margin-top: var(--space-s);
+  margin-top: 1.1em;
 }
 
 .prose h2 {
-  margin-top: var(--space-l);
-  padding-top: var(--space-s);
-  border-top: var(--rule-thin) solid var(--color-line);
-  font-size: var(--step-2);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
+  margin-top: 2.6em;
+  font-size: var(--fs-read);
+  font-weight: 500;
 }
 
-.prose h3 {
-  margin-top: var(--space-m);
-  font-size: var(--step--2);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+.prose h2:first-child {
+  margin-top: 0;
+}
+
+.prose h3,
+.prose h4 {
+  margin-top: 2em;
+  font-size: var(--fs-read);
+  font-weight: 500;
+  font-style: italic;
+}
+
+.prose h2 + *,
+.prose h3 + *,
+.prose h4 + * {
+  margin-top: 0.6em;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose a {
+  text-decoration: underline;
+  text-decoration-color: var(--grey);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color 140ms ease;
+}
+
+.prose a:hover {
+  text-decoration-color: currentColor;
 }
 
 .prose ul,
 .prose ol {
-  padding-left: 1.25rem;
-  list-style: disc;
+  padding-left: 1.2em;
+}
+
+.prose ul {
+  list-style: none;
+}
+
+.prose ul > li {
+  position: relative;
+}
+
+.prose ul > li::before {
+  content: '–';
+  position: absolute;
+  left: -1.2em;
+  color: var(--grey);
 }
 
 .prose ol {
   list-style: decimal;
 }
 
-.prose li {
-  margin-bottom: 0.45rem;
+.prose ol > li::marker {
+  color: var(--grey);
 }
 
-.prose a {
-  text-decoration: underline;
-  text-decoration-thickness: var(--rule-thin);
-  text-underline-offset: 0.22em;
-  text-decoration-color: var(--color-line);
-  transition: text-decoration-color 100ms linear;
-}
-
-.prose a:hover {
-  text-decoration-color: var(--color-text);
-}
-
-.prose em {
-  font-style: italic;
-}
-
-.prose strong {
-  font-weight: 700;
+.prose li + li {
+  margin-top: 0.45em;
 }
 
 .prose blockquote {
-  padding: var(--space-s) var(--space-s);
-  border-left: 3px solid var(--color-text);
-  background: var(--color-surface);
-  font-size: var(--step--1);
-  line-height: 1.55;
-}
-
-.prose code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.88em;
-  background: var(--color-surface);
-  padding: 0.1em 0.32em;
+  padding-left: 1.2em;
+  border-left: 1px solid var(--ink);
+  font-style: italic;
 }
 
 .prose hr {
   border: 0;
-  border-top: var(--rule-thin) solid var(--color-line);
-  margin-block: var(--space-m);
+  border-top: 1px solid var(--hair);
+  margin-block: 2.4em;
 }
 
-.accent {
-  color: var(--color-text);
+.prose code {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.88em;
 }
 
-.muted {
-  color: var(--color-muted);
-}
-
-/* --------------------------------------------------------------------------
-   6. Rules and geometry
-   -------------------------------------------------------------------------- */
-
-.rule {
-  border: 0;
-  border-top: var(--rule-thin) solid var(--color-line);
-}
-
-.rule--hair {
-  border-top-width: var(--rule-hair);
-}
-
-/* The middle weight is a black hairline, not a thicker grey one. */
-.rule--medium {
-  border-top-width: var(--rule-medium);
-  border-top-color: var(--color-text);
-}
-
-.rule--thick {
-  border-top-width: var(--rule-thick);
-  border-top-color: var(--color-text);
-}
-
-/* Category marks: geometry, never colour */
-.mark {
-  display: inline-block;
-  flex: none;
-  width: var(--space-xs);
-  height: var(--space-xs);
-  border: var(--rule-thick) solid currentColor;
-}
-
-.mark--ai {
-  border-width: 0;
-  background: currentColor;
-}
-.mark--electroacoustic {
-  border-radius: 50%;
-}
-.mark--electronic {
-  transform: rotate(45deg);
-}
-.mark--acoustic {
-  height: var(--rule-thick);
-  border: 0;
-  background: currentColor;
-  align-self: center;
-}
-
-/* --------------------------------------------------------------------------
-   7. Links and interaction
-   -------------------------------------------------------------------------- */
-
-.link {
-  display: inline-block;
-  font-size: var(--step--2);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  padding-bottom: 0.15em;
-  border-bottom: var(--rule-thin) solid var(--color-line);
-  transition: border-color 100ms linear, color 100ms linear;
-}
-
-.link:hover {
-  color: var(--color-text);
-  border-bottom-color: var(--color-text);
-}
-
-.link--strong {
-  color: var(--color-text);
-  border-bottom-width: var(--rule-thick);
-  border-bottom-color: var(--color-text);
-}
-
-/* The one filled element in the language: a black box that inverts on hover. */
-.btn {
-  display: inline-block;
-  padding: 0.75rem 1.4rem;
-  border: var(--rule-thick) solid var(--color-text);
-  background: var(--color-text);
-  color: var(--color-background);
-  font: inherit;
-  font-weight: 700;
-  font-size: var(--step--1);
-  letter-spacing: -0.01em;
-  transition: background 100ms linear, color 100ms linear;
-}
-
-.btn:hover {
-  background: var(--color-background);
-  color: var(--color-text);
-}
-
-/* --------------------------------------------------------------------------
-   8. Utilities
-   -------------------------------------------------------------------------- */
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-.stack > * + * {
-  margin-top: var(--flow, var(--space-s));
-}
-
-.section {
-  padding-block: var(--space-xl);
-}
-
-.section--tight {
-  padding-block: var(--space-l);
-}
-
-.scroll-x {
+.prose pre {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  padding: 1em 0;
+  font-size: 0.88em;
+  line-height: 1.55;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94em;
+}
+
+.prose th,
+.prose td {
+  padding: 0.45em 0.8em 0.45em 0;
+  border-bottom: 1px solid var(--hair);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose sup {
+  font-size: 0.7em;
+  line-height: 0;
+}
+
+.prose img {
+  height: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Body: the text, and the facts beside it
+   -------------------------------------------------------------------------- */
+
+.body {
+  display: grid;
+  gap: var(--sec) var(--col-gap);
+}
+
+.body__main,
+.body__aside {
+  min-width: 0;
+}
+
+@media (min-width: 84rem) {
+  .body {
+    grid-template-columns: minmax(0, 1fr) minmax(13rem, 17rem);
+    align-items: start;
+  }
+
+  .body--single {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.body__aside {
+  display: grid;
+  gap: 2.25rem;
+  align-content: start;
+  font-size: var(--fs);
+}
+
+/* A block of facts: a grey name, then the facts. */
+.panel > h2 {
+  margin-bottom: 0.5rem;
+  color: var(--grey);
+}
+
+.panel__list {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: start;
+}
+
+.panel__item {
+  display: grid;
+  line-height: 1.45;
+}
+
+.panel__pair {
+  display: grid;
+}
+
+.panel__role {
+  color: var(--grey);
+}
+
+.panel__strong {
+  font-weight: 500;
+}
+
+.panel__note {
+  max-width: 46ch;
+  color: var(--grey);
+}
+
+.panel__note + .panel__list,
+.panel__value + .panel__note {
+  margin-top: 0.5rem;
+}
+
+/* Tags are written out in a line. */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  line-height: 1.5;
+}
+
+.tag:not(:last-child)::after {
+  content: ',';
+  margin-right: 0.35em;
+}
+
+.usage-note {
+  max-width: 56ch;
+  color: var(--grey);
+  font-size: var(--fs-s);
+  font-weight: 400;
+}
+
+.back {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  margin-top: var(--sec);
+}
+
+.empty {
+  color: var(--grey);
+}
+
+/* --------------------------------------------------------------------------
+   The repertoire: one of Ömer's scores, running past as the page goes down.
+   -------------------------------------------------------------------------- */
+
+.score {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: 15vh;
+  min-height: 6rem;
+  overflow: hidden;
+  background: var(--white);
+  border-bottom: 1px solid var(--hair);
+}
+
+.score__strip {
+  display: block;
+  height: 240%;
+  width: auto;
+  max-width: none;
+  margin-top: -15%;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* The line it runs under, in red. */
+.score__head {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 30%;
+  width: 2px;
+  background: var(--red);
+  pointer-events: none;
+}
+
+.score__caption {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.4rem;
+  max-width: 60%;
+  padding: 0.1rem 0.35rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--grey);
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  text-align: right;
+}
+
+@media (min-width: 64rem) {
+  .score {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: var(--score);
+    height: auto;
+    border-bottom: 0;
+    border-left: 1px solid var(--hair);
+  }
+
+  .score__strip {
+    height: 100%;
+    margin-top: 0;
+  }
+
+  .score__caption {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    max-width: none;
+    text-align: left;
+    font-size: 0.75rem;
+  }
 }

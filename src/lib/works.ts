@@ -1,5 +1,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { CATEGORIES, type Category } from '../content.config';
+import { href } from './paths';
 
 export type Work = CollectionEntry<'works'>;
 
@@ -9,15 +10,15 @@ export function workSlug(work: Work): string {
 }
 
 export function workPath(work: Work): string {
-  return `/works/${workSlug(work)}`;
+  return href(`/works/${workSlug(work)}`);
 }
 
 export function categoryPath(category: Category): string {
-  return `/works/category/${category}`;
+  return href(`/works/category/${category}`);
 }
 
 export function seriesPath(id: string): string {
-  return `/works/series/${id}`;
+  return href(`/works/series/${id}`);
 }
 
 /**
@@ -156,7 +157,7 @@ export function primaryListenUrl(work: Work): string | undefined {
 export function soundcloudEmbedSrc(url: string, { autoPlay = true }: { autoPlay?: boolean } = {}): string {
   const params = new URLSearchParams({
     url,
-    color: '%23873b32',
+    color: '#3b3b39',
     auto_play: String(autoPlay),
     hide_related: 'true',
     show_comments: 'false',

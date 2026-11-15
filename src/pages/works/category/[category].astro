@@ -5,6 +5,7 @@ import WorkRow from '../../../components/WorkRow.astro';
 import PageHeader from '../../../components/PageHeader.astro';
 import { CATEGORIES, CATEGORY_META, type Category } from '../../../content.config';
 import { byCategory, categoryPath, getVisibleWorks, type Work } from '../../../lib/works';
+import { href } from '../../../lib/paths';
 
 export const getStaticPaths = (async () => {
   const works = await getVisibleWorks();
@@ -23,7 +24,6 @@ const { category, works } = Astro.props;
 const meta = CATEGORY_META[category];
 const others = CATEGORIES.filter((c) => c !== category);
 ---
-
 <BaseLayout title={meta.label} description={meta.blurb}>
   <PageHeader
     eyebrow="Works"
@@ -32,60 +32,46 @@ const others = CATEGORIES.filter((c) => c !== category);
     index={String(works.length).padStart(2, '0')}
   />
 
-  <div class="shell">
-    {
-      works.length > 0 ? (
-        <div class="list">
-          {works.map((work, i) => (
-            <WorkRow work={work} index={i} />
-          ))}
-        </div>
-      ) : (
-        <p class="empty prose">No works are published in this category yet.</p>
-      )
-    }
+  <section class="shell sec">
+    <p class="sec__label">{meta.short}</p>
+    <div class="sec__body">
+      {
+        works.length > 0 ? (
+          <div class="entries">
+            {works.map((work, i) => (
+              <WorkRow work={work} index={i} />
+            ))}
+          </div>
+        ) : (
+          <p class="empty">No works are published in this category yet.</p>
+        )
+      }
+    </div>
+  </section>
 
-    <nav class="jump" aria-label="Other categories">
-      <p class="eyebrow jump__label">Elsewhere</p>
-      <ul class="jump__list">
-        {
-          others.map((other) => (
-            <li>
-              <a class="link" href={categoryPath(other)}>
-                {CATEGORY_META[other].short} →
-              </a>
-            </li>
-          ))
-        }
-        <li>
-          <a class="link link--strong" href="/works">All works →</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+  <nav class="shell sec" aria-label="Other categories">
+    <p class="sec__label">Elsewhere</p>
+    <ul class="sec__body jump">
+      {
+        others.map((other) => (
+          <li>
+            <a class="link" href={categoryPath(other)}>
+              {CATEGORY_META[other].short} →
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a class="link link--strong" href={href('/works')}>All works →</a>
+      </li>
+    </ul>
+  </nav>
 </BaseLayout>
 
 <style>
-  .list {
-    border-bottom: var(--rule-thin) solid var(--color-line);
-  }
-
-  .empty {
-    padding-block: var(--space-l);
-    color: var(--color-muted);
-  }
-
   .jump {
-    padding-block: var(--space-xl);
-  }
-
-  .jump__label {
-    margin-bottom: var(--space-s);
-  }
-
-  .jump__list {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-s) var(--space-m);
+    gap: 0.3rem 1.75rem;
   }
 </style>

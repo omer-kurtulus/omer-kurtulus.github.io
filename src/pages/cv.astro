@@ -3,6 +3,7 @@ import { getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { getVisibleWorks } from '../lib/works';
+import { href } from '../lib/paths';
 
 const entry = await getEntry('pages', 'cv');
 if (!entry) throw new Error('Missing src/content/pages/cv.md');
@@ -20,41 +21,42 @@ const last = works[0]?.data.year;
     index={String(works.length).padStart(2, '0')}
   />
 
-  <div class="shell">
-    <div class="body grid">
-      <div class="body__main prose">
+  <section class="shell sec">
+    <span class="sec__label"></span>
+    <div class="sec__body">
+      <div class="prose cv">
         <Content />
       </div>
+      <p class="back">
+        <a class="link" href={href('/works')}>Complete catalogue →</a>
+        <a class="link" href={href('/contact')}>Commissions, scores and collaborations → Contact</a>
+      </p>
     </div>
-
-    <p class="body__more">
-      <a class="link link--strong" href="/works">Complete catalogue →</a>
-      <a class="link link--strong" href="/contact">Commissions, scores and collaborations → Contact</a>
-    </p>
-  </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .body {
-    padding-block: var(--space-l);
+  .cv {
+    font-size: var(--fs);
+    line-height: 1.65;
   }
 
-  @media (min-width: 56rem) {
-    .body__main {
-      grid-column: 2 / 10;
-    }
+  .cv :global(h2) {
+    margin-top: 3em;
+    color: var(--grey);
+    font-size: var(--fs);
+    font-weight: 400;
   }
 
-  .body__main {
-    grid-column: 1 / -1;
+  .cv :global(h2:first-child) {
+    margin-top: 0;
   }
 
-  .body__more {
-    padding-bottom: var(--space-xl);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-s) var(--space-l);
+  .cv :global(p) {
+    margin-top: 0.8em;
   }
 
-
+  .cv :global(strong) {
+    font-weight: 500;
+  }
 </style>

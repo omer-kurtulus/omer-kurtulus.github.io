@@ -3,7 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkRow from '../components/WorkRow.astro';
 import ActivityRow from '../components/ActivityRow.astro';
 import { CATEGORY_META } from '../content.config';
-import { CURRENT } from '../config';
+import { CURRENT, SITE } from '../config';
+import { href } from '../lib/paths';
 import { getPublishedActivity } from '../lib/activity';
 import { RECENT_WINDOW_MONTHS, groupByMonth, recentFeed } from '../lib/recent';
 import {
@@ -48,40 +49,49 @@ const foreground = counts.filter(({ category }) => category !== 'acoustic');
 // is left out, so no work appears twice on the same page.
 const shownAbove = new Set([...recentIds, ...featured.map((w) => w.id)]);
 const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w.id));
+
+// The tagline is two sentences: who he is, and the idea.
+const [who, ...restOfTagline] = SITE.tagline.split('. ');
+const idea = restOfTagline.join('. ');
 ---
 
-{/* The name and the tagline are in the masthead on every page now, this one
-    included, so the home page opens on the work rather than on a wordmark. */}
 <BaseLayout isHome jsonLd={undefined}>
+  <section class="shell sec intro" aria-label="Introduction">
+    <p class="sec__label">{who}</p>
+    <div class="sec__body">
+      {idea && <p class="title-l intro__idea">{idea}</p>}
+      <p class="intro__ways">
+        <a class="link" href={href('/works')}>Works →</a>
+        <a class="link" href={href('/about')}>About →</a>
+      </p>
+    </div>
+  </section>
+
   {
     currentOpen && CURRENT && (
-      <section class="section--tight shell current" aria-labelledby="current-heading" data-ends-on={CURRENT.endsOn}>
-        <a class="current__link" href={CURRENT.href}>
-          <span class="current__main">
-            <span class="eyebrow">{CURRENT.eyebrow}</span>
-            <span id="current-heading" class="current__title title-l">
+      <section class="shell sec current" aria-labelledby="current-heading" data-ends-on={CURRENT.endsOn}>
+        <p class="sec__label">{CURRENT.eyebrow}</p>
+        <div class="sec__body">
+          <a class="current__link" href={href(CURRENT.href)}>
+            <span id="current-heading" class="title-l current__title">
               {CURRENT.title}
             </span>
             <span class="current__blurb">{CURRENT.blurb}</span>
-          </span>
-          <span class="current__aside">
             <span class="current__until">{CURRENT.until}</span>
             <span class="current__cta">{CURRENT.cta} →</span>
-          </span>
-        </a>
+          </a>
+        </div>
       </section>
     )
   }
 
-  <section class="section--tight shell" aria-labelledby="recent-heading">
-    <div class="head">
-      <h2 id="recent-heading" class="eyebrow">Recent</h2>
-      <p class="head__count index">{recentMarker}</p>
+  <section class="shell sec" aria-labelledby="recent-heading">
+    <div class="sec__label">
+      <h2 id="recent-heading">Recent</h2>
+      <p class="index">{recentMarker}</p>
     </div>
-    <div class="list">
+    <div class="sec__body feed">
       {
-        /* The running index is the position in the whole feed, not in the
-           month, so the numbers read straight down the page. */
         recentMonths.map((month, groupIndex) => {
           const offset = recentMonths
             .slice(0, groupIndex)
@@ -89,14 +99,16 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
 
           return (
             <div class="month">
-              <h3 class="month__label eyebrow">{month.label}</h3>
-              {month.items.map((item, i) =>
-                item.kind === 'activity' ? (
-                  <ActivityRow entry={item.entry} index={offset + i} />
-                ) : (
-                  <WorkRow work={item.work} index={offset + i} />
-                ),
-              )}
+              <h3 class="month__label">{month.label}</h3>
+              <div class="entries">
+                {month.items.map((item, i) =>
+                  item.kind === 'activity' ? (
+                    <ActivityRow entry={item.entry} index={offset + i} />
+                  ) : (
+                    <WorkRow work={item.work} index={offset + i} />
+                  ),
+                )}
+              </div>
             </div>
           );
         })
@@ -106,16 +118,14 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
 
   {
     featured.length > 0 && (
-      <section class="section--tight shell" aria-labelledby="featured-heading">
-        <div class="head">
-          <h2 id="featured-heading" class="eyebrow">
-            Featured works
-          </h2>
-          <a class="link" href="/works">
+      <section class="shell sec" aria-labelledby="featured-heading">
+        <div class="sec__label">
+          <h2 id="featured-heading">Featured works</h2>
+          <a class="link" href={href('/works')}>
             All works →
           </a>
         </div>
-        <div class="list">
+        <div class="sec__body entries">
           {featured.map((work, i) => (
             <WorkRow work={work} index={recent.length + i} />
           ))}
@@ -124,22 +134,17 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
     )
   }
 
-  <section class="section--tight shell" aria-labelledby="fields-heading">
-    <div class="head">
-      <h2 id="fields-heading" class="eyebrow">Fields of work</h2>
-    </div>
-    <ul class="fields">
+  <section class="shell sec" aria-labelledby="fields-heading">
+    <h2 id="fields-heading" class="sec__label">Fields of work</h2>
+    <ul class="sec__body fields">
       {
         foreground.map(({ category, count }) => (
           <li class:list={['field', `field--${category}`]}>
             <a class="field__link" href={categoryPath(category)}>
-              <span class="field__head">
-                <span class:list={['mark', `mark--${category}`]} aria-hidden="true" />
-                <span class="field__count index">
-                  {String(count).padStart(2, '0')} {count === 1 ? 'work' : 'works'}
-                </span>
-              </span>
               <span class="field__label title-m">{CATEGORY_META[category].label}</span>
+              <span class="field__count index">
+                {String(count).padStart(2, '0')} {count === 1 ? 'work' : 'works'}
+              </span>
               <span class="field__blurb">{CATEGORY_META[category].blurb}</span>
             </a>
           </li>
@@ -148,14 +153,16 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
     </ul>
   </section>
 
-  <section class="section--tight shell" aria-labelledby="acoustic-heading">
-    <div class="head">
-      <h2 id="acoustic-heading" class="eyebrow">Acoustic — archive</h2>
+  <section class="shell sec" aria-labelledby="acoustic-heading">
+    <div class="sec__label">
+      <h2 id="acoustic-heading">Acoustic — archive</h2>
       <a class="link" href={categoryPath('acoustic')}>Open archive →</a>
     </div>
-    <p class="head__note meta meta--tight">{CATEGORY_META.acoustic.blurb}</p>
-    <div class="list list--quiet">
-      {acoustic.map((work, i) => <WorkRow work={work} index={i} variant="compact" />)}
+    <div class="sec__body">
+      <p class="archive__note">{CATEGORY_META.acoustic.blurb}</p>
+      <div class="entries entries--small">
+        {acoustic.map((work, i) => <WorkRow work={work} index={i} variant="compact" />)}
+      </div>
     </div>
   </section>
   <script is:inline>
@@ -167,158 +174,116 @@ const acoustic = byCategory(visible, 'acoustic').filter((w) => !shownAbove.has(w
 </BaseLayout>
 
 <style>
-  .head {
+  .intro {
+    margin-top: clamp(5rem, 14vw, 11rem);
+  }
+
+  .intro__idea {
+    max-width: 24ch;
+  }
+
+  .intro__ways {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-2xs) var(--space-s);
-    padding-bottom: var(--space-xs);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
   }
 
-  .head__note {
-    max-width: 62ch;
-    margin-top: var(--space-2xs);
-    margin-bottom: var(--space-s);
-  }
-
-  .list {
-    border-bottom: var(--rule-thin) solid var(--color-line);
-  }
-
-  /* The month is a spine for the feed, not a heading in its own right: a
-     hairline, the month, and the rows beneath it. */
-  .month__label {
-    padding-top: var(--space-m);
-    padding-bottom: var(--space-2xs);
-    color: var(--color-muted);
-  }
-
-  .month:first-child .month__label {
-    padding-top: var(--space-xs);
-  }
-
-  .fields {
-    margin-top: var(--space-2xs);
-    border-bottom: var(--rule-thin) solid var(--color-line);
-  }
-
-  /* Three fields, three rules, side by side once there is room. */
-  @media (min-width: 48rem) {
-    .fields {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      column-gap: var(--grid-gap);
-      border-bottom: 0;
-    }
-  }
-
-  .field {
-    border-top: var(--rule-thin) solid var(--color-line);
-  }
-
-  .field--ai {
-    border-top-width: var(--rule-thick);
-    border-top-color: var(--color-text);
-  }
-  .field--electroacoustic {
-    border-top-color: var(--color-text);
-  }
-
-  .field__link {
-    display: block;
-    height: 100%;
-    padding-block: var(--space-s);
-    transition: background-color 100ms linear;
-  }
-
-  .field__link:hover {
-    background-color: var(--color-surface);
-  }
-
-  .field__head {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2xs);
-    margin-bottom: var(--space-2xs);
-  }
-
-  .field__count {
-    text-transform: uppercase;
-  }
-
-  .field__label {
-    display: block;
-  }
-
-  .field__blurb {
-    display: block;
-    margin-top: var(--space-2xs);
-    font-size: var(--step--1);
-    line-height: 1.5;
-    color: var(--color-muted);
-  }
-
-  /* The open call is the one thing on this page a visitor can act on today,
-     so it gets the language's loudest element: the two-pixel box. */
   .current__link {
     display: grid;
-    gap: var(--space-m) var(--grid-gap);
-    border: var(--rule-thick) solid var(--color-text);
-    padding: var(--space-m);
-    transition: background-color 100ms linear;
-  }
-
-  /* The call takes the whole width, so it is set as two fields: what it is
-     on the left, when it closes and how to act on the right. */
-  @media (min-width: 56rem) {
-    .current__link {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-      align-items: end;
-    }
-
-    .current__aside {
-      justify-self: end;
-      text-align: right;
-    }
-  }
-
-  .current__link:hover {
-    background-color: var(--color-surface);
+    gap: 0.6rem;
+    max-width: 62ch;
   }
 
   .current__title {
     display: block;
-    margin-top: var(--space-2xs);
-    margin-bottom: var(--space-xs);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.16em;
+    transition: text-decoration-color 140ms ease;
+  }
+
+  .current__link:hover .current__title {
+    text-decoration-color: currentColor;
   }
 
   .current__blurb {
-    display: block;
-    max-width: 68ch;
-    font-size: var(--step--1);
-    line-height: 1.55;
-    color: var(--color-muted);
-  }
-
-  .current__aside {
     display: block;
   }
 
   .current__until {
     display: block;
-    font-size: var(--step--1);
-    color: var(--color-muted);
+    color: var(--grey);
   }
 
   .current__cta {
+    display: block;
+    font-weight: 500;
+  }
+
+  .sec__label :global(.link) {
     display: inline-block;
-    margin-top: var(--space-xs);
-    font-size: var(--step--2);
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    border-bottom: var(--rule-thick) solid var(--color-text);
-    padding-bottom: 0.15em;
+    margin-top: 0.3rem;
+  }
+
+  .feed {
+    display: grid;
+    gap: 3.5rem;
+  }
+
+  .month + .month {
+    position: relative;
+  }
+
+  .month + .month::before {
+    content: '';
+    position: absolute;
+    top: -1.75rem;
+    left: 0;
+    width: 1.1rem;
+    height: 1px;
+    background: var(--red);
+  }
+
+  .month__label {
+    margin-bottom: 1.25rem;
+    color: var(--grey);
+  }
+
+  .fields {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .field__link {
+    display: grid;
+    gap: 0.15rem;
+    max-width: 62ch;
+  }
+
+  .field__label {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    transition: text-decoration-color 140ms ease;
+  }
+
+  .field__link:hover .field__label {
+    text-decoration-color: currentColor;
+  }
+
+  .field__count {
+    color: var(--grey);
+  }
+
+  .field__blurb {
+    margin-top: 0.3rem;
+  }
+
+  .archive__note {
+    max-width: 62ch;
+    margin-bottom: 1.5rem;
+    color: var(--grey);
   }
 </style>

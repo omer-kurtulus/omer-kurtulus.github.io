@@ -13,24 +13,27 @@ const { Content } = await render(entry);
 <BaseLayout title={entry.data.title} description={entry.data.description}>
   <PageHeader title="Contact" />
 
-  <div class="shell">
-    <div class="body grid">
+  {
+    SITE.email && (
+      <section class="shell sec">
+        <h2 class="sec__label">Email</h2>
+        <div class="sec__body">
+          <ContactOptions to={SITE.email} />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="shell sec">
+    <span class="sec__label"></span>
+    <div class="sec__body body">
       <div class="body__main prose">
         <Content />
       </div>
 
       <div class="body__aside">
-        {
-          SITE.email && (
-            <section class="panel">
-              <h2 class="eyebrow">Email</h2>
-              <ContactOptions to={SITE.email} />
-            </section>
-          )
-        }
-
         <section class="panel">
-          <h2 class="eyebrow">Listen</h2>
+          <h2>Listen</h2>
           <ul class="panel__list">
             {
               PROFILES.map((profile) => (
@@ -45,17 +48,17 @@ const { Content } = await render(entry);
         </section>
 
         <section class="panel">
-          <h2 class="eyebrow">Stay in touch</h2>
+          <h2>Stay in touch</h2>
           <p class="panel__value">
-            <a class="link link--strong" href={FOLLOW.url} rel="noopener noreferrer" target="_blank">
+            <a class="link" href={FOLLOW.url} rel="noopener noreferrer" target="_blank">
               {FOLLOW.label} →
             </a>
           </p>
-          <p class="panel__note meta">New releases, the moment they are out.</p>
+          <p class="panel__note">New releases, the moment they are out.</p>
         </section>
 
         <section class="panel">
-          <h2 class="eyebrow">{AGORA.role}, {AGORA.name}</h2>
+          <h2>{AGORA.role}, {AGORA.name}</h2>
           <p class="panel__note">{AGORA.blurb}</p>
           <ul class="panel__list">
             <li>
@@ -70,53 +73,5 @@ const { Content } = await render(entry);
         </section>
       </div>
     </div>
-  </div>
+  </section>
 </BaseLayout>
-
-<style>
-  .body {
-    row-gap: var(--space-l);
-    padding-block: var(--space-l) var(--space-2xl);
-  }
-
-  @media (min-width: 56rem) {
-    .body__main {
-      grid-column: 1 / 7;
-    }
-    .body__aside {
-      grid-column: 9 / -1;
-    }
-  }
-
-  .body__main {
-    grid-column: 1 / -1;
-  }
-
-  .body__aside {
-    grid-column: 1 / -1;
-    display: grid;
-    gap: var(--space-m);
-    align-content: start;
-  }
-
-
-
-  .panel {
-    border-top: var(--rule-thin) solid var(--color-line);
-    padding-top: var(--space-xs);
-  }
-
-  .panel__value {
-    margin-top: var(--space-xs);
-  }
-
-  .panel__note {
-    margin-top: var(--space-xs);
-  }
-
-  .panel__list {
-    display: grid;
-    gap: var(--space-xs);
-    margin-top: var(--space-xs);
-  }
-</style>

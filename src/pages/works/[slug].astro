@@ -7,6 +7,7 @@ import SoundCloudPlayer from '../../components/SoundCloudPlayer.astro';
 import WorkInterest from '../../components/WorkInterest.astro';
 import { CATEGORY_META } from '../../content.config';
 import { SITE } from '../../config';
+import { href } from '../../lib/paths';
 import {
   categoryPath,
   getVisibleWorks,
@@ -39,7 +40,7 @@ interface Props {
   siblings: Work[];
 }
 
-const { work, related, siblings } = Astro.props;
+const { work, related, siblings } = Astro.props as Props;
 const { data } = work;
 const { Content } = await render(work);
 
@@ -98,94 +99,82 @@ const jsonLd = {
       }
     : {}),
 };
----
 
+---
 <BaseLayout
   title={data.title}
   description={data.shortDescription ?? `${data.title} (${data.year}) by ${SITE.name}.`}
   jsonLd={jsonLd}
 >
   <article>
-    <header class="work-head">
-      <div class="shell">
-        <nav class="crumbs" aria-label="Breadcrumb">
-          <a class="crumbs__link" href="/works">Works</a>
-          <span class="crumbs__sep" aria-hidden="true">/</span>
-          <a class="crumbs__link" href={categoryPath(data.primaryCategory)}>{category.short}</a>
-          {
-            album && (
-              <>
-                <span class="crumbs__sep" aria-hidden="true">
-                  /
-                </span>
-                <a class="crumbs__link" href={seriesPath(album.id)}>
-                  {album.data.title}
-                  {part && ` ${part}`}
-                </a>
-              </>
-            )
-          }
-        </nav>
-
-        <div class="work-head__grid grid">
-          <div class="work-head__title">
-            <h1 class="title-l">{data.title}</h1>
-            {data.shortDescription && <p class="work-head__lead">{data.shortDescription}</p>}
-          </div>
-
-          <dl class="specs">
-            {
-              specs.map((spec) => (
-                <div class="specs__row">
-                  <dt class="specs__label meta">{spec.label}</dt>
-                  <dd class="specs__value">{spec.value}</dd>
-                </div>
-              ))
-            }
-          </dl>
-        </div>
-
-        <hr class="rule rule--thick work-head__rule" />
+    <header class="shell sec">
+      <nav class="sec__label crumbs" aria-label="Breadcrumb">
+        <a class="link" href={href('/works')}>Works</a>
+        <span aria-hidden="true">/</span>
+        <a class="link" href={categoryPath(data.primaryCategory)}>{category.short}</a>
+        {
+          album && (
+            <>
+              <span aria-hidden="true">/</span>
+              <a class="link" href={seriesPath(album.id)}>
+                {album.data.title}
+                {part && ` ${part}`}
+              </a>
+            </>
+          )
+        }
+      </nav>
+      <div class="sec__body">
+        <h1 class="title-l work-title">{data.title}</h1>
+        {data.shortDescription && <p class="work-lead">{data.shortDescription}</p>}
       </div>
     </header>
 
+    <section class="shell sec" aria-label="Details">
+      <p class="sec__label">Details</p>
+      <dl class="sec__body specs">
+        {
+          specs.map((spec) => (
+            <div class="specs__row">
+              <dt class="specs__label">{spec.label}</dt>
+              <dd>{spec.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
     {
       soundcloud.length > 0 && (
-        <section class="section--tight shell" aria-label="Recordings">
-          <div class="players">
+        <section class="shell sec" aria-label="Recordings">
+          <p class="sec__label">Recordings</p>
+          <div class="sec__body players">
             {soundcloud.map((item) => (
-              <SoundCloudPlayer
-                url={item.url}
-                title={item.title}
-                note={item.note}
-                workTitle={data.title}
-              />
+              <SoundCloudPlayer url={item.url} title={item.title} note={item.note} workTitle={data.title} />
             ))}
           </div>
         </section>
       )
     }
 
-    <div class="shell">
-      <div class="body grid">
-        <div class="body__main">
-          <div class="prose">
-            <Content />
-          </div>
+    <section class="shell sec">
+      <p class="sec__label">About the work</p>
+      <div class="sec__body body">
+        <div class="body__main prose">
+          <Content />
         </div>
 
         <aside class="body__aside">
           <WorkInterest title={data.title} />
           {
             album && (
-              <section class="panel panel--album">
-                <h2 class="eyebrow">Album</h2>
-                <a class="album__title title-m" href={seriesPath(album.id)}>
+              <section class="panel">
+                <h2>Album</h2>
+                <a class="link link--strong" href={seriesPath(album.id)}>
                   {album.data.title}
                 </a>
-                <p class="album__position meta">
-                  {album.data.year} · {siblings.length}{' '}
-                  {siblings.length === 1 ? 'work' : 'works'}
+                <p class="album__position muted">
+                  {album.data.year} · {siblings.length} {siblings.length === 1 ? 'work' : 'works'}
                 </p>
                 <ol class="album__list">
                   {siblings.map((sibling) => {
@@ -197,7 +186,9 @@ const jsonLd = {
                         {isCurrent ? (
                           <span aria-current="true">{sibling.data.title}</span>
                         ) : (
-                          <a href={workPath(sibling)}>{sibling.data.title}</a>
+                          <a class="link" href={workPath(sibling)}>
+                            {sibling.data.title}
+                          </a>
                         )}
                       </li>
                     );
@@ -210,7 +201,7 @@ const jsonLd = {
           {
             data.technology.length > 0 && (
               <section class="panel">
-                <h2 class="eyebrow">Technology</h2>
+                <h2>Technology</h2>
                 <ul class="panel__list">
                   {data.technology.map((item) => (
                     <li class="panel__item">{item}</li>
@@ -223,11 +214,11 @@ const jsonLd = {
           {
             data.credits.length > 0 && (
               <section class="panel">
-                <h2 class="eyebrow">Credits</h2>
+                <h2>Credits</h2>
                 <dl class="panel__list">
                   {data.credits.map((credit) => (
                     <div class="panel__pair">
-                      <dt class="panel__role meta meta--tight">{credit.role}</dt>
+                      <dt class="panel__role">{credit.role}</dt>
                       <dd class="panel__item">{credit.name}</dd>
                     </div>
                   ))}
@@ -239,13 +230,13 @@ const jsonLd = {
           {
             data.performances.length > 0 && (
               <section class="panel">
-                <h2 class="eyebrow">Performances</h2>
+                <h2>Performances</h2>
                 <ul class="panel__list">
                   {data.performances.map((performance) => (
                     <li class="panel__item">
                       {performance.event && <span class="panel__strong">{performance.event}</span>}
                       {performance.performers && <span>{performance.performers}</span>}
-                      <span class="meta meta--tight">
+                      <span class="panel__role">
                         {[
                           performance.venue,
                           [performance.city, performance.country].filter(Boolean).join(', '),
@@ -264,7 +255,7 @@ const jsonLd = {
           {
             data.secondaryTags.length > 0 && (
               <section class="panel">
-                <h2 class="eyebrow">Tags</h2>
+                <h2>Tags</h2>
                 <ul class="tags">
                   {data.secondaryTags.map((tag) => (
                     <li class="tag">{tag}</li>
@@ -277,7 +268,7 @@ const jsonLd = {
           {
             (data.links.length > 0 || otherMedia.length > 0) && (
               <section class="panel">
-                <h2 class="eyebrow">Links</h2>
+                <h2>Links</h2>
                 <ul class="panel__list">
                   {otherMedia.map((item) => (
                     <li>
@@ -299,15 +290,15 @@ const jsonLd = {
           }
         </aside>
       </div>
-    </div>
+    </section>
 
     {
       related.length > 0 && (
-        <section class="section shell" aria-labelledby="related-heading">
-          <h2 id="related-heading" class="eyebrow related__heading">
+        <section class="shell sec" aria-labelledby="related-heading">
+          <h2 id="related-heading" class="sec__label">
             Related works
           </h2>
-          <div class="related__list">
+          <div class="sec__body entries">
             {related.map((item, i) => (
               <WorkRow work={item} index={i} />
             ))}
@@ -319,230 +310,67 @@ const jsonLd = {
 </BaseLayout>
 
 <style>
-  .work-head {
-    padding-top: var(--space-m);
-  }
-
   .crumbs {
+    font-weight: 400;
     display: flex;
-    align-items: baseline;
-    gap: var(--space-2xs);
-    margin-bottom: var(--space-m);
-    font-size: var(--step--2);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-muted);
+    flex-wrap: wrap;
+    align-content: start;
+    gap: 0 0.4rem;
   }
 
-  .crumbs__link:hover {
-    color: var(--color-text);
+  .work-title {
+    max-width: 22ch;
   }
 
-  .work-head__grid {
-    row-gap: var(--space-m);
-    align-items: end;
-  }
-
-  .work-head__title {
-    grid-column: 1 / -1;
-  }
-
-  .work-head__lead {
+  .work-lead {
     max-width: 52ch;
-    margin-top: var(--space-s);
-    font-size: var(--step-1);
-    line-height: 1.5;
-    letter-spacing: -0.015em;
-    color: var(--color-muted);
+    margin-top: 1rem;
+    color: var(--grey);
+    font-size: var(--fs-read);
   }
 
   .specs {
-    grid-column: 1 / -1;
+    display: grid;
+    gap: 0.45rem;
+    max-width: 62ch;
   }
 
-  /* The open call's spec list: label left, value right, a hairline between
-     each pair, stacking below 34rem where two columns stop fitting. */
   .specs__row {
-    padding-block: var(--space-xs);
-    border-top: var(--rule-thin) solid var(--color-line);
-  }
-
-  @media (min-width: 34rem) {
-    .specs__row {
-      display: grid;
-      /* Wide enough for INSTRUMENTATION, which must never break mid-word. */
-      grid-template-columns: 9rem minmax(0, 1fr);
-      gap: var(--space-s);
-    }
+    display: grid;
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 1rem;
   }
 
   .specs__label {
-    overflow-wrap: normal;
-    hyphens: none;
+    color: var(--grey);
   }
-
-  .specs__value {
-    margin: 0.15rem 0 0;
-    font-size: var(--step--1);
-    line-height: 1.45;
-  }
-
-  @media (min-width: 34rem) {
-    .specs__value {
-      margin-top: 0;
-    }
-  }
-
-  .work-head__rule {
-    margin-top: var(--space-m);
-  }
-
-  @media (min-width: 56rem) {
-    .work-head {
-      padding-top: var(--space-l);
-    }
-    .work-head__title {
-      grid-column: 1 / 8;
-    }
-    .specs {
-      grid-column: 9 / -1;
-    }
-  }
-
-
 
   .players {
     display: grid;
-    gap: var(--space-xs);
-  }
-
-  .body {
-    row-gap: var(--space-xl);
-    padding-block: var(--space-l);
-  }
-
-  @media (min-width: 56rem) {
-    .body__main {
-      grid-column: 1 / 8;
-    }
-    .body__aside {
-      grid-column: 9 / -1;
-    }
-  }
-
-  .body__main {
-    grid-column: 1 / -1;
-  }
-
-  .body__aside {
-    grid-column: 1 / -1;
-    display: grid;
-    gap: var(--space-m);
-    align-content: start;
-  }
-
-
-
-  .panel {
-    border-top: var(--rule-medium) solid var(--color-text);
-    padding-top: var(--space-xs);
-  }
-
-  .panel__list {
-    display: grid;
-    gap: var(--space-xs);
-    margin-top: var(--space-xs);
-  }
-
-  .panel--album {
-    border-top-width: var(--rule-thick);
-    border-top-color: var(--color-text);
-  }
-
-  .album__title {
-    display: block;
-    margin-top: var(--space-xs);
+    gap: 1rem;
+    max-width: 62ch;
   }
 
   .album__position {
-    margin-top: var(--space-2xs);
+    margin-bottom: 0.6rem;
   }
 
   .album__list {
     display: grid;
-    gap: var(--space-2xs);
-    margin-top: var(--space-s);
+    gap: 0.2rem;
   }
 
   .album__item {
     display: grid;
-    grid-template-columns: 2rem minmax(0, 1fr);
-    gap: var(--space-2xs);
-    padding-top: var(--space-2xs);
-    border-top: var(--rule-hair) solid var(--color-line);
-    font-size: var(--step--1);
+    grid-template-columns: 1.8rem minmax(0, 1fr);
+    gap: 0.3rem;
+  }
+
+  .album__numeral {
+    color: var(--grey);
   }
 
   .album__item.is-current {
-    color: var(--color-muted);
-  }
-
-  .album__item a:hover {
-    text-decoration: underline;
-    text-underline-offset: 0.22em;
-  }
-
-  .album__item.is-current .album__numeral {
-    color: var(--color-text);
-  }
-
-  .panel__item {
-    display: block;
-    margin: 0;
-    font-size: var(--step--1);
-    line-height: 1.45;
-  }
-
-  /* A performance is three lines — who, where, when — not one run-on. */
-  .panel__item > :global(span) {
-    display: block;
-  }
-
-  .panel__pair {
-    display: grid;
-    gap: 0.15em;
-  }
-
-  .panel__strong {
-    display: block;
-    font-weight: 600;
-  }
-
-  .panel__role {
-    font-size: var(--step--2);
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2xs);
-    margin-top: var(--space-xs);
-  }
-
-  .tag {
-    padding: 0.1em 0.5em;
-    border: var(--rule-hair) solid var(--color-line);
-    font-size: var(--step--2);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-  }
-
-  .related__heading {
-    padding-bottom: var(--space-s);
-  }
-
-  .related__list {
-    border-bottom: var(--rule-thin) solid var(--color-line);
+    font-weight: 500;
   }
 </style>

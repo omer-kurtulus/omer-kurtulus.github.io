@@ -29,7 +29,7 @@ const requests = [
         {requests.map((r) => (
           <li>
             <a class="link link--strong" href={mailtoHref({ to, subject: r.subject })}>
-              {r.label} →
+              {r.label}{'\u00a0'}→
             </a>
           </li>
         ))}
@@ -41,20 +41,21 @@ const requests = [
 }
 
 <style>
-  .interest {
-    border-top: var(--rule-thick) solid var(--color-text);
-    padding-top: var(--space-xs);
-    display: grid;
-    gap: var(--space-xs);
+  .interest > h2 {
+    margin-bottom: 0.5rem;
+    color: var(--grey);
   }
 
   .interest__list {
     display: grid;
-    gap: var(--space-xs);
-    margin-top: var(--space-2xs);
+    gap: 0.3rem;
+    justify-items: start;
+    margin-bottom: 1.1rem;
   }
 
   .interest__note {
-    margin-top: var(--space-xs);
+    margin-bottom: 0.4rem;
+    color: var(--grey);
+    font-size: var(--fs-s);
   }
 </style>

@@ -4,13 +4,16 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import AmbientPlayer from '../components/AmbientPlayer.astro';
 import { AGORA, SITE, OPENING_TRACK } from '../config';
+import { IS_TEST, href, routeOf } from '../lib/paths';
+import { stripFor } from '../lib/score';
+import faceFont from '../assets/fonts/hanken-grotesk-normal-latin.woff2?url';
 
 interface Props {
   title?: string;
   description?: string;
   /** Page-specific JSON-LD, injected after the site-wide Person graph. */
   jsonLd?: Record<string, unknown>;
-  /** Set on the home page so the wordmark is an <h1> there and only there. */
+  /** Set on the home page so the name is an <h1> there and only there. */
   isHome?: boolean;
 }
 
@@ -18,6 +21,15 @@ const { title, description = SITE.description, jsonLd, isHome = false } = Astro.
 
 const pageTitle = title ? `${title} — ${SITE.name}` : SITE.title;
 const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site).href;
+
+// The score that runs past this page.
+const route = routeOf(Astro.url.pathname);
+const strip = stripFor(route);
+
+// The strips are excerpts from Ömer's scores in general, not the score of the
+// work whose page they run beside — and a page about one work has to say so.
+const aboutOneWork = /^\/works\/.+/.test(route);
+const caption = aboutOneWork ? 'An excerpt from another of the composer’s scores.' : 'From the composer’s scores.';
 
 const personLd = {
   '@context': 'https://schema.org',
@@ -39,46 +51,107 @@ const personLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {
+      IS_TEST ? (
+        /* A test publication: kept out of search engines entirely. */
+        <meta name="robots" content="noindex, nofollow, noarchive" />
+      ) : (
+        <link rel="canonical" href={canonical} />
+      )
+    }
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    {!IS_TEST && <meta property="og:url" content={canonical} />}
     <meta name="twitter:card" content="summary" />
 
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" />
 
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    {!IS_TEST && <link rel="sitemap" href={href('/sitemap-index.xml')} />}
+    <link rel="preload" href={faceFont} as="font" type="font/woff2" crossorigin />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Crect x='5' y='6' width='22' height='3' fill='%23fff'/%3E%3Ccircle cx='11' cy='20' r='5' fill='%23fff'/%3E%3Crect x='20' y='15' width='7' height='10' fill='%23fff'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fff'/%3E%3Cpath d='M4 10h24M4 14h24M4 18h24M4 22h24' stroke='%23111' stroke-width='1'/%3E%3Crect x='12' y='6' width='1.5' height='20' fill='%23111'/%3E%3C/svg%3E"
     />
 
     <script is:inline type="application/ld+json" set:html={JSON.stringify(personLd)} />
     {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
-    <!-- Cloudflare Web Analytics: çerezsiz ziyaretçi sayacı (site Cloudflare'den geçmediği için elle eklenir). -->
-    <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc19a6d3dc944b318f4291854e12dc77"}'></script>
+    {
+      !IS_TEST && (
+        /* Cloudflare Web Analytics: çerezsiz ziyaretçi sayacı (site Cloudflare'den geçmediği için elle eklenir). */
+        <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc19a6d3dc944b318f4291854e12dc77"}'></script>
+      )
+    }
   </head>
 
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    {
+      /* The repertoire. The image is decoration for a reader; the caption is
+         not. */
+    }
+    <div class="score">
+      <img
+        class="score__strip"
+        data-score-strip
+        aria-hidden="true"
+        src={strip.src}
+        width={strip.width}
+        height={strip.height}
+        alt=""
+        decoding="async"
+        draggable="false"
+      />
+      <span class="score__head" aria-hidden="true"></span>
+      <p class="score__caption">{caption}</p>
+    </div>
+
     <div class="page">
-      <a class="skip-link" href="#main">Skip to content</a>
       <SiteHeader isHome={isHome} />
       <main id="main" class="page__main">
         <slot />
       </main>
       <SiteFooter />
-      {OPENING_TRACK && <AmbientPlayer url={OPENING_TRACK.url} label={OPENING_TRACK.label} />}
     </div>
+
+    {OPENING_TRACK && <AmbientPlayer url={OPENING_TRACK.url} label={OPENING_TRACK.label} />}
+
+    <script>
+      /**
+       * The repertoire runs past. As the page is scrolled the score moves to
+       * the left under its line; at the foot of a long page its last bar has
+       * arrived. A short page moves it only as far as the page itself moves.
+       */
+      const strip = document.querySelector<HTMLImageElement>('[data-score-strip]');
+      const panel = strip?.parentElement;
+
+      if (strip && panel) {
+        let queued = false;
+
+        const place = () => {
+          queued = false;
+          const travel = Math.max(0, strip.offsetWidth - panel.clientWidth);
+          const scrollable = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+          const rate = Math.min(1.1, travel / scrollable);
+          const x = Math.min(travel, window.scrollY * rate);
+          strip.style.transform = `translate3d(${-x.toFixed(1)}px, 0, 0)`;
+        };
+
+        const ask = () => {
+          if (!queued) {
+            queued = true;
+            requestAnimationFrame(place);
+          }
+        };
+
+        window.addEventListener('scroll', ask, { passive: true });
+        window.addEventListener('resize', ask);
+        strip.addEventListener('load', ask);
+        ask();
+      }
+    </script>
   </body>
 </html>
-
-<style>
-  .page__main {
-    flex: 1 1 auto;
-  }
-</style>

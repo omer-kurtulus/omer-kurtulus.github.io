@@ -30,28 +30,25 @@ const compose = { to, subject, body };
 <style>
   .contact-options {
     display: grid;
-    gap: var(--space-2xs);
+    gap: 0.4rem;
+    justify-items: start;
   }
 
-  .contact-options__address {
-    margin-top: var(--space-xs);
+  .contact-options__address :global(.link) {
+    font-size: var(--fs-read);
+    font-weight: 500;
     overflow-wrap: anywhere;
   }
 
   .contact-options__ways {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2xs) var(--space-s);
+    gap: 0.2rem 1.25rem;
+    color: var(--grey);
   }
 
-  /* A button that reads as one of the small uppercase links beside it. */
-  .contact-options__copy {
-    background: none;
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    cursor: pointer;
-    font-family: inherit;
+  .contact-options__ways :global(.link:hover) {
+    color: var(--ink);
   }
 </style>
 

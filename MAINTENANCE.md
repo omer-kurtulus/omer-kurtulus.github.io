@@ -269,26 +269,30 @@ Two cross-field rules are enforced there:
 
 ## Design constraints
 
-These are deliberate. Keep them.
+These are deliberate (Ömer, 15 Nov 2026, after five rejected designs). Keep them.
 
-- No photography, portraits, album art, notation, instrument imagery, waveforms
-  or musical icons anywhere on the site.
-- Ornament is CSS only: lines, squares, circles, controlled intersections. It
-  never outweighs the content.
-- One accent colour (`--color-accent`, matte oxide red), used sparingly — active
-  nav, hover, one or two structural marks. Categories are **not** colour-coded;
-  they are distinguished by rule weight, geometric mark, numbering and spacing.
-- No gradients, no glassmorphism, no neon.
-- Typography is **JetBrains Mono** (OFL), self-hosted in `public/fonts/`, and it
-  is the only family on the site. Everything is monospaced. Do not introduce a
-  second face; the whole design depends on one rhythm.
-- It is variable across weights 100–800 with a true italic, so hierarchy uses
-  weight as well as size, case, letter-spacing and space.
-- Mono glyphs are ~20% wider than proportional ones. Display sizes and
-  `--measure` in `global.css` are set for that — if you change one, check the
-  other, and re-run the overflow check before pushing.
-- The palette is defined once in `src/styles/global.css` as custom properties,
-  with a dark-mode block. Change colours there, never inline.
+- A white gallery: white ground, near-black text, one grey for what is quiet.
+  Two signals only, both his request: a clear red (`--red`) for the short lines
+  that separate the parts and for the line the repertoire runs under, and
+  yellow (`--yellow`) behind selected text, which stays black. No other colour
+  — he rejected ochre, brown, cobalt and turquoise in turn.
+- The Agora badge and the commission link sit together in a thin black box in
+  the header.
+- Typeface: Hanken Grotesk, self-hosted. One face only.
+- Nothing illustrative or cartoonish: no drawn ground, no tilted tags, no
+  shadows, no boxes, no wavy edges.
+- The site must not resemble The Agora of New Music: no cream paper with black
+  and dark red, no Bodoni or other high-contrast serif, no letter-spaced
+  capital labels.
+- The one picture is the repertoire running at the right as the page scrolls —
+  the only idea he kept from all five earlier designs. Keep it small. A strip
+  never shows a running head or foot, and it is not the score of the work it
+  runs beside — keep the caption.
+- Every section is a `.sec`: grey label left, content right. Hierarchy comes
+  from place and space, hardly from size.
+- Internal links go through `href()` from `src/lib/paths.ts`, never a bare
+  `"/works"`, so a test build can live in a subfolder (see README, "Test
+  publication").
 
 ## Sources of truth for biography and CV
 
