@@ -157,7 +157,7 @@ export function primaryListenUrl(work: Work): string | undefined {
 export function soundcloudEmbedSrc(url: string, { autoPlay = true }: { autoPlay?: boolean } = {}): string {
   const params = new URLSearchParams({
     url,
-    color: '#1f3cff',
+    color: '#1f6b44',
     auto_play: String(autoPlay),
     hide_related: 'true',
     show_comments: 'false',

@@ -271,14 +271,15 @@ Two cross-field rules are enforced there:
 
 These are deliberate (Ömer, 15 Nov 2026, after five rejected designs). Keep them.
 
-- A gallery on a light grey ground (`--ground` #e7e7e5), near-black text, one
-  grey for what is quiet. Two signals only: electric blue (`--line` #1f3cff)
-  for the short lines that separate the parts and the line the repertoire runs
-  under, and yellow (`--yellow`) behind selected text, which stays black.
-  Chosen by Ömer on 15 Nov 2026 so that a visitor coming from the Agora does
-  not think the two sites came off the same lathe: no white paper + black +
-  red, no thin outlined boxes. He rejected ochre, brown, cobalt and turquoise
-  earlier; red was dropped because it is the Agora's colour.
+- A gallery on a pale sage ground (`--ground` #e2e7dd), dark green-black text
+  (`--ink` #152018), one muted green-grey for what is quiet. Two signals only:
+  dark green (`--line` #1f6b44) for the short lines that separate the parts and
+  the line the repertoire runs under, and yellow (`--yellow`) behind selected
+  text. Chosen by Ömer on 15 Nov 2026 (after briefly going live with grey +
+  electric blue the same day) so that a visitor coming from the Agora does not
+  think the two sites came off the same lathe: no white paper + black + red, no
+  thin outlined boxes. He rejected ochre, brown, cobalt and turquoise earlier;
+  red was dropped because it is the Agora's colour.
 - The Agora badge and the commission link sit together in a filled block a
   shade darker than the ground (`--panel`), not an outlined box.
 - Typeface: Hanken Grotesk, self-hosted. One face only.
