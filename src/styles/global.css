@@ -4,8 +4,8 @@
    A white room. Small, calm type; a great deal of space; nothing that is not
    information. No boxes, no shadows, no ornament. Every section is set the
    same way — a quiet label on the left, what it names on the right — and
-   every change from one part to the next is marked by a short dark-green
-   line. Green is also the line the repertoire runs under; selected text turns
+   every change from one part to the next is marked by a short violet line.
+   Violet is also the line the repertoire runs under; selected text turns
    yellow. The ground is a pale sage, so the site never reads as the white
    paper, black and red of The Agora of New Music.
 
@@ -70,8 +70,9 @@
   --ink: #152018;
   --grey: #66715f;
   --hair: #cbd3c4;
-  /* The short lines between parts and the line the repertoire runs under. */
-  --line: #1f6b44;
+  /* The short lines between parts and the line the repertoire runs under:
+     violet, chosen by Ömer on the test site. */
+  --line: #6b3fd1;
   /* Behind selected text (his request: yellow, the words stay dark). */
   --yellow: #f2e36b;
   --select-ink: #152018;
@@ -246,7 +247,7 @@ h4 {
   margin-top: var(--sec);
 }
 
-/* Every change from one part to the next: a short green line, halfway down
+/* Every change from one part to the next: a short violet line, halfway down
    the space between them. */
 .sec::before {
   content: '';
@@ -352,7 +353,7 @@ h4 {
 }
 
 /* A list of entries, one under another with room between them, and a
-   shorter green line between each two. */
+   shorter violet line between each two. */
 .entries {
   display: grid;
   gap: 2.4rem;
@@ -638,7 +639,7 @@ h4 {
   -webkit-user-drag: none;
 }
 
-/* The line it runs under, in green. */
+/* The line it runs under, in violet. */
 .score__head {
   position: absolute;
   top: 0;

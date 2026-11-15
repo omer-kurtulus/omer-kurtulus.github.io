@@ -273,9 +273,9 @@ These are deliberate (Ömer, 15 Nov 2026, after five rejected designs). Keep the
 
 - A gallery on a pale sage ground (`--ground` #e2e7dd), dark green-black text
   (`--ink` #152018), one muted green-grey for what is quiet. Two signals only:
-  dark green (`--line` #1f6b44) for the short lines that separate the parts and
-  the line the repertoire runs under, and yellow (`--yellow`) behind selected
-  text. Chosen by Ömer on 15 Nov 2026 (after briefly going live with grey +
+  violet (`--line` #6b3fd1, his choice for the lines) for the short lines that
+  separate the parts and the line the repertoire runs under, and yellow
+  (`--yellow`) behind selected text. Chosen by Ömer on 15 Nov 2026 (after briefly going live with grey +
   electric blue the same day) so that a visitor coming from the Agora does not
   think the two sites came off the same lathe: no white paper + black + red, no
   thin outlined boxes. He rejected ochre, brown, cobalt and turquoise earlier;
