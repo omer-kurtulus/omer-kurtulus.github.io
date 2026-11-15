@@ -55,6 +55,7 @@ export const ACTIVITY_KINDS = [
   'residency',
   'catalogue',
   'founded',
+  'commission',
 ] as const;
 
 export type ActivityKind = (typeof ACTIVITY_KINDS)[number];
@@ -69,6 +70,8 @@ export const ACTIVITY_KIND_META: Record<ActivityKind, { label: string }> = {
   catalogue: { label: 'Catalogue' },
   // Something Ömer founded and runs (The Agora of New Music). Founder, never "editor".
   founded: { label: 'Founded' },
+  // A new work commissioned from Ömer, announced before it has a work page.
+  commission: { label: 'Commission' },
 };
 
 const mediaItem = z.object({

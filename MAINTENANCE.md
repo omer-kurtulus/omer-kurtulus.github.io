@@ -36,7 +36,7 @@ works.
 ```yaml
 ---
 title: Whose Music?
-kind: conference          # conference | panel | talk | workshop | residency
+kind: conference          # conference | panel | talk | workshop | residency | catalogue | founded | commission
 date: 2026-09-07
 datePrecision: day        # day | month | year — cut to what is actually known
 organiser: Ulysses Platform
