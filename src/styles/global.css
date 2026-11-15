@@ -77,9 +77,9 @@
   --yellow: #f2e36b;
   --select-ink: #152018;
   /* The Agora box in the header: a filled block a shade darker than the
-     ground, not a thin outlined box like the Agora's own. */
+     ground, framed in the orange of the lines so it stands out (his request). */
   --panel: #d4dccd;
-  --panel-line: transparent;
+  --panel-line: var(--line);
   /* Half-transparent ground, for small labels laid over the score. */
   --glass: rgba(226, 231, 221, 0.9);
   /* How the engraved score sits on the ground: as it is on a light ground,

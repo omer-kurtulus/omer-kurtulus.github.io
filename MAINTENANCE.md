@@ -281,7 +281,8 @@ These are deliberate (Ömer, 15 Nov 2026, after five rejected designs). Keep the
   thin outlined boxes. He rejected ochre, brown, cobalt and turquoise earlier;
   red was dropped because it is the Agora's colour.
 - The Agora badge and the commission link sit together in a filled block a
-  shade darker than the ground (`--panel`), not an outlined box.
+  shade darker than the ground (`--panel`), framed in a 2px orange line
+  (`--panel-line`, the colour of the separating lines) so it stands out.
 - Typeface: Hanken Grotesk, self-hosted. One face only.
 - Nothing illustrative or cartoonish: no drawn ground, no tilted tags, no
   shadows, no boxes, no wavy edges.
