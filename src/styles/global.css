@@ -4,8 +4,8 @@
    A white room. Small, calm type; a great deal of space; nothing that is not
    information. No boxes, no shadows, no ornament. Every section is set the
    same way — a quiet label on the left, what it names on the right — and
-   every change from one part to the next is marked by a short orange line.
-   Orange is also the line the repertoire runs under; selected text turns
+   every change from one part to the next is marked by a short dark-green
+   line. Green is also the line the repertoire runs under; selected text turns
    yellow. The ground is a pale sage, so the site never reads as the white
    paper, black and red of The Agora of New Music.
 
@@ -71,13 +71,14 @@
   --grey: #66715f;
   --hair: #cbd3c4;
   /* The short lines between parts and the line the repertoire runs under:
-     orange, Ömer's choice (15 Nov 2026). */
-  --line: #e0601f;
+     dark green, as in the first sage proposal (Ömer, 17 Nov 2026, after
+     trying violet and orange). */
+  --line: #1f6b44;
   /* Behind selected text (his request: yellow, the words stay dark). */
   --yellow: #f2e36b;
   --select-ink: #152018;
   /* The Agora box in the header: a filled block a shade darker than the
-     ground, framed in the orange of the lines so it stands out (his request). */
+     ground, framed in the colour of the lines so it stands out (his request). */
   --panel: #d4dccd;
   --panel-line: var(--line);
   /* Half-transparent ground, for small labels laid over the score. */
@@ -247,8 +248,8 @@ h4 {
   margin-top: var(--sec);
 }
 
-/* Every change from one part to the next: a short orange line, halfway down
-   the space between them. */
+/* Every change from one part to the next: a short dark-green line, halfway
+   down the space between them. */
 .sec::before {
   content: '';
   position: absolute;
@@ -353,7 +354,7 @@ h4 {
 }
 
 /* A list of entries, one under another with room between them, and a
-   shorter orange line between each two. */
+   shorter dark-green line between each two. */
 .entries {
   display: grid;
   gap: 2.4rem;
@@ -639,7 +640,7 @@ h4 {
   -webkit-user-drag: none;
 }
 
-/* The line it runs under, in orange. */
+/* The line it runs under, in dark green. */
 .score__head {
   position: absolute;
   top: 0;

@@ -273,16 +273,16 @@ These are deliberate (Ömer, 15 Nov 2026, after five rejected designs). Keep the
 
 - A gallery on a pale sage ground (`--ground` #e2e7dd), dark green-black text
   (`--ink` #152018), one muted green-grey for what is quiet. Two signals only:
-  orange (`--line` #e0601f, his choice for the lines after trying violet) for
-  the short lines that separate the parts and the line the repertoire runs
-  under, and yellow (`--yellow`) behind selected text. Chosen by Ömer on 15 Nov 2026 (after briefly going live with grey +
+  dark green (`--line` #1f6b44 — he tried violet and orange and came back to
+  this on 17 Nov 2026) for the short lines that separate the parts and the
+  line the repertoire runs under, and yellow (`--yellow`) behind selected text. Chosen by Ömer on 15 Nov 2026 (after briefly going live with grey +
   electric blue the same day) so that a visitor coming from the Agora does not
   think the two sites came off the same lathe: no white paper + black + red, no
   thin outlined boxes. He rejected ochre, brown, cobalt and turquoise earlier;
   red was dropped because it is the Agora's colour.
 - The Agora badge and the commission link sit together in a filled block a
-  shade darker than the ground (`--panel`), framed in a 2px orange line
-  (`--panel-line`, the colour of the separating lines) so it stands out.
+  shade darker than the ground (`--panel`), framed in a 2px line in the colour
+  of the separating lines (`--panel-line`) so it stands out.
 - Typeface: Hanken Grotesk, self-hosted. One face only.
 - Nothing illustrative or cartoonish: no drawn ground, no tilted tags, no
   shadows, no boxes, no wavy edges.
