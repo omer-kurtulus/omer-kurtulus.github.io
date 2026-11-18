@@ -56,6 +56,7 @@ export const ACTIVITY_KINDS = [
   'catalogue',
   'founded',
   'commission',
+  'selection',
 ] as const;
 
 export type ActivityKind = (typeof ACTIVITY_KINDS)[number];
@@ -72,6 +73,8 @@ export const ACTIVITY_KIND_META: Record<ActivityKind, { label: string }> = {
   founded: { label: 'Founded' },
   // A new work commissioned from Ömer, announced before it has a work page.
   commission: { label: 'Commission' },
+  // A work of Ömer's chosen by performers or a festival (a call for scores).
+  selection: { label: 'Selected work' },
 };
 
 const mediaItem = z.object({
