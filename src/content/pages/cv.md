@@ -36,7 +36,9 @@ Principal instructors: Emel Çelebioğlu, Özkan Manav
 ## Awards, honours and commissions
 
 **2026** — Selected Composer, TAK Ensemble (*A Room For The Belated Sentences*,
-KEAR Electroacoustic Residency) · Commission: *an arche*, Liam Battle — cello, three
+KEAR Electroacoustic Residency) · Selected Composer, Duo Raconteur Call for
+Proposals (*Things You May Find Hidden in My Ear*, piano and narrator — debut
+concert, Baltimore, spring 2027) · Commission: *an arche*, Liam Battle — cello, three
 performers, quadraphonic diffusion and light · Commission: *Fazz*, Mikayla Farmer — oboe,
 electronics and light · Commission: *Yörüngeler*, Duo Latitude — two saxophones and
 fixed media · Commission: *Assemblage*, Markus Wenninger — disassembled
