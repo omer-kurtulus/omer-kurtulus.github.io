@@ -75,12 +75,15 @@ find new works to play and composers find performers — with no prizes, no juri
 and no entry fees.
 
 His music has been performed by the Toledo Symphony Orchestra, TAK Ensemble,
-Ensemble Ipse, FLYDLPHN and Flam-a Duo, in venues including Kobacker Hall and Bryan
-Hall at Bowling Green State University, the Great Lawn of Central Park in New York,
-Süreyya Opera House in Istanbul, and festivals in Austria and Italy. He has been a
-selected composer at the KEAR Electroacoustic Residency and the ISA Festival, and
-holds prizes from the FIDELIO Piano Composition Competition, the International
-Woodwind Festival and the Trieste Classica *Mediterraneo* album project.
+Ensemble Ipse, FLYDLPHN and Flam-a Duo, among others, in venues including Kobacker
+Hall and Bryan Hall at Bowling Green State University, the Great Lawn of Central Park
+in New York, Süreyya Opera House in Istanbul, and festivals in Austria and Italy. He
+has taken part in numerous residencies and festivals in Turkey, Italy, Austria,
+Slovenia and the United States, including Nuova Consonanza, Lago di Garda, the TAK
+Residency, praelocutio.exordium.prolusio IV, the KEAR Electroacoustic Residency and
+ISA in Mürzzuschlag. He holds prizes from the FIDELIO Piano Composition Competition,
+the International Woodwind Festival and the Trieste Classica *Mediterraneo* album
+project.
 
 Alongside composition he writes on timbre, phenomenology and the conditions of
 contemporary practice — on Sciarrino's composition of silence, on Saariaho's timbral
