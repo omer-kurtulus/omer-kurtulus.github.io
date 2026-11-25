@@ -81,9 +81,7 @@ in New York, Süreyya Opera House in Istanbul, and festivals in Austria and Ital
 has taken part in numerous residencies and festivals in Turkey, Italy, Austria,
 Slovenia and the United States, including Nuova Consonanza, Lago di Garda, the TAK
 Residency, praelocutio.exordium.prolusio IV, the KEAR Electroacoustic Residency and
-ISA in Mürzzuschlag. He holds prizes from the FIDELIO Piano Composition Competition,
-the International Woodwind Festival and the Trieste Classica *Mediterraneo* album
-project.
+ISA in Mürzzuschlag.
 
 Alongside composition he writes on timbre, phenomenology and the conditions of
 contemporary practice — on Sciarrino's composition of silence, on Saariaho's timbral
